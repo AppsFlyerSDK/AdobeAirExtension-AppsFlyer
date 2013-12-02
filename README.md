@@ -11,7 +11,7 @@ This project provides support for Adobe Air Extension.
 Add the ane file (located under ScriptsAndBuild folder) into your project.
 
 follow the instructions about permissions and receiver as described here:
-http://support.appsflyer.com/attachments/token/97dg7dz6jpnctc9/?name=AF-iOS-Integration-Guide-v2.5.1.9.8.pdf
+http://support.appsflyer.com/attachments/token/w51runonzngnrl4/?name=AF-Android-Integration-Guide-v1.3.19.pdf
 
 import the AppsFlyer Extension into your project
 
