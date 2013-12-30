@@ -17,9 +17,7 @@ package com.appsflyer.adobeair
 		//
 		//----------------------------------------
 		
-		public static function get instance():TrackingSDK {
-			return null;
-		}
+		
 		
 		/**
 		 * Sets the AppsFlyer developer key
@@ -62,16 +60,14 @@ package com.appsflyer.adobeair
 		 * Constructor. 
 		 */	
 		
-		public function TrackingSDK(enforcer:SingletonEnforcer)
+		public function TrackingSDK()
 		{
 		}
 		
 	}
 }
 
-class SingletonEnforcer {
-	
-}
+
 
 
 

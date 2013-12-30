@@ -26,13 +26,13 @@ package com.appsflyer.adobeair
 		//
 		//----------------------------------------
 		
-		public static function get instance():TrackingSDK {
+	/*	public static function get Instance():TrackingSDK {
 			if ( !_instance ) {
 				_instance = new TrackingSDK( new SingletonEnforcer() );
 			}
 			return _instance;
 		}
-		
+		*/
 		/**
 		 * Sets the AppsFlyer developer key
 		 *  
@@ -74,10 +74,10 @@ package com.appsflyer.adobeair
 		 * Constructor. 
 		 */	
 		
-		public function TrackingSDK(enforcer:SingletonEnforcer)
+		public function TrackingSDK()
 		{
 			super();
-			extContext = ExtensionContext.createExtensionContext("com.appsfyer.adobeair", "" );
+			extContext = ExtensionContext.createExtensionContext("com.appsflyer.adobeair", "" );
 			if ( !extContext ) {
 				throw new Error( "AppsFlyer Tracking is not supported on this platform" );
 			}

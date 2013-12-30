@@ -1,1 +1,0 @@
-adt -package -target ane AppsFlyerExtension.ane extension.xml -swc AppsFlyerExtension.swc -platform Android-ARM -C android . -platform default -C default .
