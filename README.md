@@ -23,6 +23,8 @@ If the following was not added automatically please add it to the APP_NAME-app.x
 follow the instructions about permissions and receiver as described here:
 http://support.appsflyer.com/attachments/token/w51runonzngnrl4/?name=AF-Android-Integration-Guide-v1.3.19.pdf
 
+####please note: the package name of the receiver is com.appsflyer.adobeeair.CLASS_NAME.
+
 import the AppsFlyer Extension into your project
 
 			import AppsFlyerInterface;
