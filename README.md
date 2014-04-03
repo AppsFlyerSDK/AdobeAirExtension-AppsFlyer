@@ -46,6 +46,10 @@ add a call for tracking in-app events when desired
 
 			afInterface.sendTrackingWithEvent("purchase","90.0"); // purchase is the event name, 90 is the value
 			
+			afInterface.getConversionData(); // calls async function to get the conversion data
+			
+			afInterface.addEventListener(AppsFlyerEvent.SUCCESS,function(e){var text=e.data}); // e.data holds the string with the conversion data.
+			
 			
 
 ###IOS
@@ -71,4 +75,6 @@ add a call for tracking in-app events when desired
 
 			afInterface.sendTrackingWithEvent("purchase","90.0"); // purchase is the event name, 90 is the value
 
-
+			afInterface.getConversionData(); // calls async function to get the conversion data
+			
+			afInterface.addEventListener(AppsFlyerEvent.SUCCESS,function(e){var text=e.data}); // e.data holds the string with the conversion data.
