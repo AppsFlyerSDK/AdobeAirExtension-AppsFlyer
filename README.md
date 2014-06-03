@@ -21,7 +21,7 @@ If the following was not added automatically please add it to the APP_NAME-app.x
 ###Android
 
 follow the instructions about permissions and receiver as described here:
-http://support.appsflyer.com/attachments/token/w51runonzngnrl4/?name=AF-Android-Integration-Guide-v1.3.19.pdf
+http://support.appsflyer.com/entries/22801952?challenge=GxUdr14D3G5LHMqCvkRnp1FvC
 
 ####please note: the package name of the receiver is com.appsflyer.adobeeair.CLASS_NAME.
 
