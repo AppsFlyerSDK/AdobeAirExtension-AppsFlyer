@@ -67,7 +67,7 @@ construct the AppsFlyer
 			
 set the developer key by calling the function:
 
-			afInterface.setDeveloperKey("your_developer_key_here","your_apple_id_here");
+			afInterface.setDeveloperKey("your_developer_key_here","your_app_id_here");
 			
 add a call for tracking whenever the app is launched
 
