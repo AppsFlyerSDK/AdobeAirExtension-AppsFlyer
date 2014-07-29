@@ -61,7 +61,7 @@ add a call for tracking whenever the app is launched
 			
 ###All Platforms 
 
-afInterface.sendTracking();
+			afInterface.sendTracking();
 			
 add a call for tracking in-app events when desired
 
