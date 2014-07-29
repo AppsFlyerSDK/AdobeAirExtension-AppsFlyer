@@ -25,6 +25,8 @@ http://support.appsflyer.com/entries/22801952?challenge=GxUdr14D3G5LHMqCvkRnp1Fv
 
 ####please note: the package name of the receiver is com.appsflyer.adobeeair.CLASS_NAME.
 
+It's highly recommended to add Google Play services into your app so we can track Google Advertising ID. See http://developer.android.com/google/play-services/setup.html
+
 import the AppsFlyer Extension into your project
 
 			import AppsFlyerInterface;
