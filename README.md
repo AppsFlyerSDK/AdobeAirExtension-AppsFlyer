@@ -73,7 +73,8 @@ get conversion data (attribution info)
 			
 			afInterface.addEventListener(AppsFlyerEvent.SUCCESS,function(e){var text=e.data}); // e.data holds the string with the conversion data.
 			
-Setting your app's user (Optional)			
+Setting your app's user (Optional)
+
 			afInterface.setAppUserId("user_id_as_used_in_the_app"); (Optional) set your app's user id
 
                         
