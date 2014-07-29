@@ -39,22 +39,9 @@ set the developer key by calling the function:
 			afInterface.setDeveloperKey("your_developer_key_here",null);// second paramter is just for IOS
 			
 add a call for tracking whenever the app is launched
-
-			afInterface.sendTracking();
-			
-add a call for tracking in-app events when desired
-
-			afInterface.sendTrackingWithEvent("purchase","90.0"); // purchase is the event name, 90 is the value
-			
-get conversion data (attribution info)
-
-			afInterface.getConversionData(); // calls async function to get the conversion data
-			
-			afInterface.addEventListener(AppsFlyerEvent.SUCCESS,function(e){var text=e.data}); // e.data holds the string with the conversion data.
-			
 			
 
-###IOS
+###iOS
 
 import the AppsFlyer Extension into your project
 
@@ -71,7 +58,10 @@ set the developer key by calling the function:
 			
 add a call for tracking whenever the app is launched
 
-			afInterface.sendTracking();
+			
+###All Platforms 
+
+afInterface.sendTracking();
 			
 add a call for tracking in-app events when desired
 
@@ -82,3 +72,7 @@ get conversion data (attribution info)
 			afInterface.getConversionData(); // calls async function to get the conversion data
 			
 			afInterface.addEventListener(AppsFlyerEvent.SUCCESS,function(e){var text=e.data}); // e.data holds the string with the conversion data.
+			
+			afInterface.setAppUserId("user_id_as_used_in_the_app"); // (Optional) set your app's user id
+
+                        
