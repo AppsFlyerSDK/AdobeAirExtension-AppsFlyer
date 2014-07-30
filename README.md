@@ -30,11 +30,11 @@ construct the AppsFlyer
 			
 set the developer key by calling the function:
 
-			Android
+Android
 
 			afInterface.setDeveloperKey("your_developer_key_here","your_apple_id_here");
 			
-			iOS
+iOS
 			
 			afInterface.setDeveloperKey("your_developer_key_here",null);// second paramter is just for IOS
 			
