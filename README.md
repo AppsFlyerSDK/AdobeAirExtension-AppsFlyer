@@ -25,6 +25,8 @@ http://support.appsflyer.com/entries/22801952?challenge=GxUdr14D3G5LHMqCvkRnp1Fv
 
 ####please note: the package name of the receiver is com.appsflyer.adobeeair.CLASS_NAME.
 
+It's highly recommended to add Google Play services into your app so we can track Google Advertising ID. See http://developer.android.com/google/play-services/setup.html
+
 import the AppsFlyer Extension into your project
 
 			import AppsFlyerInterface;
@@ -39,22 +41,9 @@ set the developer key by calling the function:
 			afInterface.setDeveloperKey("your_developer_key_here",null);// second paramter is just for IOS
 			
 add a call for tracking whenever the app is launched
-
-			afInterface.sendTracking();
-			
-add a call for tracking in-app events when desired
-
-			afInterface.sendTrackingWithEvent("purchase","90.0"); // purchase is the event name, 90 is the value
-			
-get conversion data (attribution info)
-
-			afInterface.getConversionData(); // calls async function to get the conversion data
-			
-			afInterface.addEventListener(AppsFlyerEvent.SUCCESS,function(e){var text=e.data}); // e.data holds the string with the conversion data.
-			
 			
 
-###IOS
+###iOS
 
 import the AppsFlyer Extension into your project
 
@@ -71,6 +60,9 @@ set the developer key by calling the function:
 			
 add a call for tracking whenever the app is launched
 
+			
+###All Platforms 
+
 			afInterface.sendTracking();
 			
 add a call for tracking in-app events when desired
@@ -82,3 +74,9 @@ get conversion data (attribution info)
 			afInterface.getConversionData(); // calls async function to get the conversion data
 			
 			afInterface.addEventListener(AppsFlyerEvent.SUCCESS,function(e){var text=e.data}); // e.data holds the string with the conversion data.
+			
+Setting your app's user (Optional)
+
+			afInterface.setAppUserId("user_id_as_used_in_the_app"); (Optional) set your app's user id
+
+                        
