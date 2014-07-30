@@ -6,8 +6,24 @@
 
 # Java class files
 *.class
+.classpath
+classes/
 
 # generated files
 bin/
+bin-debug/
 gen/
 
+libs/
+
+.idea
+.settings
+*.iml
+.actionScriptProperties
+.flexProperties
+.flexLibProperties
+.fxpProperties
+.project
+/android/google-play-services-res
+
+.DS_Store
