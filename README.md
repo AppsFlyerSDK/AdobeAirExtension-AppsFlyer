@@ -41,8 +41,6 @@ iOS
 add a call for tracking whenever the app is launched
 			
 			
-add a call for tracking whenever the app is launched
-
 			
 			afInterface.sendTracking();
 			
