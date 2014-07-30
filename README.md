@@ -60,7 +60,7 @@ Setting your app's user (Optional)
 
 Getting AppsFlyer's user id:
 
-			afInterface.getAppsFlyerUID();
+			appsFlyerID = afInterface.getAppsFlyerUID();
                         
 ###Android Notes
 
