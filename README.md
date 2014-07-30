@@ -58,6 +58,9 @@ Setting your app's user (Optional)
 
 			afInterface.setAppUserId("user_id_as_used_in_the_app"); (Optional) set your app's user id
 
+Getting AppsFlyer's user id:
+
+			afInterface.getAppsFlyerUID();
                         
 ###Android Notes
 
