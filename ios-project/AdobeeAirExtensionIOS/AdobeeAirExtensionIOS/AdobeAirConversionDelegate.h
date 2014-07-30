@@ -1,0 +1,19 @@
+//
+//  AdobeAirConversionDelegate.h
+//  AdobeeAirExtensionIOS
+//
+//  Created by Oren Baranes on 3/25/14.
+//  Copyright (c) 2014 Oren Baranes. All rights reserved.
+//
+
+#import <Foundation/Foundation.h>
+#import "AppsFlyerTracker.h"
+#import "FlashRuntimeExtensions.h"
+
+@interface AdobeAirConversionDelegate : NSObject<AppsFlyerTrackerDelegate> {
+    FREContext ctx;
+}
+
+@property (nonatomic,assign) FREContext ctx;
+
+@end

@@ -1,0 +1,23 @@
+<extension xmlns="http://ns.adobe.com/air/extension/14.0">
+    <id>com.appsflyer.adobeair</id> 
+    <versionNumber>0.0.1</versionNumber> 
+    <platforms> 
+        <platform name="Android-ARM">
+            <applicationDeployment>
+                <nativeLibrary>AppsFlyerExtension.jar</nativeLibrary>
+                <initializer>com.appsflyer.adobeair.AppsFlyerExtension</initializer>
+                <finalizer>com.appsflyer.adobeair.AppsFlyerExtension</finalizer>
+            </applicationDeployment> 
+        </platform>
+
+        <platform name="iPhone-ARM">
+            <applicationDeployment>
+                <nativeLibrary>libAdobeeAirExtensionIOS.a</nativeLibrary>
+                <initializer>AFExtensionInitializer</initializer>
+            </applicationDeployment>
+        </platform>
+        <platform name="default">
+            <applicationDeployment/> 
+        </platform>
+    </platforms> 
+</extension>

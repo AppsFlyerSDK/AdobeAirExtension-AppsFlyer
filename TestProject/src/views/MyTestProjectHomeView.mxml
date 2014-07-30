@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:View xmlns:fx="http://ns.adobe.com/mxml/2009" 
+		xmlns:s="library://ns.adobe.com/flex/spark" title="Simple test app"
+		initialize="initializeHandler(event)">
+	<fx:Script>
+		<![CDATA[
+		import AppsFlyerInterface;
+		import mx.events.FlexEvent;
+
+		private var test:AppsFlyerInterface;
+
+		[Bindable]
+		private var log:String = "";
+
+		private const DEVELOPER_KEY:String = "6aBJD2XbkHGPcLfQQ64cxE"; //"TcFCTFC4BdMYAqmBaeqXSN";//
+		private const APP_ID:String = "201420144";
+
+		private const USER_ID:String = "orenorensdfasdfasdf";
+
+
+
+
+		private function initializeHandler(event:FlexEvent):void {
+			test = new AppsFlyerInterface();
+			test.setDeveloperKey(DEVELOPER_KEY, APP_ID); // first param is developer key and second (NA for Android)is Apple app id.
+			//test.sendTracking();
+			log += "ANE initialized! \nDeveloper key: " + DEVELOPER_KEY + "\nApple AppID: " + APP_ID;
+			test.setAppUserId(USER_ID);
+			log += "\nApp user id set to: " + USER_ID;
+			test.setExtension();
+			log += "\nAppsFlyer UID: " + test.getAppsFlyerUID();
+			//test.sendTrackingWithEvent("Test_EVENT", " ");
+			test.setCurrency("EUR");
+			log += "\nSet currency: 'EUR'";
+		}
+
+		private function sendNumeric(event:MouseEvent):void {
+			var value:String = "90";
+			var param:String = "zivjhgziv";
+			test.sendTrackingWithEvent(param, value);
+			log += "\n-- Call sendTrackingWithEvent: '" + param + "' with value '" + value + "' --";
+		}
+
+		private function sendWithoutValue(event:MouseEvent):void {
+			test.sendTrackingWithEvent("InstallOren", "");
+			log += "\n-- Call sendTrackingWithEvent: 'InstallOren' with value '' --";
+		}
+
+		private function getConversionData(event:MouseEvent):void {
+			test.getConversionData();
+			test.addEventListener(AppsFlyerEvent.INSTALL_CONVERSATION_DATA_LOADED, onSuccess);
+			test.addEventListener(AppsFlyerEvent.CURRENT_ATTRIBUTION_DATA_LOADED, onSuccess);
+			test.addEventListener(AppsFlyerEvent.INSTALL_CONVERSATION_FAILED, onSuccess);
+			log += "\n-- Call getConversionData --";
+		}
+
+		private function onSuccess(event:AppsFlyerEvent):void {
+			log += "\n-- Event: " + event.type + "; \nData: " + event.data + " \n";
+		}
+
+		private function onSetCoollectIDClick(event:MouseEvent):void {
+			test.setCollectAndroidID(collectIdCheckBox.selected);
+			log += "\n-- Collect android ID: " + collectIdCheckBox.selected + " --";
+		}
+
+		private function onSetCoollectIMEIClick(event:MouseEvent):void {
+			test.setCollectIMEI(collectIMEICheckBox.selected);
+			log += "\n-- Collect IMEI: " + collectIMEICheckBox.selected + " --";
+		}
+
+		private function onClearClick(event:MouseEvent):void {
+			log = "";
+		}
+
+		]]>
+	</fx:Script>
+	<s:VGroup left="20" right="20" top="20" height="100%">
+		<s:Label text="Log:"/>
+		<s:Scroller width="100%" height="50%">
+			<s:Group width="100%">
+				<s:Label text="{log}" width="100%"/>
+			</s:Group>
+		</s:Scroller>
+		<s:CheckBox id="collectIdCheckBox" label="Set collect android ID" click="onSetCoollectIDClick(event)"/>
+		<s:CheckBox id="collectIMEICheckBox" label="Set collect android IMEI" click="onSetCoollectIMEIClick(event)"/>
+		<s:Button label="Send event with numeric value" click="sendNumeric(event)"/>
+		<s:Button label="Send event with no value" click="sendWithoutValue(event)"/>
+		<s:Button label="Get conversion data" click="getConversionData(event)"/>
+		<s:Button label="Clear log" click="onClearClick(event)"/>
+	</s:VGroup>
+</s:View>
