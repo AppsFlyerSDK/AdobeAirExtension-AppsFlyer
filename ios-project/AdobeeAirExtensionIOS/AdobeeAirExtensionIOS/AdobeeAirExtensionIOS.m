@@ -37,9 +37,15 @@ FREObject setDeveloperKey(FREContext ctx, void* funcData, uint32_t argc, FREObje
     return NULL;
 }
 
-
-
 FREObject sendTracking(FREContext ctx, void* funcData, uint32_t argc, FREObject argv[])
+{
+    
+    [[AppsFlyerTracker sharedTracker] trackAppLaunch];
+    
+    return NULL;
+}
+
+FREObject sendTrackingWithEvent(FREContext ctx, void* funcData, uint32_t argc, FREObject argv[])
 {
     
     if(argv[0]!=NULL)
@@ -54,19 +60,13 @@ FREObject sendTracking(FREContext ctx, void* funcData, uint32_t argc, FREObject 
         const uint8_t *string2;
         FREGetObjectAsUTF8(argv[1], &string2Length, &string2);
         NSString *eventValue = [NSString stringWithUTF8String:(char*)string2];
-    
+        
         
         [[AppsFlyerTracker sharedTracker] trackEvent:eventName withValue:eventValue];
-    }
-    else
-    {
-        [[AppsFlyerTracker sharedTracker] trackAppLaunch];
     }
     
     return NULL;
 }
-
-
 
 FREObject setCurrency(FREContext ctx, void* funcData, uint32_t argc, FREObject argv[])
 {
@@ -132,7 +132,7 @@ FREObject setExtension(FREContext ctx, void* funcData, uint32_t argc, FREObject 
 void AFExtContextInitializer(void* extData, const uint8_t* ctxType, FREContext ctx, uint32_t* numFunctionsToTest, const FRENamedFunction** functionsToSet)
 {
     
-    *numFunctionsToTest = 7;
+    *numFunctionsToTest = 8;
     FRENamedFunction* func = (FRENamedFunction*)malloc(sizeof(FRENamedFunction) * *numFunctionsToTest);
     
     func[0].name = (const uint8_t*)"setDeveloperKey";
@@ -142,26 +142,30 @@ void AFExtContextInitializer(void* extData, const uint8_t* ctxType, FREContext c
     func[1].name = (const uint8_t*)"sendTracking";
     func[1].functionData = NULL;
     func[1].function = &sendTracking;
-
-    func[2].name = (const uint8_t*)"setCurrency";
+    
+    func[2].name = (const uint8_t*)"sendTrackingWithEvent";
     func[2].functionData = NULL;
-    func[2].function = &setCurrency;
+    func[2].function = &sendTrackingWithEvent;
     
-    func[3].name = (const uint8_t*)"setAppUserId";
+    func[3].name = (const uint8_t*)"setCurrency";
     func[3].functionData = NULL;
-    func[3].function = &setAppUserId;
+    func[3].function = &setCurrency;
     
-    func[4].name = (const uint8_t*)"getConversionData";
+    func[4].name = (const uint8_t*)"setAppUserId";
     func[4].functionData = NULL;
-    func[4].function = &getConversionData;
+    func[4].function = &setAppUserId;
     
-    func[5].name = (const uint8_t*)"getAppsFlyerUID";
+    func[5].name = (const uint8_t*)"getConversionData";
     func[5].functionData = NULL;
-    func[5].function = &getAppsFlyerUID;
+    func[5].function = &getConversionData;
     
-    func[6].name = (const uint8_t*)"setExtension";
+    func[6].name = (const uint8_t*)"getAppsFlyerUID";
     func[6].functionData = NULL;
-    func[6].function = &setExtension;
+    func[6].function = &getAppsFlyerUID;
+    
+    func[7].name = (const uint8_t*)"setExtension";
+    func[7].functionData = NULL;
+    func[7].function = &setExtension;
     
     
     *functionsToSet = func;

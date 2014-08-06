@@ -4,7 +4,7 @@ import android.content.Context;
 import com.adobe.fre.*;
 import com.appsflyer.AppsFlyerLib;
 
-public class SendTrackingEventFunction implements FREFunction {
+public class SendTrackingWithEventFunction implements FREFunction {
 
     @Override
     public FREObject call(FREContext arg0, FREObject[] arg1) {
@@ -23,16 +23,12 @@ public class SendTrackingEventFunction implements FREFunction {
             eventName = arg1[0].getAsString();
             eventValue = arg1[1].getAsString();
         } catch (IllegalStateException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         } catch (FRETypeMismatchException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         } catch (FREInvalidObjectException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         } catch (FREWrongThreadException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         } catch (NullPointerException npe) {
             npe.printStackTrace();

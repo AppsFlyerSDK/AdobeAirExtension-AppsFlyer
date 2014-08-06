@@ -12,14 +12,14 @@ public class AppsFlyerContext extends FREContext {
 
     @Override
     public void dispose() {
-        // TODO Auto-generated method stub
     }
 
     @Override
     public Map<String, FREFunction> getFunctions() {
         Map<String, FREFunction> map = new HashMap<String, FREFunction>();
         map.put("setDeveloperKey", new SetDeveloperKeyFuncation());
-        map.put("sendTracking", new SendTrackingEventFunction());
+        map.put("sendTrackingWithEvent", new SendTrackingWithEventFunction());
+        map.put("sendTracking", new SendTrackingFunction());
         map.put("setCurrency", new SetCurrency());
         map.put("setAppUserId", new SetAppUserId());
         map.put("getConversionData", new GetConversionData());
@@ -31,20 +31,4 @@ public class AppsFlyerContext extends FREContext {
 
         return map;
     }
-
-//    public void test() {
-//        try {
-//            AdvertisingIdClient.class.getName();
-//            Class.forName("com.appsflyer.AppsFlyerLib");
-//            Class.forName("com.google.android.gms.ads.identifier.AdvertisingIdClient");
-//            Log.i("TEST", " My WARNING  Google Play services SDK FOUND");
-//        } catch (ClassNotFoundException e){
-//            Log.i("TEST", " My WARNING ClassNotFoundException Google Play services SDK is missing: " + e.getMessage());
-//            e.printStackTrace();
-//        }   catch (NullPointerException e) {
-//            Log.i("TEST",e.toString());
-//        } catch (Exception e){
-//            Log.i("TEST",e.toString());
-//        }
-//    }
 }

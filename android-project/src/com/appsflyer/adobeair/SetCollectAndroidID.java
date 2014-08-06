@@ -18,7 +18,7 @@ public class SetCollectAndroidID implements FREFunction {
         try {
             collectAndroidID = freObjects[0].getAsBool();
             AppsFlyerLib.setCollectAndroidID(collectAndroidID);
-        } catch(Exception e) {
+        } catch (Exception e) {
         }
 
         return null;

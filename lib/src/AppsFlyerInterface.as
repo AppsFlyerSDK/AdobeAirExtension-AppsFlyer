@@ -24,11 +24,11 @@ public class AppsFlyerInterface extends EventDispatcher {
 	}
 
 	public function sendTracking():void {
-		context.call("sendTracking", null, null);
+		context.call("sendTracking");
 	}
 
 	public function sendTrackingWithEvent(eventName:String, eventValue:String):void {
-		context.call("sendTracking", eventName, eventValue);
+		context.call("sendTrackingWithEvent", eventName, eventValue);
 	}
 
 	public function setCurrency(currency:String):void {

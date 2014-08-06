@@ -7,7 +7,7 @@
 		import AppsFlyerInterface;
 		import mx.events.FlexEvent;
 
-		private var test:AppsFlyerInterface;
+		private var appsFlyer:AppsFlyerInterface;
 
 		[Bindable]
 		private var log:String = "";
@@ -17,40 +17,38 @@
 
 		private const USER_ID:String = "orenorensdfasdfasdf";
 
-
-
-
 		private function initializeHandler(event:FlexEvent):void {
-			test = new AppsFlyerInterface();
-			test.setDeveloperKey(DEVELOPER_KEY, APP_ID); // first param is developer key and second (NA for Android)is Apple app id.
-			//test.sendTracking();
+			appsFlyer = new AppsFlyerInterface();
+			appsFlyer.setDeveloperKey(DEVELOPER_KEY, APP_ID); // first param is developer key and second (NA for Android)is Apple app id.
 			log += "ANE initialized! \nDeveloper key: " + DEVELOPER_KEY + "\nApple AppID: " + APP_ID;
-			test.setAppUserId(USER_ID);
+			appsFlyer.sendTracking();
+			log += "\nsendTracking() called";
+			appsFlyer.setAppUserId(USER_ID);
 			log += "\nApp user id set to: " + USER_ID;
-			test.setExtension();
-			log += "\nAppsFlyer UID: " + test.getAppsFlyerUID();
-			//test.sendTrackingWithEvent("Test_EVENT", " ");
-			test.setCurrency("EUR");
+			appsFlyer.setExtension();
+			log += "\nAppsFlyer UID: " + appsFlyer.getAppsFlyerUID();
+			appsFlyer.setCurrency("EUR");
 			log += "\nSet currency: 'EUR'";
+
+			appsFlyer.addEventListener(AppsFlyerEvent.INSTALL_CONVERSATION_DATA_LOADED, onSuccess);
+			appsFlyer.addEventListener(AppsFlyerEvent.CURRENT_ATTRIBUTION_DATA_LOADED, onSuccess);
+			appsFlyer.addEventListener(AppsFlyerEvent.INSTALL_CONVERSATION_FAILED, onSuccess);
 		}
 
 		private function sendNumeric(event:MouseEvent):void {
 			var value:String = "90";
 			var param:String = "zivjhgziv";
-			test.sendTrackingWithEvent(param, value);
+			appsFlyer.sendTrackingWithEvent(param, value);
 			log += "\n-- Call sendTrackingWithEvent: '" + param + "' with value '" + value + "' --";
 		}
 
 		private function sendWithoutValue(event:MouseEvent):void {
-			test.sendTrackingWithEvent("InstallOren", "");
+			appsFlyer.sendTrackingWithEvent("InstallOren", "");
 			log += "\n-- Call sendTrackingWithEvent: 'InstallOren' with value '' --";
 		}
 
 		private function getConversionData(event:MouseEvent):void {
-			test.getConversionData();
-			test.addEventListener(AppsFlyerEvent.INSTALL_CONVERSATION_DATA_LOADED, onSuccess);
-			test.addEventListener(AppsFlyerEvent.CURRENT_ATTRIBUTION_DATA_LOADED, onSuccess);
-			test.addEventListener(AppsFlyerEvent.INSTALL_CONVERSATION_FAILED, onSuccess);
+			appsFlyer.getConversionData();
 			log += "\n-- Call getConversionData --";
 		}
 
@@ -59,12 +57,12 @@
 		}
 
 		private function onSetCoollectIDClick(event:MouseEvent):void {
-			test.setCollectAndroidID(collectIdCheckBox.selected);
+			appsFlyer.setCollectAndroidID(collectIdCheckBox.selected);
 			log += "\n-- Collect android ID: " + collectIdCheckBox.selected + " --";
 		}
 
 		private function onSetCoollectIMEIClick(event:MouseEvent):void {
-			test.setCollectIMEI(collectIMEICheckBox.selected);
+			appsFlyer.setCollectIMEI(collectIMEICheckBox.selected);
 			log += "\n-- Collect IMEI: " + collectIMEICheckBox.selected + " --";
 		}
 

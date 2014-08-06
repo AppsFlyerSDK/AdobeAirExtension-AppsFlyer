@@ -13,12 +13,9 @@ public class SetExtension implements FREFunction {
     public FREObject call(FREContext freContext, FREObject[] freObjects) {
 
         String type = AppsFlyerContext.EXTENSION_TYPE;
-        try
-        {
+        try {
             type = freObjects[0].getAsString();
-        }
-        catch(Exception e)
-        {
+        } catch (Exception e) {
 
         }
 

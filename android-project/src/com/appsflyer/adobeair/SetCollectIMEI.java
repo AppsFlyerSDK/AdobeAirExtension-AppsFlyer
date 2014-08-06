@@ -16,7 +16,7 @@ public class SetCollectIMEI implements FREFunction {
         try {
             collectIMEI = freObjects[0].getAsBool();
             AppsFlyerLib.setCollectIMEI(collectIMEI);
-        } catch(Exception e) {
+        } catch (Exception e) {
 
         }
 
