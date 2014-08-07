@@ -32,11 +32,11 @@ set the developer key by calling the function:
 
 Android
 
-			afInterface.setDeveloperKey("your_developer_key_here","your_apple_id_here");
+			afInterface.setDeveloperKey("your_developer_key_here",null);
 			
 iOS
 			
-			afInterface.setDeveloperKey("your_developer_key_here",null);// second paramter is just for IOS
+			afInterface.setDeveloperKey("your_developer_key_here","your_apple_id_herere");// second paramter is just for IOS
 			
 add a call for tracking whenever the app is launched
 			
@@ -67,6 +67,5 @@ Getting AppsFlyer's user id:
 follow the instructions about permissions and receiver as described here:
 http://support.appsflyer.com/entries/22801952?challenge=GxUdr14D3G5LHMqCvkRnp1FvC
 
-####please note: the package name of the receiver is com.appsflyer.adobeeair.CLASS_NAME.
-
+####please note: the package name of the receiver is com.appsflyer.MultipleInstallBroadcastReceiver.
 It's highly recommended to add Google Play services into your app so we can track Google Advertising ID. See http://developer.android.com/google/play-services/setup.html
