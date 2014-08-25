@@ -36,7 +36,7 @@ Android
 			
 iOS
 			
-			afInterface.setDeveloperKey("your_developer_key_here","your_apple_id_herere");// second paramter is just for IOS
+			afInterface.setDeveloperKey("your_developer_key_here","your_apple_id_here");// second paramter is just for IOS
 			
 add a call for tracking whenever the app is launched
 			
