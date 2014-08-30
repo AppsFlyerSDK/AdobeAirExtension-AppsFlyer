@@ -19,6 +19,11 @@
 
 		private function initializeHandler(event:FlexEvent):void {
 			appsFlyer = new AppsFlyerInterface();
+
+			appsFlyer.addEventListener(AppsFlyerEvent.INSTALL_CONVERSATION_DATA_LOADED, onSuccess);
+			appsFlyer.addEventListener(AppsFlyerEvent.CURRENT_ATTRIBUTION_DATA_LOADED, onSuccess);
+			appsFlyer.addEventListener(AppsFlyerEvent.INSTALL_CONVERSATION_FAILED, onSuccess);
+
 			appsFlyer.setDeveloperKey(DEVELOPER_KEY, APP_ID); // first param is developer key and second (NA for Android)is Apple app id.
 			log += "ANE initialized! \nDeveloper key: " + DEVELOPER_KEY + "\nApple AppID: " + APP_ID;
 			appsFlyer.sendTracking();
@@ -29,10 +34,6 @@
 			log += "\nAppsFlyer UID: " + appsFlyer.getAppsFlyerUID();
 			appsFlyer.setCurrency("EUR");
 			log += "\nSet currency: 'EUR'";
-
-			appsFlyer.addEventListener(AppsFlyerEvent.INSTALL_CONVERSATION_DATA_LOADED, onSuccess);
-			appsFlyer.addEventListener(AppsFlyerEvent.CURRENT_ATTRIBUTION_DATA_LOADED, onSuccess);
-			appsFlyer.addEventListener(AppsFlyerEvent.INSTALL_CONVERSATION_FAILED, onSuccess);
 		}
 
 		private function sendNumeric(event:MouseEvent):void {

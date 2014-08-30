@@ -10,6 +10,8 @@ public class AppsFlyerContext extends FREContext {
 
     public static final String EXTENSION_TYPE = "AIR";
 
+    private String lastConversionData;
+
     @Override
     public void dispose() {
     }
@@ -30,5 +32,13 @@ public class AppsFlyerContext extends FREContext {
         map.put("setExtension", new SetExtension());
 
         return map;
+    }
+
+    public String getLastConversionData() {
+        return lastConversionData;
+    }
+
+    public void setLastConversionData(String lastConversionData) {
+        this.lastConversionData = lastConversionData;
     }
 }
