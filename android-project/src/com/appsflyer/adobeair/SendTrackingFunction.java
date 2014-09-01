@@ -18,7 +18,7 @@ public class SendTrackingFunction implements FREFunction {
         Context context = arg0.getActivity().getApplicationContext();
 
         AppsFlyerLib.sendTracking(context);
-
+        Log.e("AppsFlyer: ", "SendTrackingFunction with registerConversionListener");
         AppsFlyerLib.registerConversionListener(context, new AppsFlyerConversionListener() {
             public void onInstallConversionDataLoaded(java.util.Map<java.lang.String, java.lang.String> conversionData) {
                 Log.e("AppsFlyer: ", "SendTrackingFunction onInstallConversionDataLoaded");
