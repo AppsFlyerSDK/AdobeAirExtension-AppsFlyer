@@ -18,15 +18,15 @@ public class SendTrackingFunction implements FREFunction {
         Context context = arg0.getActivity().getApplicationContext();
 
         AppsFlyerLib.sendTracking(context);
-        Log.e("AppsFlyer: ", "SendTrackingFunction with registerConversionListener");
+        Log.i("AppsFlyer: ", "SendTrackingFunction with registerConversionListener");
         AppsFlyerLib.registerConversionListener(context, new AppsFlyerConversionListener() {
             public void onInstallConversionDataLoaded(java.util.Map<java.lang.String, java.lang.String> conversionData) {
-                Log.e("AppsFlyer: ", "SendTrackingFunction onInstallConversionDataLoaded");
+                Log.i("AppsFlyer: ", "SendTrackingFunction onInstallConversionDataLoaded");
                 cnt.setLastConversionData(getResultString(conversionData));
             }
 
             public void onCurrentAttributionDataLoaded(Map<String, String> conversionData) {
-                Log.e("AppsFlyer: ", "SendTrackingFunction onCurrentAttributionDataLoaded");
+                Log.i("AppsFlyer: ", "SendTrackingFunction onCurrentAttributionDataLoaded");
                 cnt.setLastConversionData(getResultString(conversionData));
             }
 
@@ -49,7 +49,7 @@ public class SendTrackingFunction implements FREFunction {
             }
 
             public void onInstallConversionFailure(String errorMessage) {
-                Log.e("AppsFlyer: ", "SendTrackingFunction errorMessage");
+                Log.i("AppsFlyer: ", "SendTrackingFunction errorMessage");
                 cnt.setLastConversionData("Error retrieving conversion data " + errorMessage);
             }
         });

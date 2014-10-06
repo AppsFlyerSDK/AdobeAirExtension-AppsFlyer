@@ -54,18 +54,18 @@ public class GetConversionData implements FREFunction {
 //            });
            if(cnt.getLastConversionData() != null) {
                arg0.dispatchStatusEventAsync("installConversionDataLoaded", cnt.getLastConversionData());
-               Log.e("AppsFlyer: ", "GetConversionData from cache " + cnt.getLastConversionData());
+               Log.i("AppsFlyer: ", "GetConversionData from cache " + cnt.getLastConversionData());
            } else {
                 AppsFlyerLib.registerConversionListener(context, new AppsFlyerConversionListener() {
 
                     public void onInstallConversionDataLoaded(java.util.Map<java.lang.String, java.lang.String> conversionData) {
-                        Log.e("AppsFlyer: ", "GetConversionData onConversionDataLoaded");
+                        Log.i("AppsFlyer: ", "GetConversionData onConversionDataLoaded");
                         cnt.setLastConversionData(getResultString(conversionData));
                         arg0.dispatchStatusEventAsync("installConversionDataLoaded", cnt.getLastConversionData());
                     }
 
                     public void onCurrentAttributionDataLoaded(Map<String, String> conversionData) {
-                        Log.e("AppsFlyer: ", "GetConversionData onConversionDataLoaded");
+                        Log.i("AppsFlyer: ", "GetConversionData onConversionDataLoaded");
                         cnt.setLastConversionData(getResultString(conversionData));
                         arg0.dispatchStatusEventAsync("currentAttributionDataLoaded", cnt.getLastConversionData());
                     }
@@ -89,12 +89,12 @@ public class GetConversionData implements FREFunction {
                     }
 
                     public void onInstallConversionFailure(String errorMessage) {
-                        Log.e("AppsFlyer: ", "GetConversionData errorMessage" + errorMessage);
+                        Log.i("AppsFlyer: ", "GetConversionData errorMessage" + errorMessage);
                         cnt.setLastConversionData("Error retrieving conversion data " + errorMessage);
                         arg0.dispatchStatusEventAsync("installConversionFailure", cnt.getLastConversionData());
                     }
                 });
-               Log.e("AppsFlyer: ", "GetConversionData with registerConversionListener");
+               Log.i("AppsFlyer: ", "GetConversionData with registerConversionListener");
            }
 
         } catch (Exception e) {
