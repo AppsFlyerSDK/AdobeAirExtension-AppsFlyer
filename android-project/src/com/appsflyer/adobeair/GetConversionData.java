@@ -89,7 +89,7 @@ public class GetConversionData implements FREFunction {
                     }
 
                     public void onInstallConversionFailure(String errorMessage) {
-                        Log.i("AppsFlyer: ", "GetConversionData errorMessage" + errorMessage);
+                        Log.e("AppsFlyer: ", "GetConversionData errorMessage" + errorMessage);
                         cnt.setLastConversionData("Error retrieving conversion data " + errorMessage);
                         arg0.dispatchStatusEventAsync("installConversionFailure", cnt.getLastConversionData());
                     }
