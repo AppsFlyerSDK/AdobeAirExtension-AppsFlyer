@@ -20,13 +20,21 @@ public class SendTrackingFunction implements FREFunction {
         AppsFlyerLib.sendTracking(context);
         Log.i("AppsFlyer: ", "SendTrackingFunction with registerConversionListener");
         AppsFlyerLib.registerConversionListener(context, new AppsFlyerConversionListener() {
-            public void onInstallConversionDataLoaded(java.util.Map<java.lang.String, java.lang.String> conversionData) {
-                Log.i("AppsFlyer: ", "SendTrackingFunction onInstallConversionDataLoaded");
-                cnt.setLastConversionData(getResultString(conversionData));
+
+            @Override
+            public void onAppOpenAttribution(Map<String, String> map) {
+                Log.i("AppsFlyer: ", "SendTrackingFunction onAppOpenAttribution");
+                cnt.setLastConversionData(getResultString(map));
             }
 
-            public void onCurrentAttributionDataLoaded(Map<String, String> conversionData) {
-                Log.i("AppsFlyer: ", "SendTrackingFunction onCurrentAttributionDataLoaded");
+            @Override
+            public void onAttributionFailure(String s) {
+                Log.i("AppsFlyer: ", "SendTrackingFunction onAttributionFailure");
+                cnt.setLastConversionData("Error retrieving conversion data " + s);
+            }
+
+            public void onInstallConversionDataLoaded(java.util.Map<java.lang.String, java.lang.String> conversionData) {
+                Log.i("AppsFlyer: ", "SendTrackingFunction onInstallConversionDataLoaded");
                 cnt.setLastConversionData(getResultString(conversionData));
             }
 

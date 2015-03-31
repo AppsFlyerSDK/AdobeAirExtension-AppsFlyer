@@ -31,6 +31,10 @@ public class AppsFlyerInterface extends EventDispatcher {
 		context.call("sendTrackingWithEvent", eventName, eventValue);
 	}
 
+	public function sendTrackingWithValues(eventName:String, json:String):void {
+		context.call("sendTrackingWithValues", eventName, json);
+	}
+
 	public function setCurrency(currency:String):void {
 		context.call("setCurrency", currency);
 	}
@@ -56,9 +60,9 @@ public class AppsFlyerInterface extends EventDispatcher {
 		return context.call("getAppsFlyerUID") as String;
 	}
 
-	public function setExtension():void {
-		context.call("setExtension", EXTENSION_TYPE);
-	}
+//	public function setExtension():void {
+//		context.call("setExtension", EXTENSION_TYPE);
+//	}
 
 	protected function _handleStatusEvents(e:StatusEvent):void {
 		var event:AppsFlyerEvent = new AppsFlyerEvent(e.code, e.level);

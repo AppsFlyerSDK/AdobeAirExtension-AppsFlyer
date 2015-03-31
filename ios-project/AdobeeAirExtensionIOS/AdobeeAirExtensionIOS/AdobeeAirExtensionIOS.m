@@ -118,21 +118,21 @@ FREObject getAppsFlyerUID(FREContext ctx, void* funcData, uint32_t argc, FREObje
 }
 
 
-FREObject setExtension(FREContext ctx, void* funcData, uint32_t argc, FREObject argv[])
-{
-    uint32_t string1Length;
-    const uint8_t *string1;
-    FREGetObjectAsUTF8(argv[0], &string1Length, &string1);
-    NSString *extensionType = [NSString stringWithUTF8String:(char*)string1];
-    [AppsFlyerTracker sharedTracker].sdkExtension = extensionType;
-    return NULL;
-}
+//FREObject setExtension(FREContext ctx, void* funcData, uint32_t argc, FREObject argv[])
+//{
+//    uint32_t string1Length;
+//    const uint8_t *string1;
+//    FREGetObjectAsUTF8(argv[0], &string1Length, &string1);
+//    NSString *extensionType = [NSString stringWithUTF8String:(char*)string1];
+//    [AppsFlyerTracker sharedTracker].sdkExtension = extensionType;
+//    return NULL;
+//}
 
 
 void AFExtContextInitializer(void* extData, const uint8_t* ctxType, FREContext ctx, uint32_t* numFunctionsToTest, const FRENamedFunction** functionsToSet)
 {
     
-    *numFunctionsToTest = 8;
+    *numFunctionsToTest = 7;
     FRENamedFunction* func = (FRENamedFunction*)malloc(sizeof(FRENamedFunction) * *numFunctionsToTest);
     
     func[0].name = (const uint8_t*)"setDeveloperKey";
@@ -163,9 +163,9 @@ void AFExtContextInitializer(void* extData, const uint8_t* ctxType, FREContext c
     func[6].functionData = NULL;
     func[6].function = &getAppsFlyerUID;
     
-    func[7].name = (const uint8_t*)"setExtension";
-    func[7].functionData = NULL;
-    func[7].function = &setExtension;
+//    func[7].name = (const uint8_t*)"setExtension";
+//    func[7].functionData = NULL;
+//    func[7].function = &setExtension;
     
     
     *functionsToSet = func;

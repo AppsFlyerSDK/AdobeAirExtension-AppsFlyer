@@ -58,16 +58,24 @@ public class GetConversionData implements FREFunction {
            } else {
                 AppsFlyerLib.registerConversionListener(context, new AppsFlyerConversionListener() {
 
+                    @Override
+                    public void onAppOpenAttribution(Map<String, String> map) {
+                        Log.i("AppsFlyer: ", "SendTrackingFunction onAppOpenAttribution");
+                        cnt.setLastConversionData(getResultString(map));
+                        arg0.dispatchStatusEventAsync("appOpenAttribution", cnt.getLastConversionData());
+                    }
+
+                    @Override
+                    public void onAttributionFailure(String s) {
+                        Log.i("AppsFlyer: ", "SendTrackingFunction onAttributionFailure");
+                        cnt.setLastConversionData("Error retrieving conversion data " + s);
+                        arg0.dispatchStatusEventAsync("attributionFailure", cnt.getLastConversionData());
+                    }
+
                     public void onInstallConversionDataLoaded(java.util.Map<java.lang.String, java.lang.String> conversionData) {
                         Log.i("AppsFlyer: ", "GetConversionData onConversionDataLoaded");
                         cnt.setLastConversionData(getResultString(conversionData));
                         arg0.dispatchStatusEventAsync("installConversionDataLoaded", cnt.getLastConversionData());
-                    }
-
-                    public void onCurrentAttributionDataLoaded(Map<String, String> conversionData) {
-                        Log.i("AppsFlyer: ", "GetConversionData onConversionDataLoaded");
-                        cnt.setLastConversionData(getResultString(conversionData));
-                        arg0.dispatchStatusEventAsync("currentAttributionDataLoaded", cnt.getLastConversionData());
                     }
 
                     private String getResultString(Map<String, String> conversionData) {

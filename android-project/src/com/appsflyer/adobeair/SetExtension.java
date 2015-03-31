@@ -5,9 +5,6 @@ import com.adobe.fre.FREFunction;
 import com.adobe.fre.FREObject;
 import com.appsflyer.AppsFlyerLib;
 
-/**
- * Created by maksym on 22.07.2014.
- */
 public class SetExtension implements FREFunction {
     @Override
     public FREObject call(FREContext freContext, FREObject[] freObjects) {

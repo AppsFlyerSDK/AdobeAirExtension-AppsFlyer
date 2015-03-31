@@ -1,8 +1,11 @@
 # path to YOUR Android SDK
 export AIR_ANDROID_SDK_HOME="D:\sdks\android-sdk"
 
-ADT="../../sdks/flex-sdk-4.13.0.air14.0/bin/adt"
-ADB="../../sdks/flex-sdk-4.13.0.air14.0/lib/android/bin/adb"
+#ADT="../../sdks/flex-sdk-4.13.0.air14.0/bin/adt"
+#ADB="../../sdks/flex-sdk-4.13.0.air14.0/lib/android/bin/adb"
+
+ADT="../../sdks/AIRSDK16_Compiler/bin/adt"
+ADB="../../sdks/AIRSDK16_Compiler/lib/android/bin/adb"
 
 # AS lib folder
 LIB_FOLDER=lib
@@ -46,10 +49,11 @@ cp ./android/${JAR_NAME} ./build/ane/Android-ARM/${JAR_NAME}
 cp ./${LIB_FOLDER}/src/extension.xml ./build/ane/
 cp ./${LIB_FOLDER}/bin/*.swc ./build/ane/
 cp ./android/google-play-services.jar ./build/ane/Android-ARM
-cp ./android/AF-Android-SDK-v2.3.1.9.jar ./build/ane/Android-ARM
+cp ./android/AF-Android-SDK-v2.3.1.16.jar ./build/ane/Android-ARM
 cp -R ./android/google-play-services-res/values/ ./build/ane/Android-ARM/res/values
 unzip ./build/ane/*.swc -d ./build/ane
 mv ./build/ane/library.swf ./build/ane/Android-ARM
+cp -R ./build/ane/Android-ARM ./build/ane/Android-x86
 cp ./build/ane/Android-ARM/library.swf ./build/ane/iPhone-ARM
 cp ./ios/libAdobeeAirExtensionIOS.a ./build/ane/iPhone-ARM
 cp ./${DEF_FOLDER}/bin/*.swc ./build/ane/default
@@ -67,6 +71,9 @@ echo "****** creating ANE package *******"
 		-platform Android-ARM \
 		-platformoptions ./android/platform-android.xml \
 		-C ./build/ane/Android-ARM/ . \
+        -platform Android-x86 \
+        -platformoptions ./android/platform-android.xml \
+        -C ./build/ane/Android-x86/ . \
 		-platform iPhone-ARM \
 		-platformoptions ./ios/platform-ios.xml \
 		-C ios/ libAppsFlyerLib.a \

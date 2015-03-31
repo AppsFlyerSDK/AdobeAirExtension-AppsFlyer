@@ -18,6 +18,9 @@ public class AppsFlyerInterface extends  EventDispatcher {
 	public function sendTrackingWithEvent(eventName:String, eventValue:String):void {
 	}
 
+	public function sendTrackingWithValues(eventName:String, json:String):void {
+	}
+
 	public function setCurrency(currency:String):void {
 	}
 
@@ -38,8 +41,8 @@ public class AppsFlyerInterface extends  EventDispatcher {
 		return "-1";
 	}
 
-	public function setExtension():void {
-
-	}
+//	public function setExtension():void {
+//
+//	}
 }
 }

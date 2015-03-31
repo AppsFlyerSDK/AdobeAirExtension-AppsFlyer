@@ -49,6 +49,15 @@
       ignoresPersistentStateOnLaunch = "NO"
       debugDocumentVersioning = "YES"
       allowLocationSimulation = "YES">
+      <MacroExpansion>
+         <BuildableReference
+            BuildableIdentifier = "primary"
+            BlueprintIdentifier = "AACAB236185624FE00C55EB7"
+            BuildableName = "libAdobeeAirExtensionIOS.a"
+            BlueprintName = "AdobeeAirExtensionIOS"
+            ReferencedContainer = "container:AdobeeAirExtensionIOS.xcodeproj">
+         </BuildableReference>
+      </MacroExpansion>
       <AdditionalOptions>
       </AdditionalOptions>
    </LaunchAction>

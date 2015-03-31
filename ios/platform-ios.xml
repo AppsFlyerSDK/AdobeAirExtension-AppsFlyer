@@ -1,5 +1,5 @@
-<platform xmlns="http://ns.adobe.com/air/extension/14.0">
-    <sdkVersion>7.1</sdkVersion>
+<platform xmlns="http://ns.adobe.com/air/extension/16.0">
+    <sdkVersion>8.1</sdkVersion>
 	<linkerOptions>
         <option>-framework iAd</option>
         <option>-framework AdSupport</option>
