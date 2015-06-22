@@ -17,6 +17,7 @@ If the following was not added automatically please add it to the APP_NAME-app.x
         			<extensionID>com.appsflyer.adobeair</extensionID>
     			</extensions>
 
+Note: On AppsFlyer's dashboard you will need to add "air." prefix to the package name as this is added automatically by Air. For the above exmaple the app id on AppsFlyer's dashboard should be "air.com.appsflyer.adobeair"
 
 
 import the AppsFlyer Extension into your project
