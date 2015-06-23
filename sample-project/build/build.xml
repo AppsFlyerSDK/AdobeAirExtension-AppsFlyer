@@ -1,0 +1,251 @@
+<?xml version="1.0" ?>
+<project default="package-apk-device" basedir="../">
+	
+	<property name="BUILD_DIR" value="${basedir}/build"/>
+	<loadproperties srcFile="${BUILD_DIR}/build.properties"/>
+	<!-- Custom properties per dev env. File ignored by Mercurial -->
+	<loadproperties srcFile="${BUILD_DIR}/build.custom.properties"/>
+	
+	<taskdef resource="net/sf/antcontrib/antcontrib.properties"/>
+	<taskdef resource="flexTasks.tasks">
+        <classpath>
+            <pathelement path="${air-sdk.home}/ant/lib/flexTasks.jar"/>
+            <fileset dir="${air-sdk.home}/lib">
+                <include name="**/*.jar"/>
+            </fileset>
+        </classpath>
+    </taskdef>
+    
+	<property name="FLEX_HOME" value="${air-sdk.home}"/>
+    <property name="ADT.JAR" value="${air-sdk.home}/lib/adt.jar"/>
+	
+	<buildnumber file="${BUILD_DIR}/pruduct.build.number"/>
+	
+	<property name="APP_NAME" value="${app.name}"/>
+	<property name="APP_ROOT_DIR" value="${basedir}"/>
+	<property name="SRC_DIR" value="${APP_ROOT_DIR}/src" />
+	<property name="LIB_DIR" value="${APP_ROOT_DIR}/lib"/>
+	<property name="APP_SWF_FILE" value="${APP_NAME}.swf"/>
+	<property name="PACKAGE_DIR" value="${BUILD_DIR}/package-target"/>
+	<property name="COMPILER_OUTPUT_PATH" value="${PACKAGE_DIR}/${APP_SWF_FILE}"/>
+	<property name="version.number" value="${app.version}b${build.number}"/>
+	
+	<scriptdef language="javascript" name="lower">
+		<attribute name="string" /> 
+		<attribute name="to" />
+		project.setProperty( attributes.get( "to" ), attributes.get( "string" ).toLowerCase() );
+	</scriptdef>
+	
+	
+	<!--mobile specific -->
+	<target name="adjustMobileProperties" depends="info">
+		<property name="CERT_DIR" value="${APP_ROOT_DIR}/cer"/>
+		<lower string="${target.platform}" to="platform" />
+		<if>
+			<equals arg1="${isAppMarketBuild}" arg2="true" />
+			<then>
+				<echo message="Building market version." />
+				<property name="ANDROID_KEYSTORE" value="${CERT_DIR}/${android.cert}" />
+				<property name="IOS_KEYSTORE" value="${CERT_DIR}/${ios.cert.name}"/>
+				<property name="IOS_PROVISIONING_PROFILE" value="${CERT_DIR}/${ios.mobileprovision.name}"/>
+				<property name="IOS_STOREPASS" value="${ios.cert.passwd}"/>
+				<property name="ANDROID_STOREPASS" value="${android.passwd}"/>
+				<property name="IOS_TARGET" value="ipa-app-store" />
+				<property name="SHOW_DEBUG_INFO" value="false"/>
+				<property name="version.number" value="${app.version}"/>
+			</then>
+			<else>
+				<echo message="Building adhoc version." />
+				<property name="ANDROID_KEYSTORE" value="${CERT_DIR}/android_cert_trembit.p12" />
+				<property name="IOS_KEYSTORE" value="${CERT_DIR}/${ios.cert.name}"/>
+				<property name="IOS_PROVISIONING_PROFILE" value="${CERT_DIR}/${ios.mobileprovision.name}"/>
+				<property name="IOS_STOREPASS" value="${ios.cert.passwd}"/>
+				<property name="ANDROID_STOREPASS" value="123qwe"/>
+				<property name="IOS_TARGET" value="ipa-ad-hoc" />
+				<property name="SHOW_DEBUG_INFO" value="false"/>
+				<property name="version.number" value="${app.version}b${build.number}"/>
+			</else>
+		</if>
+		
+		<if>
+			<equals arg1="${target.platform}" arg2="iOS"/>
+			<then>
+				<property name="PACKAGE_BUNDLE_PATH" value="${PACKAGE_DIR}/${FULL_APP_NAME}.ipa" />
+				<property name="ARTIFACT_PATH" value="${PACKAGE_DIR}/latest/${FULL_APP_NAME}.ipa" />
+			</then>
+			<else>
+				<property name="PACKAGE_BUNDLE_PATH" value="${PACKAGE_DIR}/${FULL_APP_NAME}.apk" />
+				<property name="ARTIFACT_PATH" value="${PACKAGE_DIR}/latest/${FULL_APP_NAME}.apk" />
+			</else>
+		</if>
+		
+		<property name="STORETYPE" value="pkcs12"/>
+		<property name="APP_DESCRIPTOR" value="MyTestProjectAndroid-app.xml"/>
+		<property name="NATIVE_EXTENSIONS_DIR" value="${APP_ROOT_DIR}/extentions"/>
+		<property name="APP_ICONS_FOLDER" value="icons" />
+		
+		<echo message="Platform ${target.platform}"/>
+		<echo message="IOS target: ${IOS_TARGET}"/>
+	</target>
+	
+    <target name="buildMobile" depends="adjustMobileProperties">
+		<property name="APP_ROOT_FILE" value="Main.as"/>
+		<antcall target="compileMobile"/>
+		<antcall target="resources"/>
+        <antcall target="packageMobile"/>
+		<antcall target="clear"/>
+    </target>
+	
+	<target name="package-apk-device" depends="adjustMobileProperties">
+		<property name="APP_ROOT_FILE" value="Main.as"/>
+		<antcall target="compileMobile"/>
+		<antcall target="resources"/>
+        <antcall target="packageMobile"/>
+		<exec executable="H:\sdks\android-sdk\platform-tools\adb">
+			<arg line="install -r ${PACKAGE_BUNDLE_PATH}"/>
+		</exec>
+		<antcall target="clear"/>
+    </target>
+	
+    <target name="info">
+        <echo message="Using Flex SDK at ${flex-sdk.home}"/>
+		<echo message="Using AIR SDK at ${air-sdk.home}"/>
+        <echo message="User dir ${basedir}"/>
+		<tstamp>
+			<format property="TODAY" pattern="dd.MM.yyyy" locale="en,US"/>
+		</tstamp>
+		<echo message="Date ${TODAY}"/>
+		<property name="FULL_APP_NAME" value="${APP_NAME}_${TODAY}_${version.number}"/>
+    </target>
+	
+	<target name="compileMobile" depends="adjustMobileProperties">	
+			<mxmlc file="${SRC_DIR}/${APP_ROOT_FILE}" 
+				   output="${COMPILER_OUTPUT_PATH}" 
+				   debug="false"
+				   configname="airmobile"
+				   failonerror="true"
+				   fork="false"
+				   maxmemory="1536m"
+				   optimize="true"
+				   warnings="false">
+				 
+				<swf-version>28</swf-version>
+				
+				<source-path path-element="${SRC_DIR}"/>
+				
+				<compiler.library-path dir="${NATIVE_EXTENSIONS_DIR}">
+					<include name="*.swc"/>
+				</compiler.library-path>
+				
+				<!--+++++++++++++++++++++++  only for mobile +++++++++++++++++++++++++++-->	
+				<compiler.library-path dir="${FLEX_HOME}/frameworks/libs">
+					<include name="*.swc"/>
+				</compiler.library-path>
+			
+				<!--compiler.library-path dir="${FLEX_HOME}/frameworks/libs/mobile">
+					<include name="**/*"/>
+				</compiler.library-path-->
+			
+				<compiler.library-path dir="${FLEX_HOME}/frameworks/locale">
+					<include name="**/*"/>
+				</compiler.library-path>
+				<!--++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++-->	
+			</mxmlc>	
+    </target>
+	
+    <target name="resources">
+        <copy tofile="${PACKAGE_DIR}/${APP_DESCRIPTOR}"
+			  file="${SRC_DIR}/${APP_DESCRIPTOR}" 
+			  overwrite="true" />
+		<if>
+			<equals arg1="${target.platform}" arg2="iOS"/>
+			<then>
+				<!--replaceregexp file="${BUILD_DIR}/${APP_DESCRIPTOR}" match="&lt;iPhone&gt;" replace="&lt;iPhone&gt;&lt;externalSwfs&gt;externalSwfs\/SwfSoundsAssets.txt&lt;\/externalSwfs&gt;" flags="g" byline="true" /-->  
+			</then>
+			<else>
+				<replaceregexp file="${PACKAGE_DIR}/${APP_DESCRIPTOR}" match="&lt;id&gt;.*?&lt;\/id&gt;" replace="&lt;id&gt;${android.package.name}&lt;\/id&gt;" flags="g" byline="true" />
+			</else>
+		</if>
+		<replace file="${PACKAGE_DIR}/${APP_DESCRIPTOR}" casesensitive="true">
+			<replacefilter token="0.0.1" value="${app.version}"/>
+			<replacefilter token="${app.version} Build local" value="${app.version}"/>
+		</replace>	  
+		<replaceregexp file="${PACKAGE_DIR}/${APP_DESCRIPTOR}" match="&lt;content&gt;.*?&lt;\/content&gt;" replace="&lt;content&gt;${APP_SWF_FILE}&lt;\/content&gt;" flags="g" byline="true" />
+    </target>
+	
+	<target name="packageMobile">
+		<condition property="isAndroid">
+			<equals arg1="${target.platform}" arg2="Android"/>
+		</condition>
+		<condition property="isIOS">
+            <equals arg1="${target.platform}" arg2="iOS"/>
+		</condition>
+		<antcall target="package-ipa" />
+		<antcall target="package-apk"/>
+	</target>
+	
+	<target name="package-ipa" if="isIOS">
+        <java jar="${ADT.JAR}" fork="true" failonerror="true">
+            <arg value="-package"/>
+            <arg value="-target"/>
+            <arg value="${IOS_TARGET}"/>
+            <arg value="-provisioning-profile"/>
+            <arg value="${IOS_PROVISIONING_PROFILE}"/>
+            <arg value="-storetype"/>
+            <arg value="${STORETYPE}"/>
+            <arg value="-keystore"/>
+            <arg value="${IOS_KEYSTORE}"/>
+            <arg value="-storepass"/>
+            <arg value="${IOS_STOREPASS}"/>
+			<arg value="${PACKAGE_DIR}/${FULL_APP_NAME}.ipa"/>
+			<arg value="${PACKAGE_DIR}/${APP_DESCRIPTOR}"/>
+			<arg value="-extdir"/>
+			<arg value="${NATIVE_EXTENSIONS_DIR}/" />
+			<arg value="-C"/>
+			<arg value="${PACKAGE_DIR}"/>
+            <arg value="${APP_SWF_FILE}"/>
+        </java>
+        <echo message="Finished package ipa"/>
+    </target>
+	
+	<target name="package-apk" if="isAndroid">
+		<java jar="${ADT.JAR}" fork="true" failonerror="true">
+			<arg value="-package"/>
+			<arg value="-target"/>
+			<arg value="apk-captive-runtime"/>
+			<arg value="-storetype"/>
+			<arg value="${STORETYPE}"/>
+			<arg value="-keystore"/>
+			<arg value="${ANDROID_KEYSTORE}"/>
+			<arg value="-storepass"/>
+			<arg value="${ANDROID_STOREPASS}"/>
+			<arg value="${PACKAGE_DIR}/${FULL_APP_NAME}.apk"/>
+			<arg value="${PACKAGE_DIR}/${APP_DESCRIPTOR}"/>
+			<arg value="-extdir"/>
+			<arg value="${NATIVE_EXTENSIONS_DIR}/" />
+			<arg value="-C"/>
+			<arg value="${PACKAGE_DIR}"/>
+			<arg value="${APP_SWF_FILE}"/>
+		</java>
+		<echo message="Finished package apk"/>
+	</target>
+	
+	<target name="clear">
+		<delete>
+			<fileset dir="${PACKAGE_DIR}">
+				<include name="*"/>
+				<exclude name="*.swf"/>
+				<exclude name="*.apk"/>
+				<exclude name="*.ipa"/>
+			</fileset>
+		</delete>
+	</target>
+	
+	<!-- 
+		FIX FOR OUT OF MEMORY
+		java.lang.OutOfMemoryError: PermGen space
+
+		set ANT_OPTS=-XX:MaxPermSize=128m
+	--> 
+	
+</project>

@@ -1,29 +1,44 @@
-*.apk
-*.ap_
+# General
+temp
+build.config
 
-# files for the dex VM
-*.dex
-
-# Java class files
-*.class
-.classpath
-classes/
-
-# generated files
-bin/
-bin-debug/
-gen/
-
-libs/
-
-.idea
-.settings
-*.iml
+# Flash Builder
+actionscript/bin
 .actionScriptProperties
-.flexProperties
 .flexLibProperties
-.fxpProperties
-.project
-/android/google-play-services-res
 
+# Eclipse
+.settings
+.project
+
+# Android
+bin/AirPushNotification_multiMsg.ane
+android/bin
+android/gen
+android/lint.xml
+.classpath
+proguard-project.txt
+project.properties
+
+# Xcode
+xcuserdata
+ios/build
+
+# OS X
+Icon
+Thumbs.db
 .DS_Store
+
+#Idea
+.idea
+*.iml
+classes
+out
+
+
+google-play-services_lib
+sample-project/ext
+cer
+/sample-project/extentions
+package-target
+/android/src/com/appsflyer/adobeair/lib
