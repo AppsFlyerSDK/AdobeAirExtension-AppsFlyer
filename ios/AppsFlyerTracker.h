@@ -2,7 +2,7 @@
 //  AppsFlyerTracker.h
 //  AppsFlyerLib
 //
-//  AppsFlyer iOS SDK v2.5.3.15
+//  AppsFlyer iOS SDK v2.5.3.18
 //  08-Mar-2015
 //  Copyright (c) 2013 AppsFlyer Ltd. All rights reserved.
 //
@@ -34,6 +34,7 @@
 #define AFEventReEngage                 @"af_re_engage"
 #define AFEventUpdate                   @"af_update"
 #define AFEventOpenedFromPushNotification @"af_opened_from_push_notification"
+#define AFEventLocation                 @"af_location_coordinates"
 
 // In app event parameter names
 #define AFEventParamLevel                  @"af_level"
@@ -75,6 +76,13 @@
 #define AFEventParam9                      @"af_param_9"
 #define AFEventParam10                     @"af_param_10"
 
+
+typedef enum  {
+    EmailCryptTypeNone = 0,
+    EmailCryptTypeSHA1 = 1,
+    EmailCryptTypeMD5 = 2
+} EmailCryptType;
+
 /*
  * This delegate should be use if you want to use AppsFlyer conversion data. See AppsFlyer iOS
  * Tracking SDK documentation for more details http://support.appsflyer.com/entries/25458906-iOS-SDK-Integration-Guide-v2-5-3-x-New-API-
@@ -89,14 +97,16 @@
 
 @end
 
-@interface AppsFlyerTracker : NSObject {
+@interface AppsFlyerTracker : NSObject <AppsFlyerTrackerDelegate>{
 
     BOOL _isDebug;
-    
     BOOL didCollectIAdData;
-    
     BOOL _useReceiptValidationSandbox;
+    EmailCryptType emailCryptType;
+    NSArray *userEmails;
 }
+
++(AppsFlyerTracker*) sharedTracker;
 
 /* In case you use your own user ID in your app, you can set this property to that ID. */
 @property (nonatomic, strong, setter=setCustomerUserID:) NSString *customerUserID;
@@ -113,8 +123,9 @@
  */
 @property (nonatomic, strong) NSString *currencyCode;
 
+
 /* AppsFlyer's SDK send the data to AppsFlyer's servers over HTTPS. You can set the isHTTPS property to NO in order to use regular HTTP. */
-@property BOOL isHTTPS;
+//@property BOOL isHTTPS;
 
 /* 
  * AppsFLyer SDK collect Apple's advertisingIdentifier if the AdSupport framework included in the SDK.
@@ -127,6 +138,13 @@
  * is NO.
  */
 @property (nonatomic, setter = setIsDebug:) BOOL isDebug;
+
+
+/*
+ * Set this flag to NO, to not collect the device name.
+ */
+@property (nonatomic, setter = setShouldCollectDeviceName:) BOOL shouldCollectDeviceName;
+
 
 /*
  * Opt-out tracking for specific user
@@ -149,7 +167,13 @@
  */
 @property (nonatomic, setter = setUseReceiptValidationSandbox:) BOOL useReceiptValidationSandbox;
 
-+(AppsFlyerTracker*) sharedTracker;
+
+
+/*
+ * Use this to send the User's emails
+ */
+-(void) setUserEmails:(NSArray *) userEmails withCryptType:(EmailCryptType) type;
+
 
 /* Track application launch*/
 - (void) trackAppLaunch;
@@ -171,23 +195,29 @@
  * To track in app purchases you can call this method from the completeTransaction: method on 
  * your SKPaymentTransactionObserver.
  */
-- (void) validateAndTrackInAppPurchase:(NSString *)eventNameIfSuucceed
-                     eventNameIfFailed:(NSString *)failedEventName
-                             withValue:(NSString *)value
-                           withProduct:(NSString *)productIdentifier
-                                 price:(NSDecimalNumber *)price
-                                 currency:(NSString *)currency
+- (void) validateAndTrackInAppPurchase:(NSString *)productIdentifier
+                                 price:(NSString *)price
+                              currency:(NSString *)currency
+                         transactionId:(NSString *) tranactionId
+                  additionalParameters:(NSDictionary *)params
                                success:(void (^)(NSDictionary *response))successBlock
                                failure:(void (^)(NSError *error, id reponse)) failedBlock;
 
-/* 
+
+/*
+* To Track location for geo-fencing.
+*/
+
+-(void) trackLocation:(double) longitude latitude:(double) latitude;
+/*
  * This method returns AppsFLyer's internal user ID (unique for your app)
  */
+
 - (NSString *) getAppsFlyerUID;
 
 /* 
  * In case you want to use AppsFlyer tracking data in your app you can use the following method set a
- * delegate with callbakc buttons for the tracking data. See AppsFlyerTrackerDelegate above.
+ * delegate with callback buttons for the tracking data. See AppsFlyerTrackerDelegate above.
  */
 - (void) loadConversionDataWithDelegate:(id<AppsFlyerTrackerDelegate>) delegate __attribute__((deprecated));
 
@@ -200,6 +230,13 @@
  * In case you want to track deep linking, call this method from your delegate's openURL method with refferer.
  */
 - (void) handleOpenURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication withAnnotaion:(id) annotation;
+
+/* 
+ * For Universal links iOS 9
+ */
+
+-(void) continueUserActivity:(NSUserActivity *) userActivity restorationHandler:(void (^)(NSArray *))restorationHandler;
+-(void) didUpdateUserActivity:(NSUserActivity *)userActivity;
 
 
 @end

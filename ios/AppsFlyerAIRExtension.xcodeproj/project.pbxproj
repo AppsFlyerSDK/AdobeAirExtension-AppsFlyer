@@ -34,7 +34,7 @@
 		AA9913A518AB7C3900F165AE /* AppsFlyerTracker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppsFlyerTracker.h; sourceTree = "<group>"; };
 		AAA4F9B818E1B2D800C121B5 /* AppsFlyerConversionDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppsFlyerConversionDelegate.h; sourceTree = "<group>"; };
 		AAA4F9B918E1B2D800C121B5 /* AppsFlyerConversionDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AppsFlyerConversionDelegate.m; sourceTree = "<group>"; };
-		AACAB237185624FE00C55EB7 /* libAdobeeAirExtensionIOS.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; name = libAdobeeAirExtensionIOS.a; path = libAppsFlyerAIRExtension.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		AACAB237185624FE00C55EB7 /* libAppsFlyerAIRExtension.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libAppsFlyerAIRExtension.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		AACAB23A185624FE00C55EB7 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		AACAB23E185624FE00C55EB7 /* AppsFlyerAIRExtension-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "AppsFlyerAIRExtension-Prefix.pch"; sourceTree = "<group>"; };
 		AACAB241185624FE00C55EB7 /* AppsFlyerAIRExtension.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppsFlyerAIRExtension.m; sourceTree = "<group>"; };
@@ -70,7 +70,7 @@
 		AACAB238185624FE00C55EB7 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				AACAB237185624FE00C55EB7 /* libAdobeeAirExtensionIOS.a */,
+				AACAB237185624FE00C55EB7 /* libAppsFlyerAIRExtension.a */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -126,7 +126,7 @@
 			);
 			name = AppsFlyerAIRExtension;
 			productName = AdobeeAirExtensionIOS;
-			productReference = AACAB237185624FE00C55EB7 /* libAdobeeAirExtensionIOS.a */;
+			productReference = AACAB237185624FE00C55EB7 /* libAppsFlyerAIRExtension.a */;
 			productType = "com.apple.product-type.library.static";
 		};
 /* End PBXNativeTarget section */

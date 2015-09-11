@@ -30,6 +30,10 @@ public class AppsFlyerContext extends FREContext {
         map.put("setCollectAndroidID", new SetCollectAndroidID());
         map.put("setCollectIMEI", new SetCollectIMEI());
         map.put("getAppsFlyerUID", new GetAppsFlyerUID());
+        map.put("getAdvertiserId", new GetAdvertiserId());
+        map.put("getAdvertiserIdEnabled", new GetAdvertiserIdEnabled());
+        map.put("setDebug", new SetDebug());
+
 //        map.put("setExtension", new SetExtension());
 
         return map;
