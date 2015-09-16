@@ -144,6 +144,28 @@ FREObject getAppsFlyerUID(FREContext ctx, void* funcData, uint32_t argc, FREObje
     return uid;
 }
 
+FREObject getAdvertiserId(FREContext ctx, void* funcData, uint32_t argc, FREObject argv[])
+{
+    FREObject id = nil;
+    NSString *value = @"-1";
+    FRENewObjectFromUTF8(strlen((const char*)[value UTF8String]) + 1, (const uint8_t*)[value UTF8String], &id);
+    return id;
+}
+
+FREObject getAdvertiserIdEnabled(FREContext ctx, void* funcData, uint32_t argc, FREObject argv[])
+{
+    FREObject res = nil;
+    FRENewObjectFromBool(0, &res);
+    return res;
+}
+
+FREObject setDebug(FREContext ctx, void* funcData, uint32_t argc, FREObject argv[])
+{
+    uint32_t value;
+    FREGetObjectAsBool(argv[0], &value);
+    [AppsFlyerTracker sharedTracker].isDebug = value;
+    return NULL;
+}
 
 //FREObject setExtension(FREContext ctx, void* funcData, uint32_t argc, FREObject argv[])
 //{
@@ -159,7 +181,7 @@ FREObject getAppsFlyerUID(FREContext ctx, void* funcData, uint32_t argc, FREObje
 void AFExtContextInitializer(void* extData, const uint8_t* ctxType, FREContext ctx, uint32_t* numFunctionsToTest, const FRENamedFunction** functionsToSet)
 {
     
-    *numFunctionsToTest = 8;
+    *numFunctionsToTest = 11;
     FRENamedFunction* func = (FRENamedFunction*)malloc(sizeof(FRENamedFunction) * *numFunctionsToTest);
     
     func[0].name = (const uint8_t*)"setDeveloperKey";
@@ -193,6 +215,19 @@ void AFExtContextInitializer(void* extData, const uint8_t* ctxType, FREContext c
     func[7].name = (const uint8_t*)"sendTrackingWithValues";
     func[7].functionData = NULL;
     func[7].function = &sendTrackingWithValues;
+    
+    func[8].name = (const uint8_t*)"setDebug";
+    func[8].functionData = NULL;
+    func[8].function = &setDebug;
+    
+    func[9].name = (const uint8_t*)"getAdvertiserId";
+    func[9].functionData = NULL;
+    func[9].function = &getAdvertiserId;
+    
+    func[10].name = (const uint8_t*)"getAdvertiserIdEnabled";
+    func[10].functionData = NULL;
+    func[10].function = &getAdvertiserIdEnabled;
+
     
 //    func[7].name = (const uint8_t*)"setExtension";
 //    func[7].functionData = NULL;

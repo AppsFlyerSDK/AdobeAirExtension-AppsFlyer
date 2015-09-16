@@ -7,7 +7,10 @@ import com.adobe.fre.FREFunction;
 import com.adobe.fre.FREObject;
 import com.appsflyer.AppsFlyerConversionListener;
 import com.appsflyer.AppsFlyerLib;
+import org.json.simple.JSONValue;
 
+import java.io.IOException;
+import java.io.StringWriter;
 import java.util.Map;
 
 
@@ -72,28 +75,35 @@ public class GetConversionData implements FREFunction {
                         arg0.dispatchStatusEventAsync("attributionFailure", cnt.getLastConversionData());
                     }
 
-                    public void onInstallConversionDataLoaded(java.util.Map<java.lang.String, java.lang.String> conversionData) {
+                    public void onInstallConversionDataLoaded(Map<String, String> conversionData) {
                         Log.i("AppsFlyer: ", "GetConversionData onConversionDataLoaded");
                         cnt.setLastConversionData(getResultString(conversionData));
                         arg0.dispatchStatusEventAsync("installConversionDataLoaded", cnt.getLastConversionData());
                     }
 
-                    private String getResultString(Map<String, String> conversionData) {
-                        boolean first = true;
-                        StringBuilder sb = new StringBuilder();
-                        sb.append("{");
-                        for (String attrName : conversionData.keySet()) {
-                            if (!first) {
-                                sb.append(",");
-                            } else {
-                                first = false;
-                            }
-                            String str = "\"" + attrName + "\" : \"" + conversionData.get(attrName) + "\"";
-                            sb.append(str);
+                    private String getResultString(Map<String, String> data) {
+                        StringWriter out = new StringWriter();
+                        try {
+                            JSONValue.writeJSONString(data, out);
+                        } catch (IOException e) {
+                            e.printStackTrace();
                         }
-
-                        sb.append("}");
-                        return sb.toString();
+                        return out.toString();
+//                        boolean first = true;
+//                        StringBuilder sb = new StringBuilder();
+//                        sb.append("{");
+//                        for (String attrName : conversionData.keySet()) {
+//                            if (!first) {
+//                                sb.append(",");
+//                            } else {
+//                                first = false;
+//                            }
+//                            String str = "\"" + attrName + "\" : \"" + conversionData.get(attrName) + "\"";
+//                            sb.append(str);
+//                        }
+//
+//                        sb.append("}");
+//                        return sb.toString();
                     }
 
                     public void onInstallConversionFailure(String errorMessage) {

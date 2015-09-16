@@ -41,6 +41,19 @@ public class AppsFlyerInterface extends  EventDispatcher {
 		return "-1";
 	}
 
+	public function setDebug(value:Boolean):void{
+
+	}
+
+
+	public function getAdvertiserId():String {
+		return "-1";
+	}
+
+	public function getAdvertiserIdEnabled():Boolean {
+		return false;
+	}
+
 //	public function setExtension():void {
 //
 //	}

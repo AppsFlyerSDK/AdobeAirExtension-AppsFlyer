@@ -64,6 +64,19 @@ public class AppsFlyerInterface extends EventDispatcher {
 //		context.call("setExtension", EXTENSION_TYPE);
 //	}
 
+	public function setDebug(value:Boolean):void{
+		context.call("setDebug", value);
+	}
+
+	public function getAdvertiserId():String {
+		return context.call("getAdvertiserId") as String;
+	}
+
+	public function getAdvertiserIdEnabled():Boolean {
+		return context.call("getAdvertiserIdEnabled") as Boolean;
+	}
+
+
 	protected function _handleStatusEvents(e:StatusEvent):void {
 		var event:AppsFlyerEvent = new AppsFlyerEvent(e.code, e.level);
 		if (event != null) {

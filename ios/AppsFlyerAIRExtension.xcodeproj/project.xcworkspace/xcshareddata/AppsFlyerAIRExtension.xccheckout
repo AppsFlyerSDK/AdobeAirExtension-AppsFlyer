@@ -7,34 +7,34 @@
 	<key>IDESourceControlProjectIdentifier</key>
 	<string>BE31505E-8113-494C-9A13-C3C26BD3F17C</string>
 	<key>IDESourceControlProjectName</key>
-	<string>AppsFlyerAIRExtension</string>
+	<string>project</string>
 	<key>IDESourceControlProjectOriginsDictionary</key>
 	<dict>
-		<key>3198892B55A2390FCE9773465A53CA364D1B0B31</key>
-		<string>https://github.com/nicechap/ANE-Push-Notification.git</string>
+		<key>312A9D932D03C9A81C8AE821F7F5E94BAE30B676</key>
+		<string>https://github.com/AppsFlyerSDK/AdobeAirExtension-AppsFlyer.git</string>
 	</dict>
 	<key>IDESourceControlProjectPath</key>
-	<string>Копия ios/AppsFlyerAIRExtension.xcodeproj</string>
+	<string>ios/AppsFlyerAIRExtension.xcodeproj/project.xcworkspace</string>
 	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
 	<dict>
-		<key>3198892B55A2390FCE9773465A53CA364D1B0B31</key>
+		<key>312A9D932D03C9A81C8AE821F7F5E94BAE30B676</key>
 		<string>../../..</string>
 	</dict>
 	<key>IDESourceControlProjectURL</key>
-	<string>https://github.com/nicechap/ANE-Push-Notification.git</string>
+	<string>https://github.com/AppsFlyerSDK/AdobeAirExtension-AppsFlyer.git</string>
 	<key>IDESourceControlProjectVersion</key>
 	<integer>111</integer>
 	<key>IDESourceControlProjectWCCIdentifier</key>
-	<string>3198892B55A2390FCE9773465A53CA364D1B0B31</string>
+	<string>312A9D932D03C9A81C8AE821F7F5E94BAE30B676</string>
 	<key>IDESourceControlProjectWCConfigurations</key>
 	<array>
 		<dict>
 			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
 			<string>public.vcs.git</string>
 			<key>IDESourceControlWCCIdentifierKey</key>
-			<string>3198892B55A2390FCE9773465A53CA364D1B0B31</string>
+			<string>312A9D932D03C9A81C8AE821F7F5E94BAE30B676</string>
 			<key>IDESourceControlWCCName</key>
-			<string>appsflyer</string>
+			<string>AdobeAirExtension-AppsFlyer</string>
 		</dict>
 	</array>
 </dict>
