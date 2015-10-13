@@ -1,7 +1,3 @@
-//
-//  AdobeeAirExtensionIOS.h
-//  AdobeeAirExtensionIOS
-//
 //  Created by Admin on 24.07.14.
 //  Copyright (c) 2014 Oren Baranes. All rights reserved.
 //

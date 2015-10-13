@@ -7,14 +7,14 @@
 	<key>IDESourceControlProjectIdentifier</key>
 	<string>BE31505E-8113-494C-9A13-C3C26BD3F17C</string>
 	<key>IDESourceControlProjectName</key>
-	<string>project</string>
+	<string>AppsFlyerAIRExtension</string>
 	<key>IDESourceControlProjectOriginsDictionary</key>
 	<dict>
 		<key>312A9D932D03C9A81C8AE821F7F5E94BAE30B676</key>
 		<string>https://github.com/AppsFlyerSDK/AdobeAirExtension-AppsFlyer.git</string>
 	</dict>
 	<key>IDESourceControlProjectPath</key>
-	<string>ios/AppsFlyerAIRExtension.xcodeproj/project.xcworkspace</string>
+	<string>ios/AppsFlyerAIRExtension.xcodeproj</string>
 	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
 	<dict>
 		<key>312A9D932D03C9A81C8AE821F7F5E94BAE30B676</key>

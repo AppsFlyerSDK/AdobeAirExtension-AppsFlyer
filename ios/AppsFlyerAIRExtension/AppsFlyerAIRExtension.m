@@ -1,7 +1,3 @@
-//
-//  AdobeeAirExtensionIOS.m
-//  AdobeeAirExtensionIOS
-//
 //  Created by Oren Baranes on 12/9/13.
 //  Copyright (c) 2013 Oren Baranes. All rights reserved.
 //
@@ -88,7 +84,7 @@ FREObject sendTrackingWithValues(FREContext ctx, void* funcData, uint32_t argc, 
         NSDictionary *values = [NSJSONSerialization JSONObjectWithData:objectData
                                                              options:NSJSONReadingMutableContainers
                                                                error:&jsonError];
-        
+
         [[AppsFlyerTracker sharedTracker] trackEvent:eventName withValues:values];
     }
     
@@ -97,8 +93,6 @@ FREObject sendTrackingWithValues(FREContext ctx, void* funcData, uint32_t argc, 
 
 FREObject setCurrency(FREContext ctx, void* funcData, uint32_t argc, FREObject argv[])
 {
-    
-    
     uint32_t string1Length;
     const uint8_t *string1;
     FREGetObjectAsUTF8(argv[0], &string1Length, &string1);
@@ -112,14 +106,11 @@ FREObject setCurrency(FREContext ctx, void* funcData, uint32_t argc, FREObject a
 
 FREObject setAppUserId(FREContext ctx, void* funcData, uint32_t argc, FREObject argv[])
 {
-    
-    
     uint32_t string1Length;
     const uint8_t *string1;
     FREGetObjectAsUTF8(argv[0], &string1Length, &string1);
     NSString *appUserId = [NSString stringWithUTF8String:(char*)string1];
     [AppsFlyerTracker sharedTracker].customerUserID = appUserId;
-    
     
     return NULL;
 }
@@ -128,10 +119,7 @@ FREObject setAppUserId(FREContext ctx, void* funcData, uint32_t argc, FREObject 
 
 FREObject getConversionData(FREContext ctx, void* funcData, uint32_t argc, FREObject argv[])
 {
-    
-    
-    [[AppsFlyerTracker sharedTracker] loadConversionDataWithDelegate: conversionDelegate];
-    
+    [AppsFlyerTracker sharedTracker].delegate = conversionDelegate;
     return NULL;
 }
 
@@ -167,6 +155,18 @@ FREObject setDebug(FREContext ctx, void* funcData, uint32_t argc, FREObject argv
     return NULL;
 }
 
+FREObject setCollectAndroidID(FREContext ctx, void* funcData, uint32_t argc, FREObject argv[])
+{
+    NSLog(@"setCollectAndroidID method is not supported on iOS");
+    return NULL;
+}
+
+FREObject setCollectIMEI(FREContext ctx, void* funcData, uint32_t argc, FREObject argv[])
+{
+    NSLog(@"setCollectIMEI method is not supported on iOS");
+    return NULL;
+}
+
 //FREObject setExtension(FREContext ctx, void* funcData, uint32_t argc, FREObject argv[])
 //{
 //    uint32_t string1Length;
@@ -181,7 +181,7 @@ FREObject setDebug(FREContext ctx, void* funcData, uint32_t argc, FREObject argv
 void AFExtContextInitializer(void* extData, const uint8_t* ctxType, FREContext ctx, uint32_t* numFunctionsToTest, const FRENamedFunction** functionsToSet)
 {
     
-    *numFunctionsToTest = 11;
+    *numFunctionsToTest = 13;
     FRENamedFunction* func = (FRENamedFunction*)malloc(sizeof(FRENamedFunction) * *numFunctionsToTest);
     
     func[0].name = (const uint8_t*)"setDeveloperKey";
@@ -227,11 +227,14 @@ void AFExtContextInitializer(void* extData, const uint8_t* ctxType, FREContext c
     func[10].name = (const uint8_t*)"getAdvertiserIdEnabled";
     func[10].functionData = NULL;
     func[10].function = &getAdvertiserIdEnabled;
-
     
-//    func[7].name = (const uint8_t*)"setExtension";
-//    func[7].functionData = NULL;
-//    func[7].function = &setExtension;
+    func[11].name = (const uint8_t*)"setCollectAndroidID";
+    func[11].functionData = NULL;
+    func[11].function = &setCollectAndroidID;
+    
+    func[12].name = (const uint8_t*)"setCollectIMEI";
+    func[12].functionData = NULL;
+    func[12].function = &setCollectIMEI;
     
     
     *functionsToSet = func;
