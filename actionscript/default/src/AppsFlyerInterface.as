@@ -54,6 +54,10 @@ public class AppsFlyerInterface extends  EventDispatcher {
 		return false;
 	}
 
+	public function handlePushNotification(userInfo:String):void{
+
+    }
+
 //	public function setExtension():void {
 //
 //	}

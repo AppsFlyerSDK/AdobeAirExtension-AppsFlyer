@@ -68,6 +68,10 @@ public class AppsFlyerInterface extends EventDispatcher {
 		context.call("setDebug", value);
 	}
 
+	public function handlePushNotification(userInfo:String):void{
+    	context.call("handlePushNotification", userInfo);
+    }
+
 	public function getAdvertiserId():String {
 		return context.call("getAdvertiserId") as String;
 	}

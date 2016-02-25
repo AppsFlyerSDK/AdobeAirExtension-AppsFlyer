@@ -7,17 +7,52 @@
 #import "AppsFlyerConversionDelegate.h"
 #import "AppsFlyerAIRExtension.h"
 
+#import <UIKit/UIApplication.h>
 
+#import <objc/runtime.h>
+#import <objc/message.h>
+
+
+#define DEFINE_ANE_FUNCTION(fn) FREObject (fn)(FREContext context, void* functionData, uint32_t argc, FREObject argv[])
+
+@implementation AppsFlyerAIRExtension 
+
+//empty delegate functions, stubbed signature is so we can find this method in the delegate
+//and override it with our custom implementation
+- (BOOL) application:(UIApplication *)application continueUserActivity:(NSUserActivity *)userActivity restorationHandler:(void (^)(NSArray *_Nullable))restorationHandler{ return TRUE; }
+- (BOOL)application:(UIApplication *)application openURL:(NSURL *)url
+  sourceApplication:(NSString*)sourceApplication annotation:(id)annotation{ return TRUE; }
+
++ (NSDictionary*) convertFromJSonString:(NSString*)jsonString
+{
+    NSError *jsonError = nil;
+    NSData *data = [jsonString dataUsingEncoding:NSUTF8StringEncoding];
+    NSDictionary *json  = [NSJSONSerialization JSONObjectWithData:data options:0 error:&jsonError];
+    if (jsonError != nil) {
+        NSLog(@"[AppsFlyerAIRExtension] JSON to NSDictionnary error: %@", jsonError.localizedDescription);
+        return NULL;
+    }
+    return json;
+}
+
+@end
+
+BOOL continueUserActivity(id self, SEL _cmd, UIApplication* application, NSUserActivity* userActivity, RestorationHandler restorationHandler) {
+    [[AppsFlyerTracker sharedTracker] continueUserActivity:userActivity restorationHandler:restorationHandler];
+    return YES;
+}
+BOOL openURL(id self, SEL _cmd, UIApplication* application, NSURL* url, NSString* sourceApplication, id annotation) {
+    [[AppsFlyerTracker sharedTracker] handleOpenURL:url sourceApplication:sourceApplication];
+    return YES;
+}
 
 AdobeAirConversionDelegate * conversionDelegate;
 
 
 NSString *const EXTENSION_TYPE = @"AIR";
 
-FREObject setDeveloperKey(FREContext ctx, void* funcData, uint32_t argc, FREObject argv[])
+DEFINE_ANE_FUNCTION(setDeveloperKey)
 {
-   
-
     uint32_t string1Length;
     const uint8_t *string1;
     FREGetObjectAsUTF8(argv[0], &string1Length, &string1);
@@ -33,7 +68,7 @@ FREObject setDeveloperKey(FREContext ctx, void* funcData, uint32_t argc, FREObje
     return NULL;
 }
 
-FREObject sendTracking(FREContext ctx, void* funcData, uint32_t argc, FREObject argv[])
+DEFINE_ANE_FUNCTION(sendTracking)
 {
     
     [[AppsFlyerTracker sharedTracker] trackAppLaunch];
@@ -41,7 +76,7 @@ FREObject sendTracking(FREContext ctx, void* funcData, uint32_t argc, FREObject 
     return NULL;
 }
 
-FREObject sendTrackingWithEvent(FREContext ctx, void* funcData, uint32_t argc, FREObject argv[])
+DEFINE_ANE_FUNCTION(sendTrackingWithEvent)
 {
     
     if(argv[0]!=NULL)
@@ -63,7 +98,7 @@ FREObject sendTrackingWithEvent(FREContext ctx, void* funcData, uint32_t argc, F
     return NULL;
 }
 
-FREObject sendTrackingWithValues(FREContext ctx, void* funcData, uint32_t argc, FREObject argv[])
+DEFINE_ANE_FUNCTION(sendTrackingWithValues)
 {
     
     if(argv[0]!=NULL)
@@ -91,7 +126,7 @@ FREObject sendTrackingWithValues(FREContext ctx, void* funcData, uint32_t argc, 
     return NULL;
 }
 
-FREObject setCurrency(FREContext ctx, void* funcData, uint32_t argc, FREObject argv[])
+DEFINE_ANE_FUNCTION(setCurrency)
 {
     uint32_t string1Length;
     const uint8_t *string1;
@@ -102,52 +137,48 @@ FREObject setCurrency(FREContext ctx, void* funcData, uint32_t argc, FREObject a
     return NULL;
 }
 
-
-
-FREObject setAppUserId(FREContext ctx, void* funcData, uint32_t argc, FREObject argv[])
+DEFINE_ANE_FUNCTION(setAppUserId)
 {
     uint32_t string1Length;
-    const uint8_t *string1;
-    FREGetObjectAsUTF8(argv[0], &string1Length, &string1);
-    NSString *appUserId = [NSString stringWithUTF8String:(char*)string1];
+    const uint8_t *value;
+    FREGetObjectAsUTF8(argv[0], &string1Length, &value);
+    NSString *appUserId = [NSString stringWithUTF8String:(char*)value];
     [AppsFlyerTracker sharedTracker].customerUserID = appUserId;
     
     return NULL;
 }
 
-
-
-FREObject getConversionData(FREContext ctx, void* funcData, uint32_t argc, FREObject argv[])
+DEFINE_ANE_FUNCTION(getConversionData)
 {
     [AppsFlyerTracker sharedTracker].delegate = conversionDelegate;
     return NULL;
 }
 
 
-FREObject getAppsFlyerUID(FREContext ctx, void* funcData, uint32_t argc, FREObject argv[])
+DEFINE_ANE_FUNCTION(getAppsFlyerUID)
 {
     FREObject uid = nil;
     NSString *value = (NSString *)[[AppsFlyerTracker sharedTracker] getAppsFlyerUID];
-    FRENewObjectFromUTF8(strlen((const char*)[value UTF8String]) + 1, (const uint8_t*)[value UTF8String], &uid);
+    FRENewObjectFromUTF8(strlen((const char*)[value UTF8String]) + 1.0, (const uint8_t*)[value UTF8String], &uid);
     return uid;
 }
 
-FREObject getAdvertiserId(FREContext ctx, void* funcData, uint32_t argc, FREObject argv[])
+DEFINE_ANE_FUNCTION(getAdvertiserId)
 {
     FREObject id = nil;
     NSString *value = @"-1";
-    FRENewObjectFromUTF8(strlen((const char*)[value UTF8String]) + 1, (const uint8_t*)[value UTF8String], &id);
+    FRENewObjectFromUTF8(strlen((const char*)[value UTF8String]) + 1.0, (const uint8_t*)[value UTF8String], &id);
     return id;
 }
 
-FREObject getAdvertiserIdEnabled(FREContext ctx, void* funcData, uint32_t argc, FREObject argv[])
+DEFINE_ANE_FUNCTION(getAdvertiserIdEnabled)
 {
     FREObject res = nil;
     FRENewObjectFromBool(0, &res);
     return res;
 }
 
-FREObject setDebug(FREContext ctx, void* funcData, uint32_t argc, FREObject argv[])
+DEFINE_ANE_FUNCTION(setDebug)
 {
     uint32_t value;
     FREGetObjectAsBool(argv[0], &value);
@@ -155,15 +186,27 @@ FREObject setDebug(FREContext ctx, void* funcData, uint32_t argc, FREObject argv
     return NULL;
 }
 
-FREObject setCollectAndroidID(FREContext ctx, void* funcData, uint32_t argc, FREObject argv[])
+DEFINE_ANE_FUNCTION(setCollectAndroidID)
 {
     NSLog(@"setCollectAndroidID method is not supported on iOS");
     return NULL;
 }
 
-FREObject setCollectIMEI(FREContext ctx, void* funcData, uint32_t argc, FREObject argv[])
+DEFINE_ANE_FUNCTION(setCollectIMEI)
 {
     NSLog(@"setCollectIMEI method is not supported on iOS");
+    return NULL;
+}
+
+DEFINE_ANE_FUNCTION(handlePushNotification)
+{
+    uint32_t string1Length;
+    const uint8_t *value;
+    FREGetObjectAsUTF8(argv[0], &string1Length, &value);
+    NSString *userInfoString = [NSString stringWithUTF8String:(char*)value];
+    NSDictionary *userInfo = [AppsFlyerAIRExtension convertFromJSonString:userInfoString];
+    //NSLog(@"handlePushNotification %@ userInfo %@", userInfoString, userInfo);
+    [[AppsFlyerTracker sharedTracker] handlePushNotification:userInfo];
     return NULL;
 }
 
@@ -181,7 +224,39 @@ FREObject setCollectIMEI(FREContext ctx, void* funcData, uint32_t argc, FREObjec
 void AFExtContextInitializer(void* extData, const uint8_t* ctxType, FREContext ctx, uint32_t* numFunctionsToTest, const FRENamedFunction** functionsToSet)
 {
     
-    *numFunctionsToTest = 13;
+    UIApplication *application = UIApplication.sharedApplication;
+    //injects our modified delegate functions into the sharedApplication delegate
+    id delegate = application.delegate;
+    
+    Class objectClass = object_getClass(delegate);
+    
+    NSString *newClassName = [NSString stringWithFormat:@"Custom_%@", NSStringFromClass(objectClass)];
+    Class modDelegate = NSClassFromString(newClassName);
+    
+    if (modDelegate == nil) {
+        // this class doesn't exist; create it
+        // allocate a new class
+        modDelegate = objc_allocateClassPair(objectClass, [newClassName UTF8String], 0);
+        
+        SEL selectorToOverride1 = @selector(application:continueUserActivity:restorationHandler:);
+        
+        SEL selectorToOverride2 = @selector(application:openURL:sourceApplication:annotation:);
+        
+        // get the info on the method we're going to override
+        Method m1 = class_getInstanceMethod(objectClass, selectorToOverride1);
+        Method m2 = class_getInstanceMethod(objectClass, selectorToOverride2);
+        // add the method to the new class
+        class_addMethod(modDelegate, selectorToOverride1, (IMP)continueUserActivity, method_getTypeEncoding(m1));
+        class_addMethod(modDelegate, selectorToOverride2, (IMP)openURL, method_getTypeEncoding(m2));
+        
+        
+        // register the new class with the runtime
+        objc_registerClassPair(modDelegate);
+    }
+    // change the class of the object
+    object_setClass(delegate, modDelegate);
+    
+    *numFunctionsToTest = 14;
     FRENamedFunction* func = (FRENamedFunction*)malloc(sizeof(FRENamedFunction) * *numFunctionsToTest);
     
     func[0].name = (const uint8_t*)"setDeveloperKey";
@@ -235,6 +310,10 @@ void AFExtContextInitializer(void* extData, const uint8_t* ctxType, FREContext c
     func[12].name = (const uint8_t*)"setCollectIMEI";
     func[12].functionData = NULL;
     func[12].function = &setCollectIMEI;
+    
+    func[13].name = (const uint8_t*)"handlePushNotification";
+    func[13].functionData = NULL;
+    func[13].function = &handlePushNotification;
     
     
     *functionsToSet = func;
