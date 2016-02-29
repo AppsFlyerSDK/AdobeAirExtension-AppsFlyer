@@ -2,6 +2,7 @@ package com.appsflyer.adobeair;
 
 import com.adobe.fre.FREContext;
 import com.adobe.fre.FREFunction;
+import com.appsflyer.adobeair.functions.*;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -19,10 +20,11 @@ public class AppsFlyerContext extends FREContext {
     @Override
     public Map<String, FREFunction> getFunctions() {
         Map<String, FREFunction> map = new HashMap<String, FREFunction>();
-        map.put("setDeveloperKey", new SetDeveloperKeyFuncation());
+        map.put("setDeveloperKey", new AppsFlyerInit());
         map.put("sendTrackingWithEvent", new SendTrackingWithEventFunction());
         map.put("sendTrackingWithValues", new SendTrackingWithValuesFunction());
-        map.put("sendTracking", new SendTrackingFunction());
+        map.put("sendTracking", new SendTracking());
+        map.put("registerConversionListener", new RegisterConversionListener());
         map.put("setCurrency", new SetCurrency());
         map.put("setAppUserId", new SetAppUserId());
         map.put("getConversionData", new GetConversionData());

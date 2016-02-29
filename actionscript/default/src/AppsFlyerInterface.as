@@ -15,6 +15,9 @@ public class AppsFlyerInterface extends  EventDispatcher {
 	public function sendTracking():void {
 	}
 
+	public function registerConversionListener():void {
+    }
+
 	public function sendTrackingWithEvent(eventName:String, eventValue:String):void {
 	}
 

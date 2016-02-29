@@ -1,16 +1,12 @@
-package com.appsflyer.adobeair;
+package com.appsflyer.adobeair.functions;
 
-import android.content.Context;
 import com.adobe.fre.FREContext;
 import com.adobe.fre.FREFunction;
 import com.adobe.fre.FREObject;
-import com.appsflyer.AppsFlyerLib;
 import com.appsflyer.AppsFlyerProperties;
 import com.appsflyer.ServerParameters;
 
-/**
- * Created by maksym on 22.07.2014.
- */
+
 public class GetAdvertiserId implements FREFunction {
     @Override
     public FREObject call(FREContext freContext, FREObject[] freObjects) {

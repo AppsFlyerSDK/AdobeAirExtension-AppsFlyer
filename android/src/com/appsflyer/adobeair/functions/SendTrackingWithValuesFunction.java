@@ -1,4 +1,4 @@
-package com.appsflyer.adobeair;
+package com.appsflyer.adobeair.functions;
 
 import android.content.Context;
 import com.adobe.fre.*;
@@ -12,22 +12,22 @@ import java.util.*;
 public class SendTrackingWithValuesFunction implements FREFunction {
 
     @Override
-    public FREObject call(FREContext arg0, FREObject[] arg1) {
+    public FREObject call(FREContext freContext, FREObject[] freObjects) {
 
-        Context context = arg0.getActivity().getApplicationContext();
+        Context context = freContext.getActivity().getApplicationContext();
 
         String eventName = null;
         String value = null;
         Map<String,Object> eventValues = new HashMap<String, Object>();
 
-        if (arg1[0] == null) {
-            AppsFlyerLib.sendTrackingWithEvent(context, eventName, value);
+        if (freObjects[0] == null) {
+            AppsFlyerLib.getInstance().trackEvent(context, eventName, eventValues);
             return null;
         }
 
         try {
-            eventName = arg1[0].getAsString();
-            value = arg1[1].getAsString();
+            eventName = freObjects[0].getAsString();
+            value = freObjects[1].getAsString();
             JSONObject json = new JSONObject(value);
             eventValues = jsonToMap(json);
         } catch (IllegalStateException e) {
@@ -46,15 +46,16 @@ public class SendTrackingWithValuesFunction implements FREFunction {
 
         if (eventValues.isEmpty()) {
             if (eventName == null || eventName.isEmpty()) {
-                AppsFlyerLib.sendTrackingWithEvent(context, null, null);
+                //AppsFlyerLib.getInstance().sendTrackingWithEvent(context, null, null);
+                AppsFlyerLib.getInstance().trackEvent(context, null, null);
             } else {
-                AppsFlyerLib.sendTrackingWithEvent(context, eventName, null);
+                AppsFlyerLib.getInstance().trackEvent(context, eventName, null);
             }
         } else {
             if (eventName == null || eventName.isEmpty()) {
-                AppsFlyerLib.sendTrackingWithEvent(context, null, null);
+                AppsFlyerLib.getInstance().trackEvent(context, null, null);
             } else {
-                AppsFlyerLib.trackEvent(context, eventName, eventValues);
+                AppsFlyerLib.getInstance().trackEvent(context, eventName, eventValues);
             }
         }
         return null;

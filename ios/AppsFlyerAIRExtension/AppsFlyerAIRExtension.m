@@ -210,6 +210,12 @@ DEFINE_ANE_FUNCTION(handlePushNotification)
     return NULL;
 }
 
+DEFINE_ANE_FUNCTION(registerConversionListener)
+{
+    NSLog(@"registerConversionListener method is not supported on iOS");
+    return NULL;
+}
+
 //FREObject setExtension(FREContext ctx, void* funcData, uint32_t argc, FREObject argv[])
 //{
 //    uint32_t string1Length;
@@ -256,7 +262,7 @@ void AFExtContextInitializer(void* extData, const uint8_t* ctxType, FREContext c
     // change the class of the object
     object_setClass(delegate, modDelegate);
     
-    *numFunctionsToTest = 14;
+    *numFunctionsToTest = 15;
     FRENamedFunction* func = (FRENamedFunction*)malloc(sizeof(FRENamedFunction) * *numFunctionsToTest);
     
     func[0].name = (const uint8_t*)"setDeveloperKey";
@@ -314,6 +320,11 @@ void AFExtContextInitializer(void* extData, const uint8_t* ctxType, FREContext c
     func[13].name = (const uint8_t*)"handlePushNotification";
     func[13].functionData = NULL;
     func[13].function = &handlePushNotification;
+    
+    func[14].name = (const uint8_t*)"registerConversionListener";
+    func[14].functionData = NULL;
+    func[14].function = &registerConversionListener;
+    
     
     
     *functionsToSet = func;

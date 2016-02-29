@@ -1,15 +1,14 @@
-package com.appsflyer.adobeair;
+package com.appsflyer.adobeair.functions;
 
 import com.adobe.fre.FREContext;
 import com.adobe.fre.FREFunction;
 import com.adobe.fre.FREObject;
+import com.appsflyer.AppsFlyerLib;
 
-public class SetDebug implements FREFunction {
+public class SendTracking implements FREFunction {
     @Override
     public FREObject call(FREContext freContext, FREObject[] freObjects) {
-
-        //only available for iOS
-
+        //only for ios
         return null;
     }
 }

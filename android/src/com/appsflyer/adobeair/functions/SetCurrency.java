@@ -1,23 +1,24 @@
-package com.appsflyer.adobeair;
+package com.appsflyer.adobeair.functions;
 
 import com.adobe.fre.FREContext;
 import com.adobe.fre.FREFunction;
 import com.adobe.fre.FREObject;
 import com.appsflyer.AppsFlyerLib;
 
-public class SetDeveloperKeyFuncation implements FREFunction {
+public class SetCurrency implements FREFunction {
 
     @Override
     public FREObject call(FREContext arg0, FREObject[] arg1) {
 
-        String devKey = "";
+        String currencyCode = "USD";
         try {
-            devKey = arg1[0].getAsString();
+            currencyCode = arg1[0].getAsString();
         } catch (Exception e) {
-            // log an error if there is no developer key
+            e.printStackTrace();
+            return null;
         }
 
-        AppsFlyerLib.setAppsFlyerKey(devKey);
+        AppsFlyerLib.getInstance().setCurrencyCode(currencyCode);
 
         return null;
     }

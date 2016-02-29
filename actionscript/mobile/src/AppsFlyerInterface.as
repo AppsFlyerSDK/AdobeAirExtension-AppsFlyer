@@ -27,6 +27,10 @@ public class AppsFlyerInterface extends EventDispatcher {
 		context.call("sendTracking");
 	}
 
+	public function registerConversionListener():void {
+    	context.call("registerConversionListener");
+    }
+
 	public function sendTrackingWithEvent(eventName:String, eventValue:String):void {
 		context.call("sendTrackingWithEvent", eventName, eventValue);
 	}

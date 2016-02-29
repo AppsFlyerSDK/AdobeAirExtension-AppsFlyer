@@ -1,26 +1,26 @@
-package com.appsflyer.adobeair;
+package com.appsflyer.adobeair.functions;
 
 import com.adobe.fre.FREContext;
 import com.adobe.fre.FREFunction;
 import com.adobe.fre.FREObject;
 import com.appsflyer.AppsFlyerLib;
 
-/**
- * Created by maksym on 22.07.2014.
- */
-public class SetCollectAndroidID implements FREFunction {
-
+public class SetAppUserId implements FREFunction {
 
     @Override
     public FREObject call(FREContext freContext, FREObject[] freObjects) {
 
-        Boolean collectAndroidID = false;
+        String appUserId = "";
         try {
-            collectAndroidID = freObjects[0].getAsBool();
-            AppsFlyerLib.setCollectAndroidID(collectAndroidID);
+            appUserId = freObjects[0].getAsString();
         } catch (Exception e) {
+            e.printStackTrace();
+            return null;
         }
+        AppsFlyerLib.getInstance().setCustomerUserId(appUserId);
 
         return null;
+
     }
+
 }

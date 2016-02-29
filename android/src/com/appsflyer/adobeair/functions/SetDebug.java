@@ -1,23 +1,20 @@
-package com.appsflyer.adobeair;
+package com.appsflyer.adobeair.functions;
 
 import com.adobe.fre.FREContext;
 import com.adobe.fre.FREFunction;
 import com.adobe.fre.FREObject;
 import com.appsflyer.AppsFlyerLib;
 
-public class SetExtension implements FREFunction {
+public class SetDebug implements FREFunction {
     @Override
     public FREObject call(FREContext freContext, FREObject[] freObjects) {
-
-        String type = AppsFlyerContext.EXTENSION_TYPE;
+        Boolean debugLog = false;
         try {
-            type = freObjects[0].getAsString();
+            debugLog = freObjects[0].getAsBool();
+            AppsFlyerLib.getInstance().setDebugLog(debugLog);
         } catch (Exception e) {
-
+            e.printStackTrace();
         }
-
-        AppsFlyerLib.setExtension(type);
-
         return null;
     }
 }
