@@ -68,37 +68,35 @@ DEFINE_ANE_FUNCTION(setDeveloperKey)
     return NULL;
 }
 
-DEFINE_ANE_FUNCTION(sendTracking)
+DEFINE_ANE_FUNCTION(trackAppLaunch)
 {
-    
     [[AppsFlyerTracker sharedTracker] trackAppLaunch];
-    
     return NULL;
 }
 
-DEFINE_ANE_FUNCTION(sendTrackingWithEvent)
-{
-    
-    if(argv[0]!=NULL)
-    {
-        uint32_t string1Length;
-        const uint8_t *string1;
-        FREGetObjectAsUTF8(argv[0], &string1Length, &string1);
-        NSString *eventName = [NSString stringWithUTF8String:(char*)string1];
-        
-        
-        uint32_t string2Length;
-        const uint8_t *string2;
-        FREGetObjectAsUTF8(argv[1], &string2Length, &string2);
-        NSString *eventValue = [NSString stringWithUTF8String:(char*)string2];
-        
-        [[AppsFlyerTracker sharedTracker] trackEvent:eventName withValue:eventValue];
-    }
-    
-    return NULL;
-}
+//DEFINE_ANE_FUNCTION(sendTrackingWithEvent)
+//{
+//    
+//    if(argv[0]!=NULL)
+//    {
+//        uint32_t string1Length;
+//        const uint8_t *string1;
+//        FREGetObjectAsUTF8(argv[0], &string1Length, &string1);
+//        NSString *eventName = [NSString stringWithUTF8String:(char*)string1];
+//        
+//        
+//        uint32_t string2Length;
+//        const uint8_t *string2;
+//        FREGetObjectAsUTF8(argv[1], &string2Length, &string2);
+//        NSString *eventValue = [NSString stringWithUTF8String:(char*)string2];
+//        
+//        [[AppsFlyerTracker sharedTracker] trackEvent:eventName withValue:eventValue];
+//    }
+//    
+//    return NULL;
+//}
 
-DEFINE_ANE_FUNCTION(sendTrackingWithValues)
+DEFINE_ANE_FUNCTION(trackEvent)
 {
     
     if(argv[0]!=NULL)
@@ -262,20 +260,20 @@ void AFExtContextInitializer(void* extData, const uint8_t* ctxType, FREContext c
     // change the class of the object
     object_setClass(delegate, modDelegate);
     
-    *numFunctionsToTest = 15;
+    *numFunctionsToTest = 14;
     FRENamedFunction* func = (FRENamedFunction*)malloc(sizeof(FRENamedFunction) * *numFunctionsToTest);
     
     func[0].name = (const uint8_t*)"setDeveloperKey";
     func[0].functionData = NULL;
     func[0].function = &setDeveloperKey;
     
-    func[1].name = (const uint8_t*)"sendTracking";
+    func[1].name = (const uint8_t*)"trackAppLaunch";
     func[1].functionData = NULL;
-    func[1].function = &sendTracking;
+    func[1].function = &trackAppLaunch;
     
-    func[2].name = (const uint8_t*)"sendTrackingWithEvent";
-    func[2].functionData = NULL;
-    func[2].function = &sendTrackingWithEvent;
+//    func[2].name = (const uint8_t*)"sendTrackingWithEvent";
+//    func[2].functionData = NULL;
+//    func[2].function = &sendTrackingWithEvent;
     
     func[3].name = (const uint8_t*)"setCurrency";
     func[3].functionData = NULL;
@@ -293,9 +291,9 @@ void AFExtContextInitializer(void* extData, const uint8_t* ctxType, FREContext c
     func[6].functionData = NULL;
     func[6].function = &getAppsFlyerUID;
     
-    func[7].name = (const uint8_t*)"sendTrackingWithValues";
+    func[7].name = (const uint8_t*)"trackEvent";
     func[7].functionData = NULL;
-    func[7].function = &sendTrackingWithValues;
+    func[7].function = &trackEvent;
     
     func[8].name = (const uint8_t*)"setDebug";
     func[8].functionData = NULL;
@@ -321,11 +319,9 @@ void AFExtContextInitializer(void* extData, const uint8_t* ctxType, FREContext c
     func[13].functionData = NULL;
     func[13].function = &handlePushNotification;
     
-    func[14].name = (const uint8_t*)"registerConversionListener";
-    func[14].functionData = NULL;
-    func[14].function = &registerConversionListener;
-    
-    
+    func[2].name = (const uint8_t*)"registerConversionListener";
+    func[2].functionData = NULL;
+    func[2].function = &registerConversionListener;
     
     *functionsToSet = func;
     

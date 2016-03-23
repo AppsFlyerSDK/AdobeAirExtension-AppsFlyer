@@ -12,16 +12,19 @@ public class AppsFlyerInterface extends  EventDispatcher {
 	public function setDeveloperKey(key:String, appId:String):void {
 	}
 
-	public function sendTracking():void {
-	}
+//	public function sendTracking():void {
+//	}
 
 	public function registerConversionListener():void {
     }
 
-	public function sendTrackingWithEvent(eventName:String, eventValue:String):void {
-	}
+//	public function sendTrackingWithEvent(eventName:String, eventValue:String):void {
+//	}
 
-	public function sendTrackingWithValues(eventName:String, json:String):void {
+	public function trackAppLaunch():void {
+    }
+
+	public function trackEvent(eventName:String, json:String):void {
 	}
 
 	public function setCurrency(currency:String):void {

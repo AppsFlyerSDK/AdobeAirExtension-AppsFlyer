@@ -21,9 +21,10 @@ public class AppsFlyerContext extends FREContext {
     public Map<String, FREFunction> getFunctions() {
         Map<String, FREFunction> map = new HashMap<String, FREFunction>();
         map.put("setDeveloperKey", new AppsFlyerInit());
-        map.put("sendTrackingWithEvent", new SendTrackingWithEventFunction());
-        map.put("sendTrackingWithValues", new SendTrackingWithValuesFunction());
-        map.put("sendTracking", new SendTracking());
+        //map.put("sendTrackingWithEvent", new SendTrackingWithEventFunction());
+        map.put("trackAppLaunch", new TrackAppLaunchFunction());
+        map.put("trackEvent", new SendTrackingWithValuesFunction());
+        //map.put("sendTracking", new SendTracking());
         map.put("registerConversionListener", new RegisterConversionListener());
         map.put("setCurrency", new SetCurrency());
         map.put("setAppUserId", new SetAppUserId());

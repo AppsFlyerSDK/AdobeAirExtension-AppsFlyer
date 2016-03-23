@@ -23,20 +23,20 @@ public class AppsFlyerInterface extends EventDispatcher {
 		context.call("setDeveloperKey", key, appId);
 	}
 
-	public function sendTracking():void {
-		context.call("sendTracking");
+	public function trackAppLaunch():void {
+		context.call("trackAppLaunch");
 	}
 
 	public function registerConversionListener():void {
     	context.call("registerConversionListener");
     }
 
-	public function sendTrackingWithEvent(eventName:String, eventValue:String):void {
-		context.call("sendTrackingWithEvent", eventName, eventValue);
-	}
+//	public function sendTrackingWithEvent(eventName:String, eventValue:String):void {
+//		context.call("sendTrackingWithEvent", eventName, eventValue);
+//	}
 
-	public function sendTrackingWithValues(eventName:String, json:String):void {
-		context.call("sendTrackingWithValues", eventName, json);
+	public function trackEvent(eventName:String, json:String):void {
+		context.call("trackEvent", eventName, json);
 	}
 
 	public function setCurrency(currency:String):void {
