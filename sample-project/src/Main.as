@@ -9,128 +9,115 @@ import flash.text.TextFormatAlign;
 
 public class Main extends Sprite {
 
-	private static var appsFlyer:AppsFlyerInterface;
-	private const DEVELOPER_KEY:String = "6aBJD2XbkHGPcLfQQ64cxE"; //"TcFCTFC4BdMYAqmBaeqXSN";//
-	private const APP_ID:String = "201420144";
+    private static const DEVELOPER_KEY:String = "your_developer_key";
+    private static const APP_ID:String = "your_app_id";
+    private static const USER_ID:String = "your_user_id";
+    private static var appsFlyer:AppsFlyerInterface;
 
-	private const USER_ID:String = "orenorensdfasdfasdf";
+    public function Main() {
+        addEventListener(Event.ADDED_TO_STAGE, onAddedToStage);
+    }
+    private var logField:TextField;
 
-	private var logField:TextField;
+    public function createButton(label:String):Sprite {
+        var s:Sprite = new Sprite();
 
-	public function Main() {
-		addEventListener(Event.ADDED_TO_STAGE, onAddedToStage);
-	}
+        s.graphics.lineStyle(1, 0x0000FF);
+        s.graphics.beginFill(0x222222, 1);
+        s.graphics.drawRoundRect(0, 0, stage.stageWidth * 0.17, stage.stageHeight * 0.05, 7, 7);
+        s.graphics.endFill();
 
-	private function onAddedToStage(event:Event):void {
-		logField = new TextField();
-		var tf:TextFormat = logField.defaultTextFormat;
-		tf.size = int(stage.stageWidth / 42);
-		tf.font = "Helvetica";
-		tf.align = TextFormatAlign.CENTER;
-		logField.setTextFormat(tf);
+        var t:TextField = new TextField();
+        t.text = label;
 
-		logField.textColor = 0x000000;
-		logField.selectable = false;
-		logField.mouseEnabled = false;
-		logField.width = stage.stageWidth - 20;
-		logField.height = 400;
-		logField.x = 10;
-		logField.y = 100;
-		addChild(logField);
+        var tf:TextFormat = t.defaultTextFormat;
+        tf.size = int(stage.stageWidth / 42);
+        tf.font = "Helvetica";
+        tf.align = TextFormatAlign.CENTER;
+        t.setTextFormat(tf);
 
-		var b:Sprite = createButton("Test");
-		b.addEventListener(MouseEvent.CLICK, onMouseClick);
-		addChild(b);
+        t.textColor = 0xFFFFFF;
+        t.selectable = false;
+        t.mouseEnabled = false;
+        t.width = s.width * 0.95;
+        t.height = s.height;
+        t.x = (s.width * 0.020);
+        t.y = (s.height * 0.5) - (t.textHeight * 0.5);
 
-		appsFlyer = new AppsFlyerInterface();
-		appsFlyer.addEventListener(AppsFlyerEvent.INSTALL_CONVERSATION_DATA_LOADED, onSuccess);
-		appsFlyer.addEventListener(AppsFlyerEvent.CURRENT_ATTRIBUTION_DATA_LOADED, onSuccess);
-		appsFlyer.addEventListener(AppsFlyerEvent.INSTALL_CONVERSATION_FAILED, onSuccess);
-		appsFlyer.addEventListener(AppsFlyerEvent.ATTRIBUTION_FAILURE, onSuccess);
-		appsFlyer.addEventListener(AppsFlyerEvent.APP_OPEN_ATTRIBUTION, onSuccess);
+        s.addChild(t);
 
-		appsFlyer.setDeveloperKey(DEVELOPER_KEY, APP_ID); // first param is developer key and second (NA for Android)is Apple app id.
-		logField.text += "ANE initialized! \nDeveloper key: " + DEVELOPER_KEY + "\nApple AppID: " + APP_ID;
-		appsFlyer.sendTracking();
-		logField.text += "\nsendTracking() called";
-		appsFlyer.setAppUserId(USER_ID);
-		logField.text += "\nApp user id set to: " + USER_ID;
-		//appsFlyer.setExtension();
-		logField.text += "\nAppsFlyer UID: " + appsFlyer.getAppsFlyerUID();
-		appsFlyer.setCurrency("EUR");
-		logField.text += "\nSet currency: 'EUR'";
-	}
+        return s;
+    }
 
-	public function createButton(label:String):Sprite {
-		var s:Sprite = new Sprite();
+    private function log(s:String):void {
+        logField.appendText(s);
+    }
 
-		s.graphics.lineStyle(1, 0x0000FF);
-		s.graphics.beginFill(0x222222, 1);
-		s.graphics.drawRoundRect(0, 0, stage.stageWidth * 0.17, stage.stageHeight * 0.05, 7, 7);
-		s.graphics.endFill();
+    private function createUI():void {
+        logField = new TextField();
+        var tf:TextFormat = logField.defaultTextFormat;
+        tf.size = int(stage.stageWidth / 42);
+        tf.align = TextFormatAlign.CENTER;
+        logField.setTextFormat(tf);
 
-		var t:TextField = new TextField();
-		t.text = label;
+        logField.textColor = 0x000000;
+        logField.selectable = false;
+        logField.mouseEnabled = false;
+        logField.width = stage.stageWidth - 20;
+        logField.height = stage.stageHeight - 20;
+        logField.x = 10;
+        logField.y = 10;
+        addChild(logField);
 
-		var tf:TextFormat = t.defaultTextFormat;
-		tf.size = int(stage.stageWidth / 42);
-		tf.font = "Helvetica";
-		tf.align = TextFormatAlign.CENTER;
-		t.setTextFormat(tf);
+        var b:Sprite = createButton("Test");
+        b.addEventListener(MouseEvent.CLICK, function (e:MouseEvent):void {
+            sendJSON();
+            getConversionData();
+        });
+        addChild(b);
+    }
 
-		t.textColor = 0xFFFFFF;
-		t.selectable = false;
-		t.mouseEnabled = false;
-		t.width = s.width * 0.95;
-		t.height = s.height;
-		t.x = (s.width * 0.020);
-		t.y = (s.height * 0.5) - (t.textHeight * 0.5);
+    private function sendJSON():void {
+        var param:String = "Deposit";
+        var value:String = '{"amount":10, "FTDLevel":"-"}';
+        appsFlyer.trackEvent(param, value);
+        log("\n-- Call sendTrackingWithValues: '" + param + "' with value '" + value + "' --");
+    }
 
-		s.addChild(t);
+    private function getConversionData():void {
+        appsFlyer.getConversionData();
+        log("\n-- Call getConversionData --");
+    }
 
-		return s;
-	}
+    private function onAddedToStage(event:Event):void {
+        removeEventListener(Event.ADDED_TO_STAGE, onAddedToStage);
 
-	private function onMouseClick(event:MouseEvent):void {
-		appsFlyer.setCollectAndroidID(true);
-		appsFlyer.setCollectIMEI(true);
+        createUI();
 
-		//sendNumeric();
-		sendJSON();
-		//sendWithoutValue();
-		getConversionData();
-	}
+        appsFlyer = new AppsFlyerInterface();
 
-	private function sendNumeric():void {
-		var value:String = "90";
-		var param:String = "zivjhgziv";
-		appsFlyer.sendTrackingWithEvent(param, value);
-		logField.text += "\n-- Call sendTrackingWithEvent: '" + param + "' with value '" + value + "' --";
-	}
+        appsFlyer.addEventListener(AppsFlyerEvent.INSTALL_CONVERSATION_DATA_LOADED, eventHandler);
+        appsFlyer.addEventListener(AppsFlyerEvent.CURRENT_ATTRIBUTION_DATA_LOADED, eventHandler);
+        appsFlyer.addEventListener(AppsFlyerEvent.INSTALL_CONVERSATION_FAILED, eventHandler);
+        appsFlyer.addEventListener(AppsFlyerEvent.ATTRIBUTION_FAILURE, eventHandler);
+        appsFlyer.addEventListener(AppsFlyerEvent.APP_OPEN_ATTRIBUTION, eventHandler);
 
-	private function sendJSON():void {
-//        var value:String = '{"af_price": 9.99, "af_content_type": "something", "af_content_id": "234234", "af_currency": "USD", "af_quantity": "1"}';
-//        var param:String = 'af_add_to_cart';
-//		appsFlyer.sendTrackingWithEvent(param, value);
-		var param:String = "Deposit";
-		var value:String = '{"amount":10, "FTDLevel":"-"}';
-		//appsFlyer.sendTrackingWithValues(param, value);
-		appsFlyer.sendTrackingWithValues("revenue_test",'{"af_revenue":10, "af_content_id":"123"}');
-		logField.text += "\n-- Call sendTrackingWithValues: '" + param + "' with value '" + value + "' --";
-	}
+        appsFlyer.setDebug(true);
+        appsFlyer.setDeveloperKey(DEVELOPER_KEY, APP_ID); // first param is developer key and second (NA for Android)is Apple app id.
+        appsFlyer.trackAppLaunch();
+        appsFlyer.registerConversionListener();
+        appsFlyer.setAppUserId(USER_ID);
+        appsFlyer.setCurrency("EUR");
+        appsFlyer.setCollectAndroidID(true);
+        appsFlyer.setCollectIMEI(true);
 
-	private function sendWithoutValue():void {
-		appsFlyer.sendTrackingWithEvent("InstallOren", "");
-		logField.text += "\n-- Call sendTrackingWithEvent: 'InstallOren' with value '' --";
-	}
+        log("ANE initialized! \nDeveloper key: " + DEVELOPER_KEY + "\nApple AppID: " + APP_ID);
+        log("\nApp user id set to: " + USER_ID);
+        log("\nAppsFlyer UID: " + appsFlyer.getAppsFlyerUID());
+    }
 
-	private function getConversionData():void {
-		appsFlyer.getConversionData();
-		logField.text += "\n-- Call getConversionData --";
-	}
-
-	private function onSuccess(event:AppsFlyerEvent):void {
-		logField.text += "\n-- Event: " + event.type + "; \nData: " + event.data + " \n";
-	}
+    private function eventHandler(event:AppsFlyerEvent):void {
+        log("\n-- Event: " + event.type + "; \nData: " + event.data + " \n");
+    }
 }
 }
