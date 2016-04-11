@@ -26,14 +26,15 @@ import the AppsFlyer Extension into your project
 			
 construct the AppsFlyer
 
-			var afInterface:AppsFlyerInterface = new AppsFlyerInterface();
+			 private static var appsFlyer:AppsFlyerInterface;
+			 appsFlyer = new AppsFlyerInterface();
 			
 			
 set the developer key by calling the function:
 
 Android
 
-			afInterface.setDeveloperKey("your_developer_key_here",null);
+			appsFlyer.setDeveloperKey("your_developer_key_here",null);
 			
 iOS
 			
@@ -43,21 +44,22 @@ add a call for tracking whenever the app is launched
 			
 			
 			
-			afInterface.sendTracking();
+			appsFlyer.trackAppLaunch();
 			
 add a call for tracking in-app events when desired
 
-			afInterface.sendTrackingWithEvent("purchase","90.0"); // purchase is the event name, 90 is the value
-			
+		var param:String = "Deposit";
+        var value:String = '{"amount":10, "FTDLevel":"-"}';
+        appsFlyer.trackEvent(param, value);			
 get conversion data (attribution info)			
 
-			afInterface.getConversionData(); // calls async function to get the conversion data
+			appsFlyer.getConversionData(); // calls async function to get the conversion data
 			
 			afInterface.addEventListener(AppsFlyerEvent.SUCCESS,function(e){var text=e.data}); // e.data holds the string with the conversion data.
 			
 Setting your app's user (Optional)
 
-			afInterface.setAppUserId("user_id_as_used_in_the_app"); (Optional) set your app's user id
+			appsFlyer.setAppUserId("user_id_as_used_in_the_app"); (Optional) set your app's user id
 
 Getting AppsFlyer's user id:
 
