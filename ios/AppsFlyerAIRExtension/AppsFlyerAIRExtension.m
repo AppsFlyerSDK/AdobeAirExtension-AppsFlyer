@@ -214,6 +214,12 @@ DEFINE_ANE_FUNCTION(registerConversionListener)
     return NULL;
 }
 
+DEFINE_ANE_FUNCTION(setGCMProjectID)
+{
+    NSLog(@"setGCMProjectID method is not supported on iOS");
+    return NULL;
+}
+
 //FREObject setExtension(FREContext ctx, void* funcData, uint32_t argc, FREObject argv[])
 //{
 //    uint32_t string1Length;
@@ -260,7 +266,7 @@ void AFExtContextInitializer(void* extData, const uint8_t* ctxType, FREContext c
     // change the class of the object
     object_setClass(delegate, modDelegate);
     
-    *numFunctionsToTest = 14;
+    *numFunctionsToTest = 15;
     FRENamedFunction* func = (FRENamedFunction*)malloc(sizeof(FRENamedFunction) * *numFunctionsToTest);
     
     func[0].name = (const uint8_t*)"setDeveloperKey";
@@ -322,6 +328,10 @@ void AFExtContextInitializer(void* extData, const uint8_t* ctxType, FREContext c
     func[2].name = (const uint8_t*)"registerConversionListener";
     func[2].functionData = NULL;
     func[2].function = &registerConversionListener;
+    
+    func[14].name = (const uint8_t*)"setGCMProjectID";
+    func[14].functionData = NULL;
+    func[14].function = &setGCMProjectID;
     
     *functionsToSet = func;
     

@@ -17,7 +17,7 @@ public class AppsFlyerInit implements FREFunction {
             e.printStackTrace();
         }
 
-        AppsFlyerLib.getInstance().init(freContext.getActivity(), devKey);
+        AppsFlyerLib.getInstance().startTracking(freContext.getActivity().getApplication(), devKey);
 
         return null;
     }

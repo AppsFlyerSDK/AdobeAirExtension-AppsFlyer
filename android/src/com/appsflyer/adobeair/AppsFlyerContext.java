@@ -36,7 +36,7 @@ public class AppsFlyerContext extends FREContext {
         map.put("getAdvertiserId", new GetAdvertiserId());
         map.put("getAdvertiserIdEnabled", new GetAdvertiserIdEnabled());
         map.put("setDebug", new SetDebug());
-
+        map.put("setGCMProjectID", new SetGCMProjectID());
 //        map.put("setExtension", new SetExtension());
 
         return map;
@@ -49,4 +49,5 @@ public class AppsFlyerContext extends FREContext {
     public void setLastConversionData(String lastConversionData) {
         this.lastConversionData = lastConversionData;
     }
+
 }

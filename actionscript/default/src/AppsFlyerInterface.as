@@ -33,6 +33,9 @@ public class AppsFlyerInterface extends  EventDispatcher {
 	public function setAppUserId(appUserId:String):void {
 	}
 
+	public function setGCMProjectID(id:String):void {
+    }
+
 	public function getConversionData():String {
 		return "conversionData";
 	}

@@ -1,5 +1,6 @@
 package com.appsflyer.adobeair.functions;
 
+import android.util.Log;
 import com.adobe.fre.FREContext;
 import com.adobe.fre.FREFunction;
 import com.adobe.fre.FREObject;
@@ -11,11 +12,10 @@ public class GetAdvertiserIdEnabled implements FREFunction {
     public FREObject call(FREContext freContext, FREObject[] freObjects) {
         FREObject result = null;
         try {
-            result = FREObject.newObject(AppsFlyerProperties.getInstance().getString(ServerParameters.ADVERTISING_ID_ENABLED_PARAM));
+            result = FREObject.newObject(AppsFlyerProperties.getInstance().getBoolean(ServerParameters.ADVERTISING_ID_ENABLED_PARAM, false));
         } catch (Exception e) {
             e.printStackTrace();
         }
-
         return result;
     }
 }
