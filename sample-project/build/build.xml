@@ -72,15 +72,16 @@
 			<then>
 				<property name="PACKAGE_BUNDLE_PATH" value="${PACKAGE_DIR}/${FULL_APP_NAME}.ipa" />
 				<property name="ARTIFACT_PATH" value="${PACKAGE_DIR}/latest/${FULL_APP_NAME}.ipa" />
+				<property name="APP_DESCRIPTOR" value="MyTestProject-app.xml"/>
 			</then>
 			<else>
 				<property name="PACKAGE_BUNDLE_PATH" value="${PACKAGE_DIR}/${FULL_APP_NAME}.apk" />
 				<property name="ARTIFACT_PATH" value="${PACKAGE_DIR}/latest/${FULL_APP_NAME}.apk" />
+				<property name="APP_DESCRIPTOR" value="MyTestProjectAndroid-app.xml"/>
 			</else>
 		</if>
 		
 		<property name="STORETYPE" value="pkcs12"/>
-		<property name="APP_DESCRIPTOR" value="MyTestProjectAndroid-app.xml"/>
 		<property name="NATIVE_EXTENSIONS_DIR" value="${APP_ROOT_DIR}/extentions"/>
 		<property name="APP_ICONS_FOLDER" value="icons" />
 		
@@ -129,7 +130,7 @@
 				   optimize="true"
 				   warnings="false">
 				 
-				<swf-version>28</swf-version>
+				<swf-version>31</swf-version>
 				
 				<source-path path-element="${SRC_DIR}"/>
 				
