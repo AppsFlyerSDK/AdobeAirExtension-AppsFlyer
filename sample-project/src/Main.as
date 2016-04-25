@@ -6,12 +6,14 @@ import flash.events.MouseEvent;
 import flash.text.TextField;
 import flash.text.TextFormat;
 import flash.text.TextFormatAlign;
+import flash.utils.setTimeout;
 
 public class Main extends Sprite {
 
-    private static const DEVELOPER_KEY:String = "your_developer_key";
-    private static const APP_ID:String = "your_app_id";
-    private static const USER_ID:String = "your_user_id";
+    private static const DEVELOPER_KEY:String = "2MUJ9GP6pVoMU4c76jqiuA";//"your_developer_key";
+    private static const APP_ID:String = "201420144";//"your_app_id";
+    private static const USER_ID:String = "orenorensdfasdfasdf";//"your_user_id";
+
     private static var appsFlyer:AppsFlyerInterface;
 
     public function Main() {
@@ -59,6 +61,7 @@ public class Main extends Sprite {
         tf.size = int(stage.stageWidth / 42);
         tf.align = TextFormatAlign.CENTER;
         logField.setTextFormat(tf);
+        logField.y = 80;
 
         logField.textColor = 0x000000;
         logField.selectable = false;
@@ -73,6 +76,10 @@ public class Main extends Sprite {
         b.addEventListener(MouseEvent.CLICK, function (e:MouseEvent):void {
             sendJSON();
             getConversionData();
+            setTimeout(function():void {
+                log("\nAdvertiserId: " + appsFlyer.getAdvertiserId());
+                log("\nAdvertiserId enabled: " + appsFlyer.getAdvertiserIdEnabled());
+            }, 1000)
         });
         addChild(b);
     }
@@ -104,13 +111,13 @@ public class Main extends Sprite {
 
         appsFlyer.setDebug(true);
         appsFlyer.setDeveloperKey(DEVELOPER_KEY, APP_ID); // first param is developer key and second (NA for Android)is Apple app id.
+        appsFlyer.setGCMProjectID("11234");
         appsFlyer.trackAppLaunch();
         appsFlyer.registerConversionListener();
         appsFlyer.setAppUserId(USER_ID);
         appsFlyer.setCurrency("EUR");
         appsFlyer.setCollectAndroidID(true);
         appsFlyer.setCollectIMEI(true);
-
         log("ANE initialized! \nDeveloper key: " + DEVELOPER_KEY + "\nApple AppID: " + APP_ID);
         log("\nApp user id set to: " + USER_ID);
         log("\nAppsFlyer UID: " + appsFlyer.getAppsFlyerUID());
