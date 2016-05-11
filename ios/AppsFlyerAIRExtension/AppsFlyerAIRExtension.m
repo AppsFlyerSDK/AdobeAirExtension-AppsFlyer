@@ -1,6 +1,3 @@
-//  Created by Oren Baranes on 12/9/13.
-//  Copyright (c) 2013 Oren Baranes. All rights reserved.
-//
 
 #import "FlashRuntimeExtensions.h"
 #import "AppsFlyerTracker.h"
@@ -17,12 +14,6 @@
 
 @implementation AppsFlyerAIRExtension 
 
-//empty delegate functions, stubbed signature is so we can find this method in the delegate
-//and override it with our custom implementation
-- (BOOL) application:(UIApplication *)application continueUserActivity:(NSUserActivity *)userActivity restorationHandler:(void (^)(NSArray *_Nullable))restorationHandler{ return TRUE; }
-- (BOOL)application:(UIApplication *)application openURL:(NSURL *)url
-  sourceApplication:(NSString*)sourceApplication annotation:(id)annotation{ return TRUE; }
-
 + (NSDictionary*) convertFromJSonString:(NSString*)jsonString
 {
     NSError *jsonError = nil;
@@ -37,13 +28,17 @@
 
 @end
 
+static IMP __original_continueUserActivity_Imp;
 BOOL continueUserActivity(id self, SEL _cmd, UIApplication* application, NSUserActivity* userActivity, RestorationHandler restorationHandler) {
+    NSLog(@"continueUserActivity: %@", self);
     [[AppsFlyerTracker sharedTracker] continueUserActivity:userActivity restorationHandler:restorationHandler];
-    return YES;
+    return ((BOOL(*)(id,SEL,UIApplication*,NSUserActivity*, RestorationHandler))__original_continueUserActivity_Imp)(self, _cmd, application, userActivity, restorationHandler);
 }
+static IMP __original_openURL_Imp;
 BOOL openURL(id self, SEL _cmd, UIApplication* application, NSURL* url, NSString* sourceApplication, id annotation) {
-    [[AppsFlyerTracker sharedTracker] handleOpenURL:url sourceApplication:sourceApplication];
-    return YES;
+    NSLog(@"openURL: %@", self);
+    [[AppsFlyerTracker sharedTracker] handleOpenURL:url sourceApplication:sourceApplication withAnnotation:annotation];
+    return ((BOOL(*)(id, SEL, UIApplication*, NSURL*, NSString*, id))__original_openURL_Imp)(self, _cmd, application, url, sourceApplication, annotation);
 }
 
 AdobeAirConversionDelegate * conversionDelegate;
@@ -73,28 +68,6 @@ DEFINE_ANE_FUNCTION(trackAppLaunch)
     [[AppsFlyerTracker sharedTracker] trackAppLaunch];
     return NULL;
 }
-
-//DEFINE_ANE_FUNCTION(sendTrackingWithEvent)
-//{
-//    
-//    if(argv[0]!=NULL)
-//    {
-//        uint32_t string1Length;
-//        const uint8_t *string1;
-//        FREGetObjectAsUTF8(argv[0], &string1Length, &string1);
-//        NSString *eventName = [NSString stringWithUTF8String:(char*)string1];
-//        
-//        
-//        uint32_t string2Length;
-//        const uint8_t *string2;
-//        FREGetObjectAsUTF8(argv[1], &string2Length, &string2);
-//        NSString *eventValue = [NSString stringWithUTF8String:(char*)string2];
-//        
-//        [[AppsFlyerTracker sharedTracker] trackEvent:eventName withValue:eventValue];
-//    }
-//    
-//    return NULL;
-//}
 
 DEFINE_ANE_FUNCTION(trackEvent)
 {
@@ -220,51 +193,22 @@ DEFINE_ANE_FUNCTION(setGCMProjectID)
     return NULL;
 }
 
-//FREObject setExtension(FREContext ctx, void* funcData, uint32_t argc, FREObject argv[])
-//{
-//    uint32_t string1Length;
-//    const uint8_t *string1;
-//    FREGetObjectAsUTF8(argv[0], &string1Length, &string1);
-//    NSString *extensionType = [NSString stringWithUTF8String:(char*)string1];
-//    [AppsFlyerTracker sharedTracker].sdkExtension = extensionType;
-//    return NULL;
-//}
-
-
 void AFExtContextInitializer(void* extData, const uint8_t* ctxType, FREContext ctx, uint32_t* numFunctionsToTest, const FRENamedFunction** functionsToSet)
 {
-    
+
     UIApplication *application = UIApplication.sharedApplication;
-    //injects our modified delegate functions into the sharedApplication delegate
+
     id delegate = application.delegate;
     
     Class objectClass = object_getClass(delegate);
     
-    NSString *newClassName = [NSString stringWithFormat:@"Custom_%@", NSStringFromClass(objectClass)];
-    Class modDelegate = NSClassFromString(newClassName);
-    
-    if (modDelegate == nil) {
-        // this class doesn't exist; create it
-        // allocate a new class
-        modDelegate = objc_allocateClassPair(objectClass, [newClassName UTF8String], 0);
-        
-        SEL selectorToOverride1 = @selector(application:continueUserActivity:restorationHandler:);
-        
-        SEL selectorToOverride2 = @selector(application:openURL:sourceApplication:annotation:);
-        
-        // get the info on the method we're going to override
-        Method m1 = class_getInstanceMethod(objectClass, selectorToOverride1);
-        Method m2 = class_getInstanceMethod(objectClass, selectorToOverride2);
-        // add the method to the new class
-        class_addMethod(modDelegate, selectorToOverride1, (IMP)continueUserActivity, method_getTypeEncoding(m1));
-        class_addMethod(modDelegate, selectorToOverride2, (IMP)openURL, method_getTypeEncoding(m2));
-        
-        
-        // register the new class with the runtime
-        objc_registerClassPair(modDelegate);
-    }
-    // change the class of the object
-    object_setClass(delegate, modDelegate);
+    SEL originalContinueUserActivitySelector = @selector(application:continueUserActivity:restorationHandler:);
+    SEL originalOpenURLSelector = @selector(application:openURL:options:);
+    Method originalContinueUserActivityMethod = class_getInstanceMethod(objectClass, originalContinueUserActivitySelector);
+    Method originalOpenURLMethod = class_getInstanceMethod(objectClass, originalOpenURLSelector);
+
+    __original_continueUserActivity_Imp = method_setImplementation(originalContinueUserActivityMethod, (IMP)continueUserActivity);
+    __original_openURL_Imp = method_setImplementation(originalOpenURLMethod, (IMP)openURL);
     
     *numFunctionsToTest = 15;
     FRENamedFunction* func = (FRENamedFunction*)malloc(sizeof(FRENamedFunction) * *numFunctionsToTest);
@@ -277,9 +221,9 @@ void AFExtContextInitializer(void* extData, const uint8_t* ctxType, FREContext c
     func[1].functionData = NULL;
     func[1].function = &trackAppLaunch;
     
-//    func[2].name = (const uint8_t*)"sendTrackingWithEvent";
-//    func[2].functionData = NULL;
-//    func[2].function = &sendTrackingWithEvent;
+    func[2].name = (const uint8_t*)"registerConversionListener";
+    func[2].functionData = NULL;
+    func[2].function = &registerConversionListener;
     
     func[3].name = (const uint8_t*)"setCurrency";
     func[3].functionData = NULL;
@@ -324,10 +268,6 @@ void AFExtContextInitializer(void* extData, const uint8_t* ctxType, FREContext c
     func[13].name = (const uint8_t*)"handlePushNotification";
     func[13].functionData = NULL;
     func[13].function = &handlePushNotification;
-    
-    func[2].name = (const uint8_t*)"registerConversionListener";
-    func[2].functionData = NULL;
-    func[2].function = &registerConversionListener;
     
     func[14].name = (const uint8_t*)"setGCMProjectID";
     func[14].functionData = NULL;
