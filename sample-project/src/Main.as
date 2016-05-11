@@ -1,7 +1,9 @@
 package {
 
+import flash.desktop.NativeApplication;
 import flash.display.Sprite;
 import flash.events.Event;
+import flash.events.InvokeEvent;
 import flash.events.MouseEvent;
 import flash.text.TextField;
 import flash.text.TextFormat;
@@ -18,6 +20,13 @@ public class Main extends Sprite {
 
     public function Main() {
         addEventListener(Event.ADDED_TO_STAGE, onAddedToStage);
+        NativeApplication.nativeApplication.addEventListener(InvokeEvent.INVOKE, invokeHandler)
+    }
+
+    private function invokeHandler(event:InvokeEvent):void {
+        if(event.arguments && event.arguments.length) {
+            log("\n!!!!!!!!!!!!!!! " + " invokeHandler " + event.reason + "\n arguments: " + event.arguments[0]);
+        }
     }
     private var logField:TextField;
 
