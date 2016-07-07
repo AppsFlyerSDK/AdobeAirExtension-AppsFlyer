@@ -5,19 +5,18 @@ import com.adobe.fre.FREFunction;
 import com.adobe.fre.FREObject;
 import com.appsflyer.AppsFlyerLib;
 
-public class SetAndroidIdData implements FREFunction {
+public class SetImeiData implements FREFunction {
 
     @Override
     public FREObject call(FREContext freContext, FREObject[] freObjects) {
 
-        String androidId = "";
+        String imei = "";
         try {
-            androidId = freObjects[0].getAsString();
-            AppsFlyerLib.getInstance().setAndroidIdData(androidId);
+            imei = freObjects[0].getAsString();
+            AppsFlyerLib.getInstance().setImeiData(imei);
         } catch (Exception e) {
             e.printStackTrace();
         }
-
         return null;
 
     }

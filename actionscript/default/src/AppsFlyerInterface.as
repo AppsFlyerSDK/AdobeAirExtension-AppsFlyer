@@ -8,21 +8,14 @@ public class AppsFlyerInterface extends  EventDispatcher {
 	public function AppsFlyerInterface() {
 	}
 
-
 	public function setDeveloperKey(key:String, appId:String):void {
 	}
-
-//	public function sendTracking():void {
-//	}
 
 	public function registerConversionListener():void {
     }
 
 	public function registerUninstall(deviceToken:String):void {
     }
-
-//	public function sendTrackingWithEvent(eventName:String, eventValue:String):void {
-//	}
 
 	public function trackAppLaunch():void {
     }
@@ -37,6 +30,9 @@ public class AppsFlyerInterface extends  EventDispatcher {
 	}
 
 	public function setGCMProjectNumber(id:String):void {
+    }
+
+    public function setImeiData(imei:String):void {
     }
 
 	public function getConversionData():String {
@@ -73,8 +69,5 @@ public class AppsFlyerInterface extends  EventDispatcher {
 
     }
 
-//	public function setExtension():void {
-//
-//	}
 }
 }

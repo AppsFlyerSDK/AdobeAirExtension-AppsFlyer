@@ -171,24 +171,6 @@ DEFINE_ANE_FUNCTION(setDebug)
     return NULL;
 }
 
-DEFINE_ANE_FUNCTION(setCollectAndroidID)
-{
-    NSLog(@"setCollectAndroidID method is not supported on iOS");
-    return NULL;
-}
-
-DEFINE_ANE_FUNCTION(setAndroidIdData)
-{
-    NSLog(@"setAndroidIdData method is not supported on iOS");
-    return NULL;
-}
-
-DEFINE_ANE_FUNCTION(setCollectIMEI)
-{
-    NSLog(@"setCollectIMEI method is not supported on iOS");
-    return NULL;
-}
-
 DEFINE_ANE_FUNCTION(handlePushNotification)
 {
     uint32_t string1Length;
@@ -198,18 +180,6 @@ DEFINE_ANE_FUNCTION(handlePushNotification)
     NSDictionary *userInfo = [AppsFlyerAIRExtension convertFromJSonString:userInfoString];
     //NSLog(@"handlePushNotification %@ userInfo %@", userInfoString, userInfo);
     [[AppsFlyerTracker sharedTracker] handlePushNotification:userInfo];
-    return NULL;
-}
-
-DEFINE_ANE_FUNCTION(registerConversionListener)
-{
-    NSLog(@"registerConversionListener method is not supported on iOS");
-    return NULL;
-}
-
-DEFINE_ANE_FUNCTION(setGCMProjectNumber)
-{
-    NSLog(@"setGCMProjectID method is not supported on iOS");
     return NULL;
 }
 
@@ -238,6 +208,44 @@ DEFINE_ANE_FUNCTION(registerUninstall)
     return nil;
 }
 
+DEFINE_ANE_FUNCTION(setCollectAndroidID)
+{
+    NSLog(@"setCollectAndroidID method is not supported on iOS");
+    return NULL;
+}
+
+DEFINE_ANE_FUNCTION(setAndroidIdData)
+{
+    NSLog(@"setAndroidIdData method is not supported on iOS");
+    return NULL;
+}
+
+DEFINE_ANE_FUNCTION(setImeiData)
+{
+    NSLog(@"setImeiData method is not supported on iOS");
+    return NULL;
+}
+
+
+
+DEFINE_ANE_FUNCTION(setCollectIMEI)
+{
+    NSLog(@"setCollectIMEI method is not supported on iOS");
+    return NULL;
+}
+
+DEFINE_ANE_FUNCTION(setGCMProjectNumber)
+{
+    NSLog(@"setGCMProjectID method is not supported on iOS");
+    return NULL;
+}
+
+DEFINE_ANE_FUNCTION(registerConversionListener)
+{
+    NSLog(@"registerConversionListener method is not supported on iOS");
+    return NULL;
+}
+
 void AFExtContextInitializer(void* extData, const uint8_t* ctxType, FREContext ctx, uint32_t* numFunctionsToTest, const FRENamedFunction** functionsToSet)
 {
 
@@ -262,7 +270,7 @@ void AFExtContextInitializer(void* extData, const uint8_t* ctxType, FREContext c
     __original_didReceiveRemoteNotification_Imp = method_setImplementation(originalDidReceiveRemoteNotificationMethod, (IMP)didReceiveRemoteNotificationHandler);
 //    __original_didRegisterForRemoteNotificationsWithDeviceToken_Imp = method_setImplementation(originalDidRegisterForRemoteNotificationsWithDeviceTokenMethod, (IMP)didRegisterForRemoteNotificationsWithDeviceTokenHandler);
     
-    *numFunctionsToTest = 16;
+    *numFunctionsToTest = 18;
     FRENamedFunction* func = (FRENamedFunction*)malloc(sizeof(FRENamedFunction) * *numFunctionsToTest);
     
     func[0].name = (const uint8_t*)"setDeveloperKey";
@@ -328,6 +336,14 @@ void AFExtContextInitializer(void* extData, const uint8_t* ctxType, FREContext c
     func[15].name = (const uint8_t*)"registerUninstall";
     func[15].functionData = NULL;
     func[15].function = &registerUninstall;
+    
+    func[16].name = (const uint8_t*)"setAndroidIdData";
+    func[16].functionData = NULL;
+    func[16].function = &setAndroidIdData;
+    
+    func[17].name = (const uint8_t*)"setImeiData";
+    func[17].functionData = NULL;
+    func[17].function = &setImeiData;
     
     
     

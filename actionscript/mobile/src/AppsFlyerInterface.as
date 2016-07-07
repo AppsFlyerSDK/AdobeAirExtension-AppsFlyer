@@ -31,10 +31,6 @@ public class AppsFlyerInterface extends EventDispatcher {
     	context.call("registerConversionListener");
     }
 
-//	public function sendTrackingWithEvent(eventName:String, eventValue:String):void {
-//		context.call("sendTrackingWithEvent", eventName, eventValue);
-//	}
-
 	public function trackEvent(eventName:String, json:String):void {
 		context.call("trackEvent", eventName, json);
 	}
@@ -72,13 +68,13 @@ public class AppsFlyerInterface extends EventDispatcher {
 		context.call("setCollectIMEI", collect);
 	}
 
+	public function setImeiData(imei:String):void {
+	    context.call("setImeiData", imei);
+    }
+
 	public function getAppsFlyerUID():String {
 		return context.call("getAppsFlyerUID") as String;
 	}
-
-//	public function setExtension():void {
-//		context.call("setExtension", EXTENSION_TYPE);
-//	}
 
 	public function setDebug(value:Boolean):void{
 		context.call("setDebug", value);
