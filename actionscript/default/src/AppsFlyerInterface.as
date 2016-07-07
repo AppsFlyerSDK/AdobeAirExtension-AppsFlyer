@@ -18,6 +18,9 @@ public class AppsFlyerInterface extends  EventDispatcher {
 	public function registerConversionListener():void {
     }
 
+	public function registerUninstall(deviceToken:String):void {
+    }
+
 //	public function sendTrackingWithEvent(eventName:String, eventValue:String):void {
 //	}
 
@@ -33,7 +36,7 @@ public class AppsFlyerInterface extends  EventDispatcher {
 	public function setAppUserId(appUserId:String):void {
 	}
 
-	public function setGCMProjectID(id:String):void {
+	public function setGCMProjectNumber(id:String):void {
     }
 
 	public function getConversionData():String {

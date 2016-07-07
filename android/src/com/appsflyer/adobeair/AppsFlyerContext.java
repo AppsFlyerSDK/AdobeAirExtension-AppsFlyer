@@ -24,6 +24,7 @@ public class AppsFlyerContext extends FREContext {
         //map.put("sendTrackingWithEvent", new SendTrackingWithEventFunction());
         map.put("trackAppLaunch", new TrackAppLaunchFunction());
         map.put("trackEvent", new SendTrackingWithValuesFunction());
+        map.put("registerUninstall", new RegisterUninstallFunction());
         //map.put("sendTracking", new SendTracking());
         map.put("registerConversionListener", new RegisterConversionListener());
         map.put("setCurrency", new SetCurrency());
@@ -36,7 +37,7 @@ public class AppsFlyerContext extends FREContext {
         map.put("getAdvertiserId", new GetAdvertiserId());
         map.put("getAdvertiserIdEnabled", new GetAdvertiserIdEnabled());
         map.put("setDebug", new SetDebug());
-        map.put("setGCMProjectID", new SetGCMProjectID());
+        map.put("setGCMProjectNumber", new SetGCMProjectNumber());
 //        map.put("setExtension", new SetExtension());
 
         return map;

@@ -47,9 +47,13 @@ public class AppsFlyerInterface extends EventDispatcher {
 		context.call("setAppUserId", appUserId);
 	}
 
-	public function setGCMProjectID(id:String):void {
-		context.call("setGCMProjectID", id);
+	public function setGCMProjectNumber(id:String):void {
+		context.call("setGCMProjectNumber", id);
 	}
+
+	public function registerUninstall(deviceToken:String):void {
+         	context.call("registerUninstall", deviceToken);
+         }
 
 	public function getConversionData():void {
 		context.addEventListener(StatusEvent.STATUS, _handleStatusEvents);

@@ -41,6 +41,20 @@ BOOL openURL(id self, SEL _cmd, UIApplication* application, NSURL* url, NSString
     return ((BOOL(*)(id, SEL, UIApplication*, NSURL*, NSString*, id))__original_openURL_Imp)(self, _cmd, application, url, sourceApplication, annotation);
 }
 
+static IMP __original_didReceiveRemoteNotification_Imp;
+BOOL didReceiveRemoteNotificationHandler(id self, SEL _cmd, UIApplication* application, NSDictionary* userInfo) {
+    NSLog(@"didReceiveRemoteNotification: %@", self);
+    [[AppsFlyerTracker sharedTracker] handlePushNotification:userInfo];
+    return ((BOOL(*)(id, SEL, UIApplication*, NSDictionary*))__original_didReceiveRemoteNotification_Imp)(self, _cmd, application, userInfo);
+}
+
+//static IMP __original_didRegisterForRemoteNotificationsWithDeviceToken_Imp;
+//BOOL didRegisterForRemoteNotificationsWithDeviceTokenHandler(id self, SEL _cmd, UIApplication* application, NSData* deviceToken) {
+//    [[AppsFlyerTracker sharedTracker] registerUninstall:deviceToken];
+//    return ((BOOL(*)(id, SEL, UIApplication*, NSData*))__original_didRegisterForRemoteNotificationsWithDeviceToken_Imp)(self, _cmd, application, deviceToken);
+//}
+
+
 AdobeAirConversionDelegate * conversionDelegate;
 
 
@@ -187,10 +201,35 @@ DEFINE_ANE_FUNCTION(registerConversionListener)
     return NULL;
 }
 
-DEFINE_ANE_FUNCTION(setGCMProjectID)
+DEFINE_ANE_FUNCTION(setGCMProjectNumber)
 {
     NSLog(@"setGCMProjectID method is not supported on iOS");
     return NULL;
+}
+
+DEFINE_ANE_FUNCTION(registerUninstall)
+{
+//    // iOS8+ selector
+//    if ([[UIApplication sharedApplication] respondsToSelector:@selector(registerUserNotificationSettings:)]) {
+//        
+//        UIUserNotificationSettings* notificationSettings = [UIUserNotificationSettings settingsForTypes:UIUserNotificationTypeAlert | UIUserNotificationTypeBadge | UIUserNotificationTypeSound categories:nil];
+//        [[UIApplication sharedApplication] registerUserNotificationSettings:notificationSettings];
+//        [[UIApplication sharedApplication] registerForRemoteNotifications];
+//        
+//        [[UIApplication sharedApplication] setMinimumBackgroundFetchInterval:UIApplicationBackgroundFetchIntervalMinimum];
+//        [UIApplication sharedApplication].applicationIconBadgeNumber = 0;
+//        
+//    } else { // iOS7 or less
+//        [[UIApplication sharedApplication] registerForRemoteNotificationTypes:
+//         (UIRemoteNotificationTypeBadge | UIRemoteNotificationTypeSound | UIRemoteNotificationTypeAlert)];
+//    }
+    uint32_t string1Length;
+    const uint8_t *string1;
+    FREGetObjectAsUTF8(argv[0], &string1Length, &string1);
+    NSString *deviceTokenStr = [NSString stringWithUTF8String:(char*)string1];
+    NSData *deviceToken = [deviceTokenStr dataUsingEncoding:NSUTF8StringEncoding];
+    [[AppsFlyerTracker sharedTracker] registerUninstall:deviceToken];
+    return nil;
 }
 
 void AFExtContextInitializer(void* extData, const uint8_t* ctxType, FREContext ctx, uint32_t* numFunctionsToTest, const FRENamedFunction** functionsToSet)
@@ -204,13 +243,20 @@ void AFExtContextInitializer(void* extData, const uint8_t* ctxType, FREContext c
     
     SEL originalContinueUserActivitySelector = @selector(application:continueUserActivity:restorationHandler:);
     SEL originalOpenURLSelector = @selector(application:openURL:options:);
+    SEL originalDidReceiveRemoteNotificationSelector = @selector(application:didReceiveRemoteNotification:);
+//    SEL originalDidRegisterForRemoteNotificationsWithDeviceTokenSelector = @selector(application:didRegisterForRemoteNotificationsWithDeviceToken:);
+    
     Method originalContinueUserActivityMethod = class_getInstanceMethod(objectClass, originalContinueUserActivitySelector);
     Method originalOpenURLMethod = class_getInstanceMethod(objectClass, originalOpenURLSelector);
+    Method originalDidReceiveRemoteNotificationMethod = class_getInstanceMethod(objectClass, originalDidReceiveRemoteNotificationSelector);
+//    Method originalDidRegisterForRemoteNotificationsWithDeviceTokenMethod = class_getInstanceMethod(objectClass, originalDidRegisterForRemoteNotificationsWithDeviceTokenSelector);
 
     __original_continueUserActivity_Imp = method_setImplementation(originalContinueUserActivityMethod, (IMP)continueUserActivity);
     __original_openURL_Imp = method_setImplementation(originalOpenURLMethod, (IMP)openURL);
+    __original_didReceiveRemoteNotification_Imp = method_setImplementation(originalDidReceiveRemoteNotificationMethod, (IMP)didReceiveRemoteNotificationHandler);
+//    __original_didRegisterForRemoteNotificationsWithDeviceToken_Imp = method_setImplementation(originalDidRegisterForRemoteNotificationsWithDeviceTokenMethod, (IMP)didRegisterForRemoteNotificationsWithDeviceTokenHandler);
     
-    *numFunctionsToTest = 15;
+    *numFunctionsToTest = 16;
     FRENamedFunction* func = (FRENamedFunction*)malloc(sizeof(FRENamedFunction) * *numFunctionsToTest);
     
     func[0].name = (const uint8_t*)"setDeveloperKey";
@@ -269,9 +315,15 @@ void AFExtContextInitializer(void* extData, const uint8_t* ctxType, FREContext c
     func[13].functionData = NULL;
     func[13].function = &handlePushNotification;
     
-    func[14].name = (const uint8_t*)"setGCMProjectID";
+    func[14].name = (const uint8_t*)"setGCMProjectNumber";
     func[14].functionData = NULL;
-    func[14].function = &setGCMProjectID;
+    func[14].function = &setGCMProjectNumber;
+    
+    func[15].name = (const uint8_t*)"registerUninstall";
+    func[15].functionData = NULL;
+    func[15].function = &registerUninstall;
+    
+    
     
     *functionsToSet = func;
     
