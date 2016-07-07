@@ -177,6 +177,12 @@ DEFINE_ANE_FUNCTION(setCollectAndroidID)
     return NULL;
 }
 
+DEFINE_ANE_FUNCTION(setAndroidIdData)
+{
+    NSLog(@"setAndroidIdData method is not supported on iOS");
+    return NULL;
+}
+
 DEFINE_ANE_FUNCTION(setCollectIMEI)
 {
     NSLog(@"setCollectIMEI method is not supported on iOS");

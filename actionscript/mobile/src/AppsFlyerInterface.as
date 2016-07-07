@@ -64,6 +64,10 @@ public class AppsFlyerInterface extends EventDispatcher {
 		context.call("setCollectAndroidID", collect);
 	}
 
+	public function setAndroidIdData(androidId:String):void {
+		context.call("setAndroidIdData", androidId);
+	}
+
 	public function setCollectIMEI(collect:Boolean):void {
 		context.call("setCollectIMEI", collect);
 	}
