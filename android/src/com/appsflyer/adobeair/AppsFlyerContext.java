@@ -29,7 +29,7 @@ public class AppsFlyerContext extends FREContext {
         map.put("setCurrency", new SetCurrency());
         map.put("setAppUserId", new SetAppUserId());
         map.put("getConversionData", new GetConversionData());
-
+        map.put("setAndroidIdData", new SetAndroidIdData());
         map.put("setCollectAndroidID", new SetCollectAndroidID());
         map.put("setCollectIMEI", new SetCollectIMEI());
         map.put("getAppsFlyerUID", new GetAppsFlyerUID());

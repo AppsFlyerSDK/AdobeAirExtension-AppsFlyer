@@ -40,6 +40,9 @@ public class AppsFlyerInterface extends  EventDispatcher {
 		return "conversionData";
 	}
 
+	public function setAndroidIdData(androidId:String):void {
+	}
+
 	public function setCollectAndroidID(collect:Boolean):void {
 	}
 
