@@ -28,6 +28,7 @@ public class AppsFlyerInterface extends EventDispatcher {
 	}
 
 	public function registerConversionListener():void {
+	    context.addEventListener(StatusEvent.STATUS, _handleStatusEvents);
     	context.call("registerConversionListener");
     }
 
@@ -49,8 +50,9 @@ public class AppsFlyerInterface extends EventDispatcher {
 
 	public function registerUninstall(deviceToken:String):void {
          	context.call("registerUninstall", deviceToken);
-         }
+    }
 
+    [Deprecated(replacement="registerConversionListener")]
 	public function getConversionData():void {
 		context.addEventListener(StatusEvent.STATUS, _handleStatusEvents);
 		context.call("getConversionData");

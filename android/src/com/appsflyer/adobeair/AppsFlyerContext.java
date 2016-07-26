@@ -12,6 +12,7 @@ public class AppsFlyerContext extends FREContext {
     public static final String EXTENSION_TYPE = "AIR";
 
     private String lastConversionData;
+    private String devKey;
 
     @Override
     public void dispose() {
@@ -52,4 +53,11 @@ public class AppsFlyerContext extends FREContext {
         this.lastConversionData = lastConversionData;
     }
 
+    public String getDevKey() {
+        return devKey;
+    }
+
+    public void setDevKey(String devKey) {
+        this.devKey = devKey;
+    }
 }

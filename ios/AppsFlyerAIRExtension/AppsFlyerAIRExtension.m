@@ -139,7 +139,6 @@ DEFINE_ANE_FUNCTION(getConversionData)
     return NULL;
 }
 
-
 DEFINE_ANE_FUNCTION(getAppsFlyerUID)
 {
     FREObject uid = nil;
@@ -208,6 +207,13 @@ DEFINE_ANE_FUNCTION(registerUninstall)
     return nil;
 }
 
+DEFINE_ANE_FUNCTION(registerConversionListener)
+{
+    //NSLog(@"registerConversionListener method is not supported on iOS");
+    [AppsFlyerTracker sharedTracker].delegate = conversionDelegate;
+    return NULL;
+}
+
 DEFINE_ANE_FUNCTION(setCollectAndroidID)
 {
     NSLog(@"setCollectAndroidID method is not supported on iOS");
@@ -237,12 +243,6 @@ DEFINE_ANE_FUNCTION(setCollectIMEI)
 DEFINE_ANE_FUNCTION(setGCMProjectNumber)
 {
     NSLog(@"setGCMProjectID method is not supported on iOS");
-    return NULL;
-}
-
-DEFINE_ANE_FUNCTION(registerConversionListener)
-{
-    NSLog(@"registerConversionListener method is not supported on iOS");
     return NULL;
 }
 

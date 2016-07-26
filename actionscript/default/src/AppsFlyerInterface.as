@@ -35,6 +35,7 @@ public class AppsFlyerInterface extends  EventDispatcher {
     public function setImeiData(imei:String):void {
     }
 
+    [Deprecated(replacement="registerConversionListener")]
 	public function getConversionData():String {
 		return "conversionData";
 	}
