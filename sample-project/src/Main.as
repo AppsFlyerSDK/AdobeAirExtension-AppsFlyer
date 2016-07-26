@@ -1,9 +1,7 @@
 package {
 
-import flash.desktop.NativeApplication;
 import flash.display.Sprite;
 import flash.events.Event;
-import flash.events.InvokeEvent;
 import flash.events.MouseEvent;
 import flash.text.TextField;
 import flash.text.TextFormat;
@@ -18,16 +16,10 @@ public class Main extends Sprite {
 
     private static var appsFlyer:AppsFlyerInterface;
 
-    public function Main() {
+    public function Main_wo_push() {
         addEventListener(Event.ADDED_TO_STAGE, onAddedToStage);
-        NativeApplication.nativeApplication.addEventListener(InvokeEvent.INVOKE, invokeHandler)
     }
 
-    private function invokeHandler(event:InvokeEvent):void {
-        if(event.arguments && event.arguments.length) {
-            log("\n!!!!!!!!!!!!!!! " + " invokeHandler " + event.reason + "\n arguments: " + event.arguments[0]);
-        }
-    }
     private var logField:TextField;
 
     public function createButton(label:String):Sprite {
@@ -62,12 +54,13 @@ public class Main extends Sprite {
 
     private function log(s:String):void {
         logField.appendText(s);
+        trace(s);
     }
 
     private function createUI():void {
         logField = new TextField();
         var tf:TextFormat = logField.defaultTextFormat;
-        tf.size = int(stage.stageWidth / 42);
+        tf.size = int(stage.stageWidth / 60);
         tf.align = TextFormatAlign.CENTER;
         logField.setTextFormat(tf);
         logField.y = 80;
@@ -84,7 +77,6 @@ public class Main extends Sprite {
         var b:Sprite = createButton("Test");
         b.addEventListener(MouseEvent.CLICK, function (e:MouseEvent):void {
             sendJSON();
-            getConversionData();
             setTimeout(function():void {
                 log("\nAdvertiserId: " + appsFlyer.getAdvertiserId());
                 log("\nAdvertiserId enabled: " + appsFlyer.getAdvertiserIdEnabled());
@@ -98,11 +90,6 @@ public class Main extends Sprite {
         var value:String = '{"amount":10, "FTDLevel":"-"}';
         appsFlyer.trackEvent(param, value);
         log("\n-- Call sendTrackingWithValues: '" + param + "' with value '" + value + "' --");
-    }
-
-    private function getConversionData():void {
-        appsFlyer.getConversionData();
-        log("\n-- Call getConversionData --");
     }
 
     private function onAddedToStage(event:Event):void {
@@ -120,13 +107,15 @@ public class Main extends Sprite {
 
         appsFlyer.setDebug(true);
         appsFlyer.setDeveloperKey(DEVELOPER_KEY, APP_ID); // first param is developer key and second (NA for Android)is Apple app id.
-        appsFlyer.setGCMProjectID("11234");
-        appsFlyer.trackAppLaunch();
+        appsFlyer.setGCMProjectNumber("11234");
         appsFlyer.registerConversionListener();
         appsFlyer.setAppUserId(USER_ID);
         appsFlyer.setCurrency("EUR");
-        appsFlyer.setCollectAndroidID(true);
-        appsFlyer.setCollectIMEI(true);
+        appsFlyer.setCollectAndroidID(false);
+        appsFlyer.setCollectIMEI(false);
+        appsFlyer.setImeiData("11234");
+        appsFlyer.setAndroidIdData("11234");
+        appsFlyer.trackAppLaunch();
         log("ANE initialized! \nDeveloper key: " + DEVELOPER_KEY + "\nApple AppID: " + APP_ID);
         log("\nApp user id set to: " + USER_ID);
         log("\nAppsFlyer UID: " + appsFlyer.getAppsFlyerUID());
