@@ -6,7 +6,7 @@
 #import "AppsFlyerTracker.h"
 #import "FlashRuntimeExtensions.h"
 
-@interface AdobeAirConversionDelegate : NSObject<AppsFlyerTrackerDelegate> {
+@interface AppsFlyerDelegate : NSObject<AppsFlyerTrackerDelegate> {
     FREContext ctx;
 }
 

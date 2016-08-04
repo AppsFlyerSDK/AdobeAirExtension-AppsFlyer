@@ -1,7 +1,7 @@
 
 #import "FlashRuntimeExtensions.h"
 #import "AppsFlyerTracker.h"
-#import "AppsFlyerConversionDelegate.h"
+#import "AppsFlyerDelegate.h"
 #import "AppsFlyerAIRExtension.h"
 
 #import <UIKit/UIApplication.h>
@@ -48,15 +48,7 @@ BOOL didReceiveRemoteNotificationHandler(id self, SEL _cmd, UIApplication* appli
     return ((BOOL(*)(id, SEL, UIApplication*, NSDictionary*))__original_didReceiveRemoteNotification_Imp)(self, _cmd, application, userInfo);
 }
 
-//static IMP __original_didRegisterForRemoteNotificationsWithDeviceToken_Imp;
-//BOOL didRegisterForRemoteNotificationsWithDeviceTokenHandler(id self, SEL _cmd, UIApplication* application, NSData* deviceToken) {
-//    [[AppsFlyerTracker sharedTracker] registerUninstall:deviceToken];
-//    return ((BOOL(*)(id, SEL, UIApplication*, NSData*))__original_didRegisterForRemoteNotificationsWithDeviceToken_Imp)(self, _cmd, application, deviceToken);
-//}
-
-
-AdobeAirConversionDelegate * conversionDelegate;
-
+AppsFlyerDelegate * conversionDelegate;
 
 NSString *const EXTENSION_TYPE = @"AIR";
 
@@ -147,21 +139,6 @@ DEFINE_ANE_FUNCTION(getAppsFlyerUID)
     return uid;
 }
 
-DEFINE_ANE_FUNCTION(getAdvertiserId)
-{
-    FREObject id = nil;
-    NSString *value = @"-1";
-    FRENewObjectFromUTF8(strlen((const char*)[value UTF8String]) + 1.0, (const uint8_t*)[value UTF8String], &id);
-    return id;
-}
-
-DEFINE_ANE_FUNCTION(getAdvertiserIdEnabled)
-{
-    FREObject res = nil;
-    FRENewObjectFromBool(0, &res);
-    return res;
-}
-
 DEFINE_ANE_FUNCTION(setDebug)
 {
     uint32_t value;
@@ -209,9 +186,25 @@ DEFINE_ANE_FUNCTION(registerUninstall)
 
 DEFINE_ANE_FUNCTION(registerConversionListener)
 {
-    //NSLog(@"registerConversionListener method is not supported on iOS");
     [AppsFlyerTracker sharedTracker].delegate = conversionDelegate;
     return NULL;
+}
+
+DEFINE_ANE_FUNCTION(getAdvertiserId)
+{
+    NSLog(@"getAdvertiserId method is not supported on iOS");
+    FREObject id = nil;
+    NSString *value = @"-1";
+    FRENewObjectFromUTF8(strlen((const char*)[value UTF8String]) + 1.0, (const uint8_t*)[value UTF8String], &id);
+    return id;
+}
+
+DEFINE_ANE_FUNCTION(getAdvertiserIdEnabled)
+{
+    NSLog(@"getAdvertiserIdEnabled method is not supported on iOS");
+    FREObject res = nil;
+    FRENewObjectFromBool(0, &res);
+    return res;
 }
 
 DEFINE_ANE_FUNCTION(setCollectAndroidID)
@@ -231,8 +224,6 @@ DEFINE_ANE_FUNCTION(setImeiData)
     NSLog(@"setImeiData method is not supported on iOS");
     return NULL;
 }
-
-
 
 DEFINE_ANE_FUNCTION(setCollectIMEI)
 {
@@ -258,17 +249,14 @@ void AFExtContextInitializer(void* extData, const uint8_t* ctxType, FREContext c
     SEL originalContinueUserActivitySelector = @selector(application:continueUserActivity:restorationHandler:);
     SEL originalOpenURLSelector = @selector(application:openURL:options:);
     SEL originalDidReceiveRemoteNotificationSelector = @selector(application:didReceiveRemoteNotification:);
-//    SEL originalDidRegisterForRemoteNotificationsWithDeviceTokenSelector = @selector(application:didRegisterForRemoteNotificationsWithDeviceToken:);
     
     Method originalContinueUserActivityMethod = class_getInstanceMethod(objectClass, originalContinueUserActivitySelector);
     Method originalOpenURLMethod = class_getInstanceMethod(objectClass, originalOpenURLSelector);
     Method originalDidReceiveRemoteNotificationMethod = class_getInstanceMethod(objectClass, originalDidReceiveRemoteNotificationSelector);
-//    Method originalDidRegisterForRemoteNotificationsWithDeviceTokenMethod = class_getInstanceMethod(objectClass, originalDidRegisterForRemoteNotificationsWithDeviceTokenSelector);
 
     __original_continueUserActivity_Imp = method_setImplementation(originalContinueUserActivityMethod, (IMP)continueUserActivity);
     __original_openURL_Imp = method_setImplementation(originalOpenURLMethod, (IMP)openURL);
     __original_didReceiveRemoteNotification_Imp = method_setImplementation(originalDidReceiveRemoteNotificationMethod, (IMP)didReceiveRemoteNotificationHandler);
-//    __original_didRegisterForRemoteNotificationsWithDeviceToken_Imp = method_setImplementation(originalDidRegisterForRemoteNotificationsWithDeviceTokenMethod, (IMP)didRegisterForRemoteNotificationsWithDeviceTokenHandler);
     
     *numFunctionsToTest = 18;
     FRENamedFunction* func = (FRENamedFunction*)malloc(sizeof(FRENamedFunction) * *numFunctionsToTest);
@@ -349,10 +337,8 @@ void AFExtContextInitializer(void* extData, const uint8_t* ctxType, FREContext c
     
     *functionsToSet = func;
     
-    conversionDelegate = [[AdobeAirConversionDelegate alloc] init];
+    conversionDelegate = [[AppsFlyerDelegate alloc] init];
     conversionDelegate.ctx = ctx;
-    
-    
 }
 
 
