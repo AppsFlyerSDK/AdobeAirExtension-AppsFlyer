@@ -1,7 +1,9 @@
 package {
 
+import flash.desktop.NativeApplication;
 import flash.display.Sprite;
 import flash.events.Event;
+import flash.events.InvokeEvent;
 import flash.events.MouseEvent;
 import flash.text.TextField;
 import flash.text.TextFormat;
@@ -16,10 +18,10 @@ public class Main extends Sprite {
 
     private static var appsFlyer:AppsFlyerInterface;
 
-    public function Main_wo_push() {
+    public function Main_wo_pn() {
         addEventListener(Event.ADDED_TO_STAGE, onAddedToStage);
+        NativeApplication.nativeApplication.addEventListener(InvokeEvent.INVOKE, invokeHandler);
     }
-
     private var logField:TextField;
 
     public function createButton(label:String):Sprite {
@@ -53,7 +55,7 @@ public class Main extends Sprite {
     }
 
     private function log(s:String):void {
-        logField.appendText(s);
+        logField.appendText("\n" + s);
         trace(s);
     }
 
@@ -77,9 +79,9 @@ public class Main extends Sprite {
         var b:Sprite = createButton("Test");
         b.addEventListener(MouseEvent.CLICK, function (e:MouseEvent):void {
             sendJSON();
-            setTimeout(function():void {
-                log("\nAdvertiserId: " + appsFlyer.getAdvertiserId());
-                log("\nAdvertiserId enabled: " + appsFlyer.getAdvertiserIdEnabled());
+            setTimeout(function ():void {
+                log("AdvertiserId: " + appsFlyer.getAdvertiserId());
+                log("AdvertiserId enabled: " + appsFlyer.getAdvertiserIdEnabled());
             }, 1000)
         });
         addChild(b);
@@ -89,7 +91,16 @@ public class Main extends Sprite {
         var param:String = "Deposit";
         var value:String = '{"amount":10, "FTDLevel":"-"}';
         appsFlyer.trackEvent(param, value);
-        log("\n-- Call sendTrackingWithValues: '" + param + "' with value '" + value + "' --");
+        log("Call sendTrackingWithValues: '" + param + "' with value '" + value + "' --");
+    }
+
+    private function invokeHandler(event:InvokeEvent):void {
+        log("invokeHandler " + event.reason + ". Arguments: " + event.arguments[0]);
+        if (event.arguments && event.arguments.length) {
+            for (var key:* in event.arguments[0]) {
+                log("param " + key + ": " + event.arguments[0][key]);
+            }
+        }
     }
 
     private function onAddedToStage(event:Event):void {
@@ -98,17 +109,14 @@ public class Main extends Sprite {
         createUI();
 
         appsFlyer = new AppsFlyerInterface();
-
+        appsFlyer.registerConversionListener();
         appsFlyer.addEventListener(AppsFlyerEvent.INSTALL_CONVERSATION_DATA_LOADED, eventHandler);
-        appsFlyer.addEventListener(AppsFlyerEvent.CURRENT_ATTRIBUTION_DATA_LOADED, eventHandler);
         appsFlyer.addEventListener(AppsFlyerEvent.INSTALL_CONVERSATION_FAILED, eventHandler);
         appsFlyer.addEventListener(AppsFlyerEvent.ATTRIBUTION_FAILURE, eventHandler);
         appsFlyer.addEventListener(AppsFlyerEvent.APP_OPEN_ATTRIBUTION, eventHandler);
-
         appsFlyer.setDebug(true);
         appsFlyer.setDeveloperKey(DEVELOPER_KEY, APP_ID); // first param is developer key and second (NA for Android)is Apple app id.
         appsFlyer.setGCMProjectNumber("11234");
-        appsFlyer.registerConversionListener();
         appsFlyer.setAppUserId(USER_ID);
         appsFlyer.setCurrency("EUR");
         appsFlyer.setCollectAndroidID(false);
@@ -117,12 +125,12 @@ public class Main extends Sprite {
         appsFlyer.setAndroidIdData("11234");
         appsFlyer.trackAppLaunch();
         log("ANE initialized! \nDeveloper key: " + DEVELOPER_KEY + "\nApple AppID: " + APP_ID);
-        log("\nApp user id set to: " + USER_ID);
-        log("\nAppsFlyer UID: " + appsFlyer.getAppsFlyerUID());
+        log("App user id set to: " + USER_ID);
+        log("AppsFlyer UID: " + appsFlyer.getAppsFlyerUID());
     }
 
     private function eventHandler(event:AppsFlyerEvent):void {
-        log("\n-- Event: " + event.type + "; \nData: " + event.data + " \n");
+        log("AppsFlyer event: " + event.type + "; \nData: " + event.data + " \n");
     }
 }
 }
