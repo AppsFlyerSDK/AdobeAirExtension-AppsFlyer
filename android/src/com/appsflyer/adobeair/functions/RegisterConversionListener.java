@@ -8,6 +8,7 @@ import com.adobe.fre.FREObject;
 import com.appsflyer.AppsFlyerConversionListener;
 import com.appsflyer.AppsFlyerLib;
 import com.appsflyer.adobeair.AppsFlyerContext;
+import com.appsflyer.adobeair.Utils;
 import org.json.simple.JSONValue;
 
 import java.io.IOException;
@@ -33,7 +34,7 @@ public class RegisterConversionListener implements FREFunction {
                 @Override
                 public void onAppOpenAttribution(Map<String, String> map) {
                     Log.i(LOG, "AppsFlyerConversionListener onAppOpenAttribution");
-                    cnt.setLastConversionData(getResultString(map));
+                    cnt.setLastConversionData(Utils.mapToJsonString(map));
                     freContext.dispatchStatusEventAsync("appOpenAttribution", cnt.getLastConversionData());
                 }
 
@@ -46,7 +47,7 @@ public class RegisterConversionListener implements FREFunction {
 
                 public void onInstallConversionDataLoaded(java.util.Map<java.lang.String, java.lang.String> conversionData) {
                     Log.i(LOG, "AppsFlyerConversionListener onInstallConversionDataLoaded");
-                    cnt.setLastConversionData(getResultString(conversionData));
+                    cnt.setLastConversionData(Utils.mapToJsonString(conversionData));
                     freContext.dispatchStatusEventAsync("installConversionDataLoaded", cnt.getLastConversionData());
                 }
 
@@ -56,15 +57,6 @@ public class RegisterConversionListener implements FREFunction {
                     freContext.dispatchStatusEventAsync("installConversionFailure", cnt.getLastConversionData());
                 }
 
-                private String getResultString(Map<String, String> data) {
-                    StringWriter out = new StringWriter();
-                    try {
-                        JSONValue.writeJSONString(data, out);
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                    return out.toString();
-                }
             });
         } catch (Exception e) {
             Log.e("AppsFlyer: ", "Exception RegisterConversionListener: " + e);
