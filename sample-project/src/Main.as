@@ -20,13 +20,7 @@ public class Main extends Sprite {
 
     public function Main() {
         addEventListener(Event.ADDED_TO_STAGE, onAddedToStage);
-        NativeApplication.nativeApplication.addEventListener(InvokeEvent.INVOKE, invokeHandler)
-    }
-
-    private function invokeHandler(event:InvokeEvent):void {
-        if(event.arguments && event.arguments.length) {
-            log("\n!!!!!!!!!!!!!!! " + " invokeHandler " + event.reason + "\n arguments: " + event.arguments[0]);
-        }
+        NativeApplication.nativeApplication.addEventListener(InvokeEvent.INVOKE, invokeHandler);
     }
     private var logField:TextField;
 
@@ -61,13 +55,14 @@ public class Main extends Sprite {
     }
 
     private function log(s:String):void {
-        logField.appendText(s);
+        logField.appendText("\n" + s);
+        trace(s);
     }
 
     private function createUI():void {
         logField = new TextField();
         var tf:TextFormat = logField.defaultTextFormat;
-        tf.size = int(stage.stageWidth / 42);
+        tf.size = int(stage.stageWidth / 60);
         tf.align = TextFormatAlign.CENTER;
         logField.setTextFormat(tf);
         logField.y = 80;
@@ -84,10 +79,9 @@ public class Main extends Sprite {
         var b:Sprite = createButton("Test");
         b.addEventListener(MouseEvent.CLICK, function (e:MouseEvent):void {
             sendJSON();
-            getConversionData();
-            setTimeout(function():void {
-                log("\nAdvertiserId: " + appsFlyer.getAdvertiserId());
-                log("\nAdvertiserId enabled: " + appsFlyer.getAdvertiserIdEnabled());
+            setTimeout(function ():void {
+                log("AdvertiserId: " + appsFlyer.getAdvertiserId());
+                log("AdvertiserId enabled: " + appsFlyer.getAdvertiserIdEnabled());
             }, 1000)
         });
         addChild(b);
@@ -97,12 +91,16 @@ public class Main extends Sprite {
         var param:String = "Deposit";
         var value:String = '{"amount":10, "FTDLevel":"-"}';
         appsFlyer.trackEvent(param, value);
-        log("\n-- Call sendTrackingWithValues: '" + param + "' with value '" + value + "' --");
+        log("Call sendTrackingWithValues: '" + param + "' with value '" + value + "' --");
     }
 
-    private function getConversionData():void {
-        appsFlyer.getConversionData();
-        log("\n-- Call getConversionData --");
+    private function invokeHandler(event:InvokeEvent):void {
+        log("invokeHandler " + event.reason + ". Arguments: " + event.arguments[0]);
+        if (event.arguments && event.arguments.length) {
+            for (var key:* in event.arguments[0]) {
+                log("param " + key + ": " + event.arguments[0][key]);
+            }
+        }
     }
 
     private function onAddedToStage(event:Event):void {
@@ -111,29 +109,33 @@ public class Main extends Sprite {
         createUI();
 
         appsFlyer = new AppsFlyerInterface();
-
+        appsFlyer.registerConversionListener();
         appsFlyer.addEventListener(AppsFlyerEvent.INSTALL_CONVERSATION_DATA_LOADED, eventHandler);
-        appsFlyer.addEventListener(AppsFlyerEvent.CURRENT_ATTRIBUTION_DATA_LOADED, eventHandler);
         appsFlyer.addEventListener(AppsFlyerEvent.INSTALL_CONVERSATION_FAILED, eventHandler);
         appsFlyer.addEventListener(AppsFlyerEvent.ATTRIBUTION_FAILURE, eventHandler);
         appsFlyer.addEventListener(AppsFlyerEvent.APP_OPEN_ATTRIBUTION, eventHandler);
-
         appsFlyer.setDebug(true);
         appsFlyer.setDeveloperKey(DEVELOPER_KEY, APP_ID); // first param is developer key and second (NA for Android)is Apple app id.
-        appsFlyer.setGCMProjectID("11234");
-        appsFlyer.trackAppLaunch();
-        appsFlyer.registerConversionListener();
+        appsFlyer.setGCMProjectNumber("11234");
         appsFlyer.setAppUserId(USER_ID);
         appsFlyer.setCurrency("EUR");
-        appsFlyer.setCollectAndroidID(true);
-        appsFlyer.setCollectIMEI(true);
+        appsFlyer.setCollectAndroidID(false);
+        appsFlyer.setCollectIMEI(false);
+        appsFlyer.setImeiData("11234");
+        appsFlyer.setAndroidIdData("11234");
+        appsFlyer.trackAppLaunch();
+
+        appsFlyer.registerValidatorListener();
+        appsFlyer.useReceiptValidationSandbox(true);
+        appsFlyer.validateAndTrackInAppPurchase("1", "1", "", "100", "USD", '{"test": "val" , "test1" : "val1"}');
+
         log("ANE initialized! \nDeveloper key: " + DEVELOPER_KEY + "\nApple AppID: " + APP_ID);
-        log("\nApp user id set to: " + USER_ID);
-        log("\nAppsFlyer UID: " + appsFlyer.getAppsFlyerUID());
+        log("App user id set to: " + USER_ID);
+        log("AppsFlyer UID: " + appsFlyer.getAppsFlyerUID());
     }
 
     private function eventHandler(event:AppsFlyerEvent):void {
-        log("\n-- Event: " + event.type + "; \nData: " + event.data + " \n");
+        log("AppsFlyer event: " + event.type + "; \nData: " + event.data + " \n");
     }
 }
 }
