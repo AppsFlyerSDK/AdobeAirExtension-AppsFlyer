@@ -10,6 +10,9 @@ FOUNDATION_EXPORT NSString *const EXTENSION_TYPE;
 
 @interface  AppsFlyerAIRExtension : NSObject <UIApplicationDelegate>
 + (NSDictionary*) convertFromJSonString:(NSString*)jsonString;
++ (NSString*) convertToJSonString:(NSDictionary*)data;
++ (NSString*) getString:(FREObject*)value;
++ (void) dispatchStatusEvent:(FREContext) ctx withType: (NSString*) eventType level: (NSString*) eventLevel;
 @end
 
 typedef void (^ RestorationHandler)(NSArray*);

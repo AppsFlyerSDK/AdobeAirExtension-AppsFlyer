@@ -21,53 +21,54 @@ public class GetConversionData implements FREFunction {
 
     @Override
     public FREObject call(final FREContext freContext, FREObject[] freObjects) {
-        
+
         try {
-            Context context = freContext.getActivity().getApplicationContext();
-            final AppsFlyerContext cnt = (AppsFlyerContext)freContext;
-           if(cnt.getLastConversionData() != null) {
-               freContext.dispatchStatusEventAsync("installConversionDataLoaded", cnt.getLastConversionData());
-               Log.i(LOG, "GetConversionData from cache " + cnt.getLastConversionData());
-           } else {
-                AppsFlyerLib.getInstance().registerConversionListener(context, new AppsFlyerConversionListener() {
-                    @Override
-                    public void onAppOpenAttribution(Map<String, String> map) {
-                        Log.i(LOG, "RegisterConversionListener onAppOpenAttribution");
-                        cnt.setLastConversionData(getResultString(map));
-                        freContext.dispatchStatusEventAsync("appOpenAttribution", cnt.getLastConversionData());
-                    }
-
-                    @Override
-                    public void onAttributionFailure(String s) {
-                        Log.i(LOG, "RegisterConversionListener onAttributionFailure");
-                        cnt.setLastConversionData("Error retrieving conversion data " + s);
-                        freContext.dispatchStatusEventAsync("attributionFailure", cnt.getLastConversionData());
-                    }
-
-                    public void onInstallConversionDataLoaded(Map<String, String> conversionData) {
-                        Log.i(LOG, "GetConversionData onConversionDataLoaded");
-                        cnt.setLastConversionData(getResultString(conversionData));
-                        freContext.dispatchStatusEventAsync("installConversionDataLoaded", cnt.getLastConversionData());
-                    }
-
-                    private String getResultString(Map<String, String> data) {
-                        StringWriter out = new StringWriter();
-                        try {
-                            JSONValue.writeJSONString(data, out);
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        }
-                        return out.toString();
-                    }
-
-                    public void onInstallConversionFailure(String errorMessage) {
-                        Log.e("AppsFlyer: ", "GetConversionData errorMessage" + errorMessage);
-                        cnt.setLastConversionData("Error retrieving conversion data " + errorMessage);
-                        freContext.dispatchStatusEventAsync("installConversionFailure", cnt.getLastConversionData());
-                    }
-                });
-               Log.i("AppsFlyer: ", "GetConversionData with registerConversionListener");
-           }
+            //Context context = freContext.getActivity().getApplicationContext();
+            final AppsFlyerContext cnt = (AppsFlyerContext) freContext;
+            if (cnt.getLastConversionData() != null) {
+                freContext.dispatchStatusEventAsync("installConversionDataLoaded", cnt.getLastConversionData());
+                Log.i(LOG, "GetConversionData from cache " + cnt.getLastConversionData());
+            }
+//            else {
+//                AppsFlyerLib.getInstance().registerConversionListener(context, new AppsFlyerConversionListener() {
+//                    @Override
+//                    public void onAppOpenAttribution(Map<String, String> map) {
+//                        Log.i(LOG, "RegisterConversionListener onAppOpenAttribution");
+//                        cnt.setLastConversionData(getResultString(map));
+//                        freContext.dispatchStatusEventAsync("appOpenAttribution", cnt.getLastConversionData());
+//                    }
+//
+//                    @Override
+//                    public void onAttributionFailure(String s) {
+//                        Log.i(LOG, "RegisterConversionListener onAttributionFailure");
+//                        cnt.setLastConversionData("Error retrieving conversion data " + s);
+//                        freContext.dispatchStatusEventAsync("attributionFailure", cnt.getLastConversionData());
+//                    }
+//
+//                    public void onInstallConversionDataLoaded(Map<String, String> conversionData) {
+//                        Log.i(LOG, "GetConversionData onConversionDataLoaded");
+//                        cnt.setLastConversionData(getResultString(conversionData));
+//                        freContext.dispatchStatusEventAsync("installConversionDataLoaded", cnt.getLastConversionData());
+//                    }
+//
+//                    public void onInstallConversionFailure(String errorMessage) {
+//                        Log.e("AppsFlyer: ", "GetConversionData errorMessage" + errorMessage);
+//                        cnt.setLastConversionData("Error retrieving conversion data " + errorMessage);
+//                        freContext.dispatchStatusEventAsync("installConversionFailure", cnt.getLastConversionData());
+//                    }
+//
+//                    private String getResultString(Map<String, String> data) {
+//                        StringWriter out = new StringWriter();
+//                        try {
+//                            JSONValue.writeJSONString(data, out);
+//                        } catch (IOException e) {
+//                            e.printStackTrace();
+//                        }
+//                        return out.toString();
+//                    }
+//                });
+//                Log.i("AppsFlyer: ", "GetConversionData with registerConversionListener");
+//            }
 
         } catch (Exception e) {
             Log.e("AppsFlyer: ", "Exception GetConversionData: " + e);

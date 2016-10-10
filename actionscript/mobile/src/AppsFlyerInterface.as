@@ -28,12 +28,27 @@ public class AppsFlyerInterface extends EventDispatcher {
 	}
 
 	public function registerConversionListener():void {
+	    context.addEventListener(StatusEvent.STATUS, _handleStatusEvents);
     	context.call("registerConversionListener");
     }
 
 	public function trackEvent(eventName:String, json:String):void {
 		context.call("trackEvent", eventName, json);
 	}
+
+	public function validateAndTrackInAppPurchase(publicKey:String, signature:String, purchaseData:String, price:String,
+                                                      currency:String, additionalParameters:String):void {
+    	context.call("validateAndTrackInAppPurchase", publicKey, signature, purchaseData, price, currency, additionalParameters);
+    }
+
+    public function useReceiptValidationSandbox(value:Boolean):void {
+        context.call("useReceiptValidationSandbox", value);
+    }
+
+    public function registerValidatorListener():void {
+        context.addEventListener(StatusEvent.STATUS, _handleStatusEvents);
+        context.call("registerValidatorListener");
+    }
 
 	public function setCurrency(currency:String):void {
 		context.call("setCurrency", currency);
@@ -48,9 +63,10 @@ public class AppsFlyerInterface extends EventDispatcher {
 	}
 
 	public function registerUninstall(deviceToken:String):void {
-         	context.call("registerUninstall", deviceToken);
-         }
+         context.call("registerUninstall", deviceToken);
+    }
 
+    [Deprecated(replacement="registerConversionListener")]
 	public function getConversionData():void {
 		context.addEventListener(StatusEvent.STATUS, _handleStatusEvents);
 		context.call("getConversionData");

@@ -12,6 +12,7 @@ public class AppsFlyerContext extends FREContext {
     public static final String EXTENSION_TYPE = "AIR";
 
     private String lastConversionData;
+    private String devKey;
 
     @Override
     public void dispose() {
@@ -21,11 +22,9 @@ public class AppsFlyerContext extends FREContext {
     public Map<String, FREFunction> getFunctions() {
         Map<String, FREFunction> map = new HashMap<String, FREFunction>();
         map.put("setDeveloperKey", new AppsFlyerInit());
-        //map.put("sendTrackingWithEvent", new SendTrackingWithEventFunction());
         map.put("trackAppLaunch", new TrackAppLaunchFunction());
-        map.put("trackEvent", new SendTrackingWithValuesFunction());
+        map.put("trackEvent", new TrackEventFunction());
         map.put("registerUninstall", new RegisterUninstallFunction());
-        //map.put("sendTracking", new SendTracking());
         map.put("registerConversionListener", new RegisterConversionListener());
         map.put("setCurrency", new SetCurrency());
         map.put("setAppUserId", new SetAppUserId());
@@ -39,7 +38,14 @@ public class AppsFlyerContext extends FREContext {
         map.put("getAdvertiserIdEnabled", new GetAdvertiserIdEnabled());
         map.put("setDebug", new SetDebug());
         map.put("setGCMProjectNumber", new SetGCMProjectNumber());
+
+        map.put("validateAndTrackInAppPurchase", new ValidateAndTrackInAppPurchaseFunction());
+        map.put("registerValidatorListener", new RegisterValidatorListenerFunction());
+        map.put("useReceiptValidationSandbox", new UseReceiptValidationSandboxFunction());
+
+
 //        map.put("setExtension", new SetExtension());
+
 
         return map;
     }
@@ -52,4 +58,11 @@ public class AppsFlyerContext extends FREContext {
         this.lastConversionData = lastConversionData;
     }
 
+    public String getDevKey() {
+        return devKey;
+    }
+
+    public void setDevKey(String devKey) {
+        this.devKey = devKey;
+    }
 }

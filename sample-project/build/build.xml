@@ -72,13 +72,12 @@
 			<then>
 				<property name="PACKAGE_BUNDLE_PATH" value="${PACKAGE_DIR}/${FULL_APP_NAME}.ipa" />
 				<property name="ARTIFACT_PATH" value="${PACKAGE_DIR}/latest/${FULL_APP_NAME}.ipa" />
-				<property name="APP_DESCRIPTOR" value="MyTestProject-app.xml"/>
+				<property name="APP_DESCRIPTOR" value="MainIOS-app.xml"/>
 			</then>
 			<else>
 				<property name="PACKAGE_BUNDLE_PATH" value="${PACKAGE_DIR}/${FULL_APP_NAME}.apk" />
 				<property name="ARTIFACT_PATH" value="${PACKAGE_DIR}/latest/${FULL_APP_NAME}.apk" />
-				<property name="APP_DESCRIPTOR" value="MyTestProjectAndroid-app.xml"/>
-				<!--property name="APP_DESCRIPTOR" value="Main-app.xml"/-->
+				<property name="APP_DESCRIPTOR" value="MainAndroid-app.xml"/>
 			</else>
 		</if>
 		

@@ -1,7 +1,7 @@
 
 #import "FlashRuntimeExtensions.h"
 #import "AppsFlyerTracker.h"
-#import "AppsFlyerConversionDelegate.h"
+#import "AppsFlyerDelegate.h"
 #import "AppsFlyerAIRExtension.h"
 
 #import <UIKit/UIApplication.h>
@@ -16,14 +16,40 @@
 
 + (NSDictionary*) convertFromJSonString:(NSString*)jsonString
 {
-    NSError *jsonError = nil;
+    NSError *error = nil;
     NSData *data = [jsonString dataUsingEncoding:NSUTF8StringEncoding];
-    NSDictionary *json  = [NSJSONSerialization JSONObjectWithData:data options:0 error:&jsonError];
-    if (jsonError != nil) {
-        NSLog(@"[AppsFlyerAIRExtension] JSON to NSDictionnary error: %@", jsonError.localizedDescription);
+    NSDictionary *json  = [NSJSONSerialization JSONObjectWithData:data options:0 error:&error];
+    if (error != nil) {
+        NSLog(@"[AppsFlyerAIRExtension] JSON to NSDictionnary error: %@", error.localizedDescription);
         return NULL;
     }
     return json;
+}
+
++ (NSString*) convertToJSonString:(NSDictionary*)data
+{
+    NSError *error = nil;
+    NSData *jsonData = [NSJSONSerialization dataWithJSONObject:data
+                                                       options:NSJSONWritingPrettyPrinted
+                                                         error:&error];
+    if (error != nil) {
+        NSLog(@"[AppsFlyerAIRExtension] NSDictionnary to JSON error: %@", error.localizedDescription);
+        return @"";
+    }
+    return [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
+}
+
++ (NSString*) getString:(FREObject*)value {
+    uint32_t stringLength;
+    const uint8_t *string;
+    FREGetObjectAsUTF8(value, &stringLength, &string);
+    return [NSString stringWithUTF8String:(char*)string];
+}
+
++ (void) dispatchStatusEvent:(FREContext) ctx withType: (NSString*) eventType level: (NSString*) eventLevel {
+    const uint8_t* levelCode = (const uint8_t*) [eventLevel UTF8String];
+    const uint8_t* eventCode = (const uint8_t*) [eventType UTF8String];
+    FREDispatchStatusEventAsync(ctx,eventCode,levelCode);
 }
 
 @end
@@ -48,30 +74,14 @@ BOOL didReceiveRemoteNotificationHandler(id self, SEL _cmd, UIApplication* appli
     return ((BOOL(*)(id, SEL, UIApplication*, NSDictionary*))__original_didReceiveRemoteNotification_Imp)(self, _cmd, application, userInfo);
 }
 
-//static IMP __original_didRegisterForRemoteNotificationsWithDeviceToken_Imp;
-//BOOL didRegisterForRemoteNotificationsWithDeviceTokenHandler(id self, SEL _cmd, UIApplication* application, NSData* deviceToken) {
-//    [[AppsFlyerTracker sharedTracker] registerUninstall:deviceToken];
-//    return ((BOOL(*)(id, SEL, UIApplication*, NSData*))__original_didRegisterForRemoteNotificationsWithDeviceToken_Imp)(self, _cmd, application, deviceToken);
-//}
-
-
-AdobeAirConversionDelegate * conversionDelegate;
-
-
-NSString *const EXTENSION_TYPE = @"AIR";
+AppsFlyerDelegate * conversionDelegate;
 
 DEFINE_ANE_FUNCTION(setDeveloperKey)
 {
-    uint32_t string1Length;
-    const uint8_t *string1;
-    FREGetObjectAsUTF8(argv[0], &string1Length, &string1);
-    NSString *developerKey = [NSString stringWithUTF8String:(char*)string1];
+    NSString *developerKey = [AppsFlyerAIRExtension getString: argv[0]];
+    NSString *appId = [AppsFlyerAIRExtension getString: argv[1]];
+    
     [AppsFlyerTracker sharedTracker].appsFlyerDevKey = developerKey;
-
-    uint32_t string2Length;
-    const uint8_t *string2;
-    FREGetObjectAsUTF8(argv[1], &string2Length, &string2);
-    NSString *appId = [NSString stringWithUTF8String:(char*)string2];
     [AppsFlyerTracker sharedTracker].appleAppID = appId;
     
     return NULL;
@@ -85,26 +95,11 @@ DEFINE_ANE_FUNCTION(trackAppLaunch)
 
 DEFINE_ANE_FUNCTION(trackEvent)
 {
-    
-    if(argv[0]!=NULL)
-    {
-        uint32_t string1Length;
-        const uint8_t *string1;
-        FREGetObjectAsUTF8(argv[0], &string1Length, &string1);
-        NSString *eventName = [NSString stringWithUTF8String:(char*)string1];
+    if(argv[0] != NULL) {
+        NSString *eventName = [AppsFlyerAIRExtension getString: argv[0]];
+        NSString *eventValue = [AppsFlyerAIRExtension getString: argv[1]];
+        NSDictionary *values = [AppsFlyerAIRExtension convertFromJSonString:eventValue];
         
-        
-        uint32_t string2Length;
-        const uint8_t *string2;
-        FREGetObjectAsUTF8(argv[1], &string2Length, &string2);
-        NSString *eventValue = [NSString stringWithUTF8String:(char*)string2];
-        
-        NSError *jsonError;
-        NSData *objectData = [eventValue dataUsingEncoding:NSUTF8StringEncoding];
-        NSDictionary *values = [NSJSONSerialization JSONObjectWithData:objectData
-                                                             options:NSJSONReadingMutableContainers
-                                                               error:&jsonError];
-
         [[AppsFlyerTracker sharedTracker] trackEvent:eventName withValues:values];
     }
     
@@ -113,10 +108,8 @@ DEFINE_ANE_FUNCTION(trackEvent)
 
 DEFINE_ANE_FUNCTION(setCurrency)
 {
-    uint32_t string1Length;
-    const uint8_t *string1;
-    FREGetObjectAsUTF8(argv[0], &string1Length, &string1);
-    NSString *currency = [NSString stringWithUTF8String:(char*)string1];
+    NSString *currency = [AppsFlyerAIRExtension getString: argv[0]];
+    
     [AppsFlyerTracker sharedTracker].currencyCode = currency;
     
     return NULL;
@@ -124,10 +117,8 @@ DEFINE_ANE_FUNCTION(setCurrency)
 
 DEFINE_ANE_FUNCTION(setAppUserId)
 {
-    uint32_t string1Length;
-    const uint8_t *value;
-    FREGetObjectAsUTF8(argv[0], &string1Length, &value);
-    NSString *appUserId = [NSString stringWithUTF8String:(char*)value];
+    NSString *appUserId = [AppsFlyerAIRExtension getString: argv[0]];
+    
     [AppsFlyerTracker sharedTracker].customerUserID = appUserId;
     
     return NULL;
@@ -139,28 +130,12 @@ DEFINE_ANE_FUNCTION(getConversionData)
     return NULL;
 }
 
-
 DEFINE_ANE_FUNCTION(getAppsFlyerUID)
 {
     FREObject uid = nil;
     NSString *value = (NSString *)[[AppsFlyerTracker sharedTracker] getAppsFlyerUID];
     FRENewObjectFromUTF8(strlen((const char*)[value UTF8String]) + 1.0, (const uint8_t*)[value UTF8String], &uid);
     return uid;
-}
-
-DEFINE_ANE_FUNCTION(getAdvertiserId)
-{
-    FREObject id = nil;
-    NSString *value = @"-1";
-    FRENewObjectFromUTF8(strlen((const char*)[value UTF8String]) + 1.0, (const uint8_t*)[value UTF8String], &id);
-    return id;
-}
-
-DEFINE_ANE_FUNCTION(getAdvertiserIdEnabled)
-{
-    FREObject res = nil;
-    FRENewObjectFromBool(0, &res);
-    return res;
 }
 
 DEFINE_ANE_FUNCTION(setDebug)
@@ -173,39 +148,100 @@ DEFINE_ANE_FUNCTION(setDebug)
 
 DEFINE_ANE_FUNCTION(handlePushNotification)
 {
-    uint32_t string1Length;
-    const uint8_t *value;
-    FREGetObjectAsUTF8(argv[0], &string1Length, &value);
-    NSString *userInfoString = [NSString stringWithUTF8String:(char*)value];
+    NSString *userInfoString = [AppsFlyerAIRExtension getString: argv[0]];
     NSDictionary *userInfo = [AppsFlyerAIRExtension convertFromJSonString:userInfoString];
-    //NSLog(@"handlePushNotification %@ userInfo %@", userInfoString, userInfo);
+
     [[AppsFlyerTracker sharedTracker] handlePushNotification:userInfo];
+    
     return NULL;
 }
 
 DEFINE_ANE_FUNCTION(registerUninstall)
 {
-//    // iOS8+ selector
-//    if ([[UIApplication sharedApplication] respondsToSelector:@selector(registerUserNotificationSettings:)]) {
-//        
-//        UIUserNotificationSettings* notificationSettings = [UIUserNotificationSettings settingsForTypes:UIUserNotificationTypeAlert | UIUserNotificationTypeBadge | UIUserNotificationTypeSound categories:nil];
-//        [[UIApplication sharedApplication] registerUserNotificationSettings:notificationSettings];
-//        [[UIApplication sharedApplication] registerForRemoteNotifications];
-//        
-//        [[UIApplication sharedApplication] setMinimumBackgroundFetchInterval:UIApplicationBackgroundFetchIntervalMinimum];
-//        [UIApplication sharedApplication].applicationIconBadgeNumber = 0;
-//        
-//    } else { // iOS7 or less
-//        [[UIApplication sharedApplication] registerForRemoteNotificationTypes:
-//         (UIRemoteNotificationTypeBadge | UIRemoteNotificationTypeSound | UIRemoteNotificationTypeAlert)];
-//    }
-    uint32_t string1Length;
-    const uint8_t *string1;
-    FREGetObjectAsUTF8(argv[0], &string1Length, &string1);
-    NSString *deviceTokenStr = [NSString stringWithUTF8String:(char*)string1];
+    NSString *deviceTokenStr = [AppsFlyerAIRExtension getString: argv[0]];
     NSData *deviceToken = [deviceTokenStr dataUsingEncoding:NSUTF8StringEncoding];
     [[AppsFlyerTracker sharedTracker] registerUninstall:deviceToken];
     return nil;
+}
+
+DEFINE_ANE_FUNCTION(registerConversionListener)
+{
+    [AppsFlyerTracker sharedTracker].delegate = conversionDelegate;
+    return NULL;
+}
+
+DEFINE_ANE_FUNCTION(validateAndTrackInAppPurchase)
+{
+
+    NSString *productIdentifier = [AppsFlyerAIRExtension getString: argv[0]];
+    NSString *transactionIdentifier = [AppsFlyerAIRExtension getString: argv[1]];
+
+    NSString *price = [AppsFlyerAIRExtension getString: argv[3]];
+    NSString *currency = [AppsFlyerAIRExtension getString: argv[4]];
+    NSString *additionalParameters = [AppsFlyerAIRExtension getString: argv[5]];
+    
+    NSDictionary *params = [AppsFlyerAIRExtension convertFromJSonString:additionalParameters];
+    //NSLog(@"params = %@", params);
+    
+    [[AppsFlyerTracker sharedTracker] validateAndTrackInAppPurchase:productIdentifier
+                                                              price:price
+                                                           currency:currency
+                                                      transactionId:transactionIdentifier
+                                               additionalParameters:params
+                                                            success:^(NSDictionary *result){
+                                                                NSLog(@"Purcahse succeeded And verified!!!");
+                                                                if (result != nil && result[@"receipt"] != nil) {
+                                                                    NSString* res = [AppsFlyerAIRExtension convertToJSonString: result[@"receipt"]];
+                                                                    [AppsFlyerAIRExtension dispatchStatusEvent: conversionDelegate.ctx withType: @"validateInApp" level:res];
+                                                                } else {
+                                                                    [AppsFlyerAIRExtension dispatchStatusEvent: conversionDelegate.ctx withType: @"validateInAppFailure" level:@"Invalid Response"];
+                                                              }
+                                                            } failure:^(NSError *error, id response) {
+                                                                NSLog(@"response = %@", response);
+                                                                NSString *errorString;
+                                                                if ([response objectForKey:@"error"] != nil){
+                                                                    errorString = response[@"error"];
+                                                                } else if ([response objectForKey:@"status"] != nil) {
+                                                                    errorString = [NSString stringWithFormat:@"Error code = %@", response[@"status"]];
+                                                                } else {
+                                                                    errorString = @"Unknown Error";
+                                                                }
+                                                                
+                                                                [AppsFlyerAIRExtension dispatchStatusEvent: conversionDelegate.ctx withType: @"validateInAppFailure" level:errorString];
+                                                            }];
+    return nil;
+}
+
+DEFINE_ANE_FUNCTION(useReceiptValidationSandbox)
+{
+    uint32_t value;
+    FREGetObjectAsBool(argv[0], &value);
+    [AppsFlyerTracker sharedTracker].useReceiptValidationSandbox = value;
+    
+    return NULL;
+}
+
+DEFINE_ANE_FUNCTION(registerValidatorListener)
+{
+    NSLog(@"registerValidatorListener method is not supported on iOS");
+    return NULL;
+}
+
+DEFINE_ANE_FUNCTION(getAdvertiserId)
+{
+    NSLog(@"getAdvertiserId method is not supported on iOS");
+    FREObject id = nil;
+    NSString *value = @"-1";
+    FRENewObjectFromUTF8(strlen((const char*)[value UTF8String]) + 1.0, (const uint8_t*)[value UTF8String], &id);
+    return id;
+}
+
+DEFINE_ANE_FUNCTION(getAdvertiserIdEnabled)
+{
+    NSLog(@"getAdvertiserIdEnabled method is not supported on iOS");
+    FREObject res = nil;
+    FRENewObjectFromBool(0, &res);
+    return res;
 }
 
 DEFINE_ANE_FUNCTION(setCollectAndroidID)
@@ -226,8 +262,6 @@ DEFINE_ANE_FUNCTION(setImeiData)
     return NULL;
 }
 
-
-
 DEFINE_ANE_FUNCTION(setCollectIMEI)
 {
     NSLog(@"setCollectIMEI method is not supported on iOS");
@@ -237,12 +271,6 @@ DEFINE_ANE_FUNCTION(setCollectIMEI)
 DEFINE_ANE_FUNCTION(setGCMProjectNumber)
 {
     NSLog(@"setGCMProjectID method is not supported on iOS");
-    return NULL;
-}
-
-DEFINE_ANE_FUNCTION(registerConversionListener)
-{
-    NSLog(@"registerConversionListener method is not supported on iOS");
     return NULL;
 }
 
@@ -258,19 +286,16 @@ void AFExtContextInitializer(void* extData, const uint8_t* ctxType, FREContext c
     SEL originalContinueUserActivitySelector = @selector(application:continueUserActivity:restorationHandler:);
     SEL originalOpenURLSelector = @selector(application:openURL:options:);
     SEL originalDidReceiveRemoteNotificationSelector = @selector(application:didReceiveRemoteNotification:);
-//    SEL originalDidRegisterForRemoteNotificationsWithDeviceTokenSelector = @selector(application:didRegisterForRemoteNotificationsWithDeviceToken:);
     
     Method originalContinueUserActivityMethod = class_getInstanceMethod(objectClass, originalContinueUserActivitySelector);
     Method originalOpenURLMethod = class_getInstanceMethod(objectClass, originalOpenURLSelector);
     Method originalDidReceiveRemoteNotificationMethod = class_getInstanceMethod(objectClass, originalDidReceiveRemoteNotificationSelector);
-//    Method originalDidRegisterForRemoteNotificationsWithDeviceTokenMethod = class_getInstanceMethod(objectClass, originalDidRegisterForRemoteNotificationsWithDeviceTokenSelector);
 
     __original_continueUserActivity_Imp = method_setImplementation(originalContinueUserActivityMethod, (IMP)continueUserActivity);
     __original_openURL_Imp = method_setImplementation(originalOpenURLMethod, (IMP)openURL);
     __original_didReceiveRemoteNotification_Imp = method_setImplementation(originalDidReceiveRemoteNotificationMethod, (IMP)didReceiveRemoteNotificationHandler);
-//    __original_didRegisterForRemoteNotificationsWithDeviceToken_Imp = method_setImplementation(originalDidRegisterForRemoteNotificationsWithDeviceTokenMethod, (IMP)didRegisterForRemoteNotificationsWithDeviceTokenHandler);
     
-    *numFunctionsToTest = 18;
+    *numFunctionsToTest = 21;
     FRENamedFunction* func = (FRENamedFunction*)malloc(sizeof(FRENamedFunction) * *numFunctionsToTest);
     
     func[0].name = (const uint8_t*)"setDeveloperKey";
@@ -345,14 +370,22 @@ void AFExtContextInitializer(void* extData, const uint8_t* ctxType, FREContext c
     func[17].functionData = NULL;
     func[17].function = &setImeiData;
     
+    func[18].name = (const uint8_t*)"validateAndTrackInAppPurchase";
+    func[18].functionData = NULL;
+    func[18].function = &validateAndTrackInAppPurchase;
     
+    func[19].name = (const uint8_t*)"registerValidatorListener";
+    func[19].functionData = NULL;
+    func[19].function = &registerValidatorListener;
+    
+    func[20].name = (const uint8_t*)"useReceiptValidationSandbox";
+    func[20].functionData = NULL;
+    func[20].function = &useReceiptValidationSandbox;
     
     *functionsToSet = func;
     
-    conversionDelegate = [[AdobeAirConversionDelegate alloc] init];
+    conversionDelegate = [[AppsFlyerDelegate alloc] init];
     conversionDelegate.ctx = ctx;
-    
-    
 }
 
 

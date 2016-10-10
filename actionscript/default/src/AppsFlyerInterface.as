@@ -35,6 +35,7 @@ public class AppsFlyerInterface extends  EventDispatcher {
     public function setImeiData(imei:String):void {
     }
 
+    [Deprecated(replacement="registerConversionListener")]
 	public function getConversionData():String {
 		return "conversionData";
 	}
@@ -66,6 +67,18 @@ public class AppsFlyerInterface extends  EventDispatcher {
 	}
 
 	public function handlePushNotification(userInfo:String):void{
+    }
+
+    public function validateAndTrackInAppPurchase(publicKey:String, signature:String, purchaseData:String, price:String,
+                                                         currency:String, additionalParameters:String):void {
+    }
+
+    public function useReceiptValidationSandbox(value:Boolean):void {
+    }
+
+
+
+    public function registerValidatorListener():void {
 
     }
 

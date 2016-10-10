@@ -18,7 +18,7 @@ public class Main extends Sprite {
 
     private static var appsFlyer:AppsFlyerInterface;
 
-    public function Main() {
+    public function Main_wo_pn() {
         addEventListener(Event.ADDED_TO_STAGE, onAddedToStage);
         NativeApplication.nativeApplication.addEventListener(InvokeEvent.INVOKE, invokeHandler);
     }
