@@ -181,7 +181,6 @@ DEFINE_ANE_FUNCTION(validateAndTrackInAppPurchase)
     NSString *additionalParameters = [AppsFlyerAIRExtension getString: argv[5]];
     
     NSDictionary *params = [AppsFlyerAIRExtension convertFromJSonString:additionalParameters];
-    //NSLog(@"params = %@", params);
     
     [[AppsFlyerTracker sharedTracker] validateAndTrackInAppPurchase:productIdentifier
                                                               price:price
@@ -189,23 +188,16 @@ DEFINE_ANE_FUNCTION(validateAndTrackInAppPurchase)
                                                       transactionId:transactionIdentifier
                                                additionalParameters:params
                                                             success:^(NSDictionary *result){
-                                                                NSLog(@"Purcahse succeeded And verified!!!");
-                                                                if (result != nil && result[@"receipt"] != nil) {
-                                                                    NSString* res = [AppsFlyerAIRExtension convertToJSonString: result[@"receipt"]];
-                                                                    [AppsFlyerAIRExtension dispatchStatusEvent: conversionDelegate.ctx withType: @"validateInApp" level:res];
-                                                                } else {
-                                                                    [AppsFlyerAIRExtension dispatchStatusEvent: conversionDelegate.ctx withType: @"validateInAppFailure" level:@"Invalid Response"];
-                                                              }
+                                                                NSString* res = @"";
+                                                                if (result != nil) {
+                                                                    if([result objectForKey:@"receipt"] != nil) {
+                                                                        res = [AppsFlyerAIRExtension convertToJSonString: result[@"receipt"]];
+                                                                    } else {
+                                                                        res = [AppsFlyerAIRExtension convertToJSonString: result];
+                                                                    }
+                                                                }                                                                [AppsFlyerAIRExtension dispatchStatusEvent: conversionDelegate.ctx withType: @"validateInApp" level:res];
                                                             } failure:^(NSError *error, id response) {
-                                                                NSLog(@"response = %@", response);
-                                                                NSString *errorString;
-                                                                if ([response objectForKey:@"error"] != nil){
-                                                                    errorString = response[@"error"];
-                                                                } else if ([response objectForKey:@"status"] != nil) {
-                                                                    errorString = [NSString stringWithFormat:@"Error code = %@", response[@"status"]];
-                                                                } else {
-                                                                    errorString = @"Unknown Error";
-                                                                }
+                                                                NSString *errorString = [NSString stringWithFormat:@"%@", response];
                                                                 
                                                                 [AppsFlyerAIRExtension dispatchStatusEvent: conversionDelegate.ctx withType: @"validateInAppFailure" level:errorString];
                                                             }];
