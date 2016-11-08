@@ -76,7 +76,8 @@ public class AppsFlyerInterface extends  EventDispatcher {
     public function useReceiptValidationSandbox(value:Boolean):void {
     }
 
-
+    public function sendDeepLinkData():void {
+    }
 
     public function registerValidatorListener():void {
 

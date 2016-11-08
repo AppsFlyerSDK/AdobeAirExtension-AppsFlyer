@@ -213,6 +213,12 @@ DEFINE_ANE_FUNCTION(useReceiptValidationSandbox)
     return NULL;
 }
 
+DEFINE_ANE_FUNCTION(sendDeepLinkData)
+{
+    NSLog(@"sendDeepLinkData method is not supported on iOS");
+    return NULL;
+}
+
 DEFINE_ANE_FUNCTION(registerValidatorListener)
 {
     NSLog(@"registerValidatorListener method is not supported on iOS");
@@ -287,7 +293,7 @@ void AFExtContextInitializer(void* extData, const uint8_t* ctxType, FREContext c
     __original_openURL_Imp = method_setImplementation(originalOpenURLMethod, (IMP)openURL);
     __original_didReceiveRemoteNotification_Imp = method_setImplementation(originalDidReceiveRemoteNotificationMethod, (IMP)didReceiveRemoteNotificationHandler);
     
-    *numFunctionsToTest = 21;
+    *numFunctionsToTest = 22;
     FRENamedFunction* func = (FRENamedFunction*)malloc(sizeof(FRENamedFunction) * *numFunctionsToTest);
     
     func[0].name = (const uint8_t*)"setDeveloperKey";
@@ -373,6 +379,10 @@ void AFExtContextInitializer(void* extData, const uint8_t* ctxType, FREContext c
     func[20].name = (const uint8_t*)"useReceiptValidationSandbox";
     func[20].functionData = NULL;
     func[20].function = &useReceiptValidationSandbox;
+    
+    func[21].name = (const uint8_t*)"sendDeepLinkData";
+    func[21].functionData = NULL;
+    func[21].function = &sendDeepLinkData;
     
     *functionsToSet = func;
     

@@ -108,6 +108,9 @@ public class AppsFlyerInterface extends EventDispatcher {
 		return context.call("getAdvertiserIdEnabled") as Boolean;
 	}
 
+    public function sendDeepLinkData():void {
+        context.call("sendDeepLinkData");
+    }
 
 	protected function _handleStatusEvents(e:StatusEvent):void {
 		var event:AppsFlyerEvent = new AppsFlyerEvent(e.code, e.level);

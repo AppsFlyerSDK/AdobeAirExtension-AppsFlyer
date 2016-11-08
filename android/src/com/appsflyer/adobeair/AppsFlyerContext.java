@@ -38,6 +38,7 @@ public class AppsFlyerContext extends FREContext {
         map.put("getAdvertiserIdEnabled", new GetAdvertiserIdEnabled());
         map.put("setDebug", new SetDebug());
         map.put("setGCMProjectNumber", new SetGCMProjectNumber());
+        map.put("sendDeepLinkData", new SendDeepLinkData());
 
         map.put("validateAndTrackInAppPurchase", new ValidateAndTrackInAppPurchaseFunction());
         map.put("registerValidatorListener", new RegisterValidatorListenerFunction());
