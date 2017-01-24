@@ -63,7 +63,7 @@ public class AppsFlyerInterface extends EventDispatcher {
 	}
 
 	public function registerUninstall(deviceToken:String):void {
-         context.call("registerUninstall", deviceToken);
+         context.call("registerUninstall", deviceToken.replace(/[ <>]/g, ""));
     }
 
     [Deprecated(replacement="registerConversionListener")]

@@ -52,6 +52,21 @@
     FREDispatchStatusEventAsync(ctx,eventCode,levelCode);
 }
 
++ (NSData *)dataFromHexString:(NSString *)string
+{
+    NSMutableData *stringData = [[NSMutableData alloc] init];
+    unsigned char whole_byte;
+    char byte_chars[3] = {'\0','\0','\0'};
+    int i;
+    for (i=0; i < [string length] / 2; i++) {
+        byte_chars[0] = [string characterAtIndex:i*2];
+        byte_chars[1] = [string characterAtIndex:i*2+1];
+        whole_byte = strtol(byte_chars, NULL, 16);
+        [stringData appendBytes:&whole_byte length:1];
+    }
+    return stringData;
+}
+
 @end
 
 static IMP __original_continueUserActivity_Imp;
@@ -159,7 +174,7 @@ DEFINE_ANE_FUNCTION(handlePushNotification)
 DEFINE_ANE_FUNCTION(registerUninstall)
 {
     NSString *deviceTokenStr = [AppsFlyerAIRExtension getString: argv[0]];
-    NSData *deviceToken = [deviceTokenStr dataUsingEncoding:NSUTF8StringEncoding];
+    NSData *deviceToken = [AppsFlyerAIRExtension dataFromHexString:deviceTokenStr];
     [[AppsFlyerTracker sharedTracker] registerUninstall:deviceToken];
     return nil;
 }

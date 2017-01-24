@@ -1,5 +1,8 @@
 package {
 
+import com.freshplanet.nativeExtensions.PushNotification;
+import com.freshplanet.nativeExtensions.PushNotificationEvent;
+
 import flash.desktop.NativeApplication;
 import flash.display.Sprite;
 import flash.events.Event;
@@ -10,6 +13,7 @@ import flash.text.TextFormat;
 import flash.text.TextFormatAlign;
 import flash.utils.setTimeout;
 
+
 public class Main extends Sprite {
 
     private static const DEVELOPER_KEY:String = "2MUJ9GP6pVoMU4c76jqiuA";//"your_developer_key";
@@ -18,7 +22,7 @@ public class Main extends Sprite {
 
     private static var appsFlyer:AppsFlyerInterface;
 
-    public function Main_wo_pn() {
+    public function Main() {
         addEventListener(Event.ADDED_TO_STAGE, onAddedToStage);
         NativeApplication.nativeApplication.addEventListener(InvokeEvent.INVOKE, invokeHandler);
     }
@@ -79,10 +83,13 @@ public class Main extends Sprite {
         var b:Sprite = createButton("Test");
         b.addEventListener(MouseEvent.CLICK, function (e:MouseEvent):void {
             sendJSON();
-            setTimeout(function ():void {
-                log("AdvertiserId: " + appsFlyer.getAdvertiserId());
-                log("AdvertiserId enabled: " + appsFlyer.getAdvertiserIdEnabled());
-            }, 1000)
+//            appsFlyer.validateAndTrackInAppPurchase("1", "1", "", "100", "USD", "");
+//            appsFlyer.validateAndTrackInAppPurchase("1", "1", "", "100", "USD", null);
+//            setTimeout(function ():void {
+//                log("AdvertiserId: " + appsFlyer.getAdvertiserId());
+//                log("AdvertiserId enabled: " + appsFlyer.getAdvertiserIdEnabled());
+//                appsFlyer.validateAndTrackInAppPurchase("1", "1", "", "100", "USD", '{"test": "val" , "test1" : "val1"}');
+//            }, 1000)
         });
         addChild(b);
     }
@@ -105,15 +112,14 @@ public class Main extends Sprite {
 
     private function onAddedToStage(event:Event):void {
         removeEventListener(Event.ADDED_TO_STAGE, onAddedToStage);
-
-        createUI();
-
         appsFlyer = new AppsFlyerInterface();
         appsFlyer.registerConversionListener();
         appsFlyer.addEventListener(AppsFlyerEvent.INSTALL_CONVERSATION_DATA_LOADED, eventHandler);
         appsFlyer.addEventListener(AppsFlyerEvent.INSTALL_CONVERSATION_FAILED, eventHandler);
         appsFlyer.addEventListener(AppsFlyerEvent.ATTRIBUTION_FAILURE, eventHandler);
         appsFlyer.addEventListener(AppsFlyerEvent.APP_OPEN_ATTRIBUTION, eventHandler);
+        appsFlyer.addEventListener(AppsFlyerEvent.VALIDATE_IN_APP, eventHandler);
+        appsFlyer.addEventListener(AppsFlyerEvent.VALIDATE_IN_APP_FAILURE, eventHandler);
         appsFlyer.setDebug(true);
         appsFlyer.setDeveloperKey(DEVELOPER_KEY, APP_ID); // first param is developer key and second (NA for Android)is Apple app id.
         appsFlyer.setGCMProjectNumber("11234");
@@ -124,14 +130,32 @@ public class Main extends Sprite {
         appsFlyer.setImeiData("11234");
         appsFlyer.setAndroidIdData("11234");
         appsFlyer.trackAppLaunch();
+        appsFlyer.sendDeepLinkData();
 
         appsFlyer.registerValidatorListener();
         appsFlyer.useReceiptValidationSandbox(true);
         appsFlyer.validateAndTrackInAppPurchase("1", "1", "", "100", "USD", '{"test": "val" , "test1" : "val1"}');
 
+        createUI();
+
         log("ANE initialized! \nDeveloper key: " + DEVELOPER_KEY + "\nApple AppID: " + APP_ID);
         log("App user id set to: " + USER_ID);
         log("AppsFlyer UID: " + appsFlyer.getAppsFlyerUID());
+
+        PushNotification.getInstance().registerForPushNotification();
+        PushNotification.getInstance().addEventListener(PushNotificationEvent.PERMISSION_GIVEN_WITH_TOKEN_EVENT, onPushNotificationToken);
+        PushNotification.getInstance().addEventListener(PushNotificationEvent.NOTIFICATION_RECEIVED_WHEN_IN_FOREGROUND_EVENT, onNotificationHandler);
+        PushNotification.getInstance().addEventListener(PushNotificationEvent.APP_BROUGHT_TO_FOREGROUND_FROM_NOTIFICATION_EVENT, onNotificationHandler);
+        PushNotification.getInstance().addListenerForStarterNotifications(onNotificationHandler);
+    }
+
+    private function onPushNotificationToken(event:PushNotificationEvent):void {
+        log("Notification token: " + event.token);
+        appsFlyer.registerUninstall(event.token);
+    }
+
+    private function onNotificationHandler(event:PushNotificationEvent):void {
+        log("Notification event: " + event.type + "; \nData: " + event.parameters + " \n");
     }
 
     private function eventHandler(event:AppsFlyerEvent):void {
