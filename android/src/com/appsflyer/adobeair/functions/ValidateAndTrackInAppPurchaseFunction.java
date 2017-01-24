@@ -26,16 +26,21 @@ public class ValidateAndTrackInAppPurchaseFunction implements FREFunction {
             String purchaseData = freObjects[2].getAsString();
             String price = freObjects[3].getAsString();
             String currency = freObjects[4].getAsString();
-            String additionalParameters = freObjects[5].getAsString();
-
-            JSONObject json = new JSONObject(additionalParameters);
             HashMap<String,String> params = new HashMap<String,String>();
-            for (Map.Entry<String, Object> entry : Utils.jsonToMap(json).entrySet()) {
-                params.put(entry.getKey(), entry.getValue().toString());
+            if(freObjects.length > 5) {
+                String additionalParameters = freObjects[5] != null ? freObjects[5].getAsString() : null;
+                if(additionalParameters != null && !additionalParameters.isEmpty()) {
+                    try {
+                        JSONObject json = new JSONObject(additionalParameters);
+                        for (Map.Entry<String, Object> entry : Utils.jsonToMap(json).entrySet()) {
+                            params.put(entry.getKey(), entry.getValue().toString());
+                        }
+                    } catch (JSONException ex) {
+                        ex.printStackTrace();
+                    }
+                }
             }
-
             AppsFlyerLib.getInstance().validateAndTrackInAppPurchase(context, publicKey, signature, purchaseData, price, currency, params);
-
         } catch (IllegalStateException e) {
             e.printStackTrace();
         } catch (FRETypeMismatchException e) {

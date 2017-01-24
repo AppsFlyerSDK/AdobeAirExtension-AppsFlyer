@@ -178,9 +178,11 @@ DEFINE_ANE_FUNCTION(validateAndTrackInAppPurchase)
 
     NSString *price = [AppsFlyerAIRExtension getString: argv[3]];
     NSString *currency = [AppsFlyerAIRExtension getString: argv[4]];
+    NSDictionary *params = [NSMutableDictionary dictionary];
     NSString *additionalParameters = [AppsFlyerAIRExtension getString: argv[5]];
-    
-    NSDictionary *params = [AppsFlyerAIRExtension convertFromJSonString:additionalParameters];
+    if(additionalParameters.length > 0) {
+        params = [AppsFlyerAIRExtension convertFromJSonString:additionalParameters];
+    }
     
     [[AppsFlyerTracker sharedTracker] validateAndTrackInAppPurchase:productIdentifier
                                                               price:price
