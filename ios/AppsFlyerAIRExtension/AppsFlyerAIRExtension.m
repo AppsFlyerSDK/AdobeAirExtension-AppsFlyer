@@ -52,6 +52,21 @@
     FREDispatchStatusEventAsync(ctx,eventCode,levelCode);
 }
 
++ (NSData *)dataFromHexString:(NSString *)string
+{
+    NSMutableData *stringData = [[NSMutableData alloc] init];
+    unsigned char whole_byte;
+    char byte_chars[3] = {'\0','\0','\0'};
+    int i;
+    for (i=0; i < [string length] / 2; i++) {
+        byte_chars[0] = [string characterAtIndex:i*2];
+        byte_chars[1] = [string characterAtIndex:i*2+1];
+        whole_byte = strtol(byte_chars, NULL, 16);
+        [stringData appendBytes:&whole_byte length:1];
+    }
+    return stringData;
+}
+
 @end
 
 static IMP __original_continueUserActivity_Imp;
@@ -159,7 +174,7 @@ DEFINE_ANE_FUNCTION(handlePushNotification)
 DEFINE_ANE_FUNCTION(registerUninstall)
 {
     NSString *deviceTokenStr = [AppsFlyerAIRExtension getString: argv[0]];
-    NSData *deviceToken = [deviceTokenStr dataUsingEncoding:NSUTF8StringEncoding];
+    NSData *deviceToken = [AppsFlyerAIRExtension dataFromHexString:deviceTokenStr];
     [[AppsFlyerTracker sharedTracker] registerUninstall:deviceToken];
     return nil;
 }
@@ -178,10 +193,11 @@ DEFINE_ANE_FUNCTION(validateAndTrackInAppPurchase)
 
     NSString *price = [AppsFlyerAIRExtension getString: argv[3]];
     NSString *currency = [AppsFlyerAIRExtension getString: argv[4]];
+    NSDictionary *params = [NSMutableDictionary dictionary];
     NSString *additionalParameters = [AppsFlyerAIRExtension getString: argv[5]];
-    
-    NSDictionary *params = [AppsFlyerAIRExtension convertFromJSonString:additionalParameters];
-    //NSLog(@"params = %@", params);
+    if(additionalParameters.length > 0) {
+        params = [AppsFlyerAIRExtension convertFromJSonString:additionalParameters];
+    }
     
     [[AppsFlyerTracker sharedTracker] validateAndTrackInAppPurchase:productIdentifier
                                                               price:price
@@ -189,23 +205,16 @@ DEFINE_ANE_FUNCTION(validateAndTrackInAppPurchase)
                                                       transactionId:transactionIdentifier
                                                additionalParameters:params
                                                             success:^(NSDictionary *result){
-                                                                NSLog(@"Purcahse succeeded And verified!!!");
-                                                                if (result != nil && result[@"receipt"] != nil) {
-                                                                    NSString* res = [AppsFlyerAIRExtension convertToJSonString: result[@"receipt"]];
-                                                                    [AppsFlyerAIRExtension dispatchStatusEvent: conversionDelegate.ctx withType: @"validateInApp" level:res];
-                                                                } else {
-                                                                    [AppsFlyerAIRExtension dispatchStatusEvent: conversionDelegate.ctx withType: @"validateInAppFailure" level:@"Invalid Response"];
-                                                              }
+                                                                NSString* res = @"";
+                                                                if (result != nil) {
+                                                                    if([result objectForKey:@"receipt"] != nil) {
+                                                                        res = [AppsFlyerAIRExtension convertToJSonString: result[@"receipt"]];
+                                                                    } else {
+                                                                        res = [AppsFlyerAIRExtension convertToJSonString: result];
+                                                                    }
+                                                                }                                                                [AppsFlyerAIRExtension dispatchStatusEvent: conversionDelegate.ctx withType: @"validateInApp" level:res];
                                                             } failure:^(NSError *error, id response) {
-                                                                NSLog(@"response = %@", response);
-                                                                NSString *errorString;
-                                                                if ([response objectForKey:@"error"] != nil){
-                                                                    errorString = response[@"error"];
-                                                                } else if ([response objectForKey:@"status"] != nil) {
-                                                                    errorString = [NSString stringWithFormat:@"Error code = %@", response[@"status"]];
-                                                                } else {
-                                                                    errorString = @"Unknown Error";
-                                                                }
+                                                                NSString *errorString = [NSString stringWithFormat:@"%@", response];
                                                                 
                                                                 [AppsFlyerAIRExtension dispatchStatusEvent: conversionDelegate.ctx withType: @"validateInAppFailure" level:errorString];
                                                             }];
@@ -218,6 +227,12 @@ DEFINE_ANE_FUNCTION(useReceiptValidationSandbox)
     FREGetObjectAsBool(argv[0], &value);
     [AppsFlyerTracker sharedTracker].useReceiptValidationSandbox = value;
     
+    return NULL;
+}
+
+DEFINE_ANE_FUNCTION(sendDeepLinkData)
+{
+    NSLog(@"sendDeepLinkData method is not supported on iOS");
     return NULL;
 }
 
@@ -295,7 +310,7 @@ void AFExtContextInitializer(void* extData, const uint8_t* ctxType, FREContext c
     __original_openURL_Imp = method_setImplementation(originalOpenURLMethod, (IMP)openURL);
     __original_didReceiveRemoteNotification_Imp = method_setImplementation(originalDidReceiveRemoteNotificationMethod, (IMP)didReceiveRemoteNotificationHandler);
     
-    *numFunctionsToTest = 21;
+    *numFunctionsToTest = 22;
     FRENamedFunction* func = (FRENamedFunction*)malloc(sizeof(FRENamedFunction) * *numFunctionsToTest);
     
     func[0].name = (const uint8_t*)"setDeveloperKey";
@@ -381,6 +396,10 @@ void AFExtContextInitializer(void* extData, const uint8_t* ctxType, FREContext c
     func[20].name = (const uint8_t*)"useReceiptValidationSandbox";
     func[20].functionData = NULL;
     func[20].function = &useReceiptValidationSandbox;
+    
+    func[21].name = (const uint8_t*)"sendDeepLinkData";
+    func[21].functionData = NULL;
+    func[21].function = &sendDeepLinkData;
     
     *functionsToSet = func;
     
