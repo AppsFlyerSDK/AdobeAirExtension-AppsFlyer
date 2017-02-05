@@ -18,6 +18,7 @@
     
 	<property name="FLEX_HOME" value="${air-sdk.home}"/>
     <property name="ADT.JAR" value="${air-sdk.home}/lib/adt.jar"/>
+    <property name="ADB_PATH" value="${android-sdk.home}/platform-tools/adb"/>
 	
 	<buildnumber file="${BUILD_DIR}/pruduct.build.number"/>
 	
@@ -102,7 +103,7 @@
 		<antcall target="compileMobile"/>
 		<antcall target="resources"/>
         <antcall target="packageMobile"/>
-		<exec executable="H:\sdks\android-sdk\platform-tools\adb">
+		<exec executable="${ADB_PATH}">
 			<arg line="install -r ${PACKAGE_BUNDLE_PATH}"/>
 		</exec>
 		<antcall target="clear"/>
