@@ -2,7 +2,7 @@
 //  AppsFlyerTracker.h
 //  AppsFlyerLib
 //
-//  AppsFlyer iOS SDK v4.5.9
+//  AppsFlyer iOS SDK 4.7.3
 //  Copyright (c) 2013 AppsFlyer Ltd. All rights reserved.
 //
 
@@ -32,8 +32,12 @@
 #define AFEventOpenedFromPushNotification @"af_opened_from_push_notification"
 #define AFEventLocation                 @"af_location_coordinates"
 #define AFEventOrderId                  @"af_order_id"
+#define AFEventCustomerSegment          @"af_customer_segment"
+
+
 
 // In app event parameter names
+#define AFEventParamAchievenmentId         @"af_achievement_id"
 #define AFEventParamLevel                  @"af_level"
 #define AFEventParamScore                  @"af_score"
 #define AFEventParamSuccess                @"af_success"
@@ -62,6 +66,14 @@
 #define AFEventParamValidated              @"af_validated"
 #define AFEventParamRevenue                @"af_revenue"
 #define AFEventParamReceiptId              @"af_receipt_id"
+#define AFEventParamTutorialId             @"af_tutorial_id"
+#define AFEventParamAchievenmentId         @"af_achievement_id"
+#define AFEventParamVirtualCurrencyName    @"af_virtual_currency_name"
+#define AFEventParamDeepLink               @"af_deep_link"
+#define AFEventParamOldVersion             @"af_old_version"
+#define AFEventParamNewVersion             @"af_new_version"
+#define AFEventParamReviewText             @"af_review_text"
+#define AFEventParamCouponCode             @"af_coupon_code"
 #define AFEventParam1                      @"af_param_1"
 #define AFEventParam2                      @"af_param_2"
 #define AFEventParam3                      @"af_param_3"
@@ -73,11 +85,42 @@
 #define AFEventParam9                      @"af_param_9"
 #define AFEventParam10                     @"af_param_10"
 
+#define AFEventParamDepartingDepartureDate  @"af_departing_departure_date"
+#define AFEventParamReturningDepartureDate  @"af_returning_departure_date"
+#define AFEventParamDestinationList         @"af_destination_list"  //array of string
+#define AFEventParamCity                    @"af_city"
+#define AFEventParamRegion                  @"af_region"
+#define AFEventParamCountry                 @"af_country"
+
+
+#define AFEventParamDepartingArrivalDate    @"af_departing_arrival_date"
+#define AFEventParamReturningArrivalDate    @"af_returning_arrival_date"
+#define AFEventParamSuggestedDestinations   @"af_suggested_destinations" //array of string
+#define AFEventParamTravelStart             @"af_travel_start"
+#define AFEventParamTravelEnd               @"af_travel_end"
+#define AFEventParamNumAdults               @"af_num_adults"
+#define AFEventParamNumChildren             @"af_num_children"
+#define AFEventParamNumInfants              @"af_num_infants"
+#define AFEventParamSuggestedHotels         @"af_suggested_hotels" //array of string
+
+#define AFEventParamUserScore               @"af_user_score"
+#define AFEventParamHotelScore              @"af_hotel_score"
+#define AFEventParamPurchaseCurrency        @"af_purchase_currency"
+
+#define AFEventParamPreferredStarRatings    @"af_preferred_star_ratings"	//array of int (basically a tupple (min,max) but we'll use array of int and instruct the developer to use two values)
+
+#define AFEventParamPreferredPriceRange     @"af_preferred_price_range"	//array of int (basically a tupple (min,max) but we'll use array of int and instruct the developer to use two values)
+#define AFEventParamPreferredNeighborhoods  @"af_preferred_neighborhoods" //array of string
+#define AFEventParamPreferredNumStops       @"af_preferred_num_stops"
+
+
+
 
 typedef enum  {
     EmailCryptTypeNone = 0,
     EmailCryptTypeSHA1 = 1,
-    EmailCryptTypeMD5 = 2
+    EmailCryptTypeMD5 = 2,
+    EmailCryptTypeSHA256 = 3
 } EmailCryptType;
 
 /*
@@ -175,6 +218,10 @@ typedef enum  {
  */
 @property (nonatomic, setter = setUseUninstallSandbox:) BOOL useUninstallSandbox;
 
+/*
+ * Advertising Id (exposed for RemoteDebug)
+ */
+@property (nonatomic, strong) NSString *advertiserId;
 
 /*
  * Use this to send the User's emails
@@ -190,7 +237,7 @@ typedef enum  {
  * Example :
  *      [[AppsFlyer sharedTracker] trackEvent:@"hotel-booked" withValue:"200"];
  */
-- (void) trackEvent:(NSString*)eventName withValue:(NSString*)value;
+- (void) trackEvent:(NSString*)eventName withValue:(NSString*)value __attribute__((deprecated));
 
 /*
  * Use this method to track an events with mulitple values. See AppsFlyer's documentation for details. 
@@ -209,6 +256,7 @@ typedef enum  {
                   additionalParameters:(NSDictionary *)params
                                success:(void (^)(NSDictionary *response))successBlock
                                failure:(void (^)(NSError *error, id reponse)) failedBlock NS_AVAILABLE(10_7, 7_0);
+
 
 
 /*
@@ -258,5 +306,8 @@ typedef enum  {
 */
 - (NSString *) getSDKVersion;
 
+
+
+- (void) remoteDebuggingCallWithData:(NSString *) data;
 
 @end

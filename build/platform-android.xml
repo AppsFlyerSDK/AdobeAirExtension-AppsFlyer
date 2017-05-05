@@ -4,6 +4,9 @@
         <packagedDependency>google-play-services.jar</packagedDependency> 
 		<packagedDependency>AF-Android-SDK.jar</packagedDependency>
         <packagedDependency>json-simple-1.1.1.jar</packagedDependency>
+        <packagedDependency>firebase-common.jar</packagedDependency>
+        <packagedDependency>firebase-iid.jar</packagedDependency>
+        <packagedDependency>firebase-messaging.jar</packagedDependency>
     </packagedDependencies> 
     <packagedResources>
         <!--packagedResource> 

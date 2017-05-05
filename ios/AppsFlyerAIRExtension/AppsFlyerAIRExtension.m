@@ -242,22 +242,6 @@ DEFINE_ANE_FUNCTION(registerValidatorListener)
     return NULL;
 }
 
-DEFINE_ANE_FUNCTION(getAdvertiserId)
-{
-    NSLog(@"getAdvertiserId method is not supported on iOS");
-    FREObject id = nil;
-    NSString *value = @"-1";
-    FRENewObjectFromUTF8(strlen((const char*)[value UTF8String]) + 1.0, (const uint8_t*)[value UTF8String], &id);
-    return id;
-}
-
-DEFINE_ANE_FUNCTION(getAdvertiserIdEnabled)
-{
-    NSLog(@"getAdvertiserIdEnabled method is not supported on iOS");
-    FREObject res = nil;
-    FRENewObjectFromBool(0, &res);
-    return res;
-}
 
 DEFINE_ANE_FUNCTION(setCollectAndroidID)
 {
@@ -283,12 +267,6 @@ DEFINE_ANE_FUNCTION(setCollectIMEI)
     return NULL;
 }
 
-DEFINE_ANE_FUNCTION(setGCMProjectNumber)
-{
-    NSLog(@"setGCMProjectID method is not supported on iOS");
-    return NULL;
-}
-
 void AFExtContextInitializer(void* extData, const uint8_t* ctxType, FREContext ctx, uint32_t* numFunctionsToTest, const FRENamedFunction** functionsToSet)
 {
 
@@ -310,7 +288,7 @@ void AFExtContextInitializer(void* extData, const uint8_t* ctxType, FREContext c
     __original_openURL_Imp = method_setImplementation(originalOpenURLMethod, (IMP)openURL);
     __original_didReceiveRemoteNotification_Imp = method_setImplementation(originalDidReceiveRemoteNotificationMethod, (IMP)didReceiveRemoteNotificationHandler);
     
-    *numFunctionsToTest = 22;
+    *numFunctionsToTest = 19;
     FRENamedFunction* func = (FRENamedFunction*)malloc(sizeof(FRENamedFunction) * *numFunctionsToTest);
     
     func[0].name = (const uint8_t*)"setDeveloperKey";
@@ -349,13 +327,13 @@ void AFExtContextInitializer(void* extData, const uint8_t* ctxType, FREContext c
     func[8].functionData = NULL;
     func[8].function = &setDebug;
     
-    func[9].name = (const uint8_t*)"getAdvertiserId";
+    func[9].name = (const uint8_t*)"registerValidatorListener";
     func[9].functionData = NULL;
-    func[9].function = &getAdvertiserId;
+    func[9].function = &registerValidatorListener;
     
-    func[10].name = (const uint8_t*)"getAdvertiserIdEnabled";
+    func[10].name = (const uint8_t*)"useReceiptValidationSandbox";
     func[10].functionData = NULL;
-    func[10].function = &getAdvertiserIdEnabled;
+    func[10].function = &useReceiptValidationSandbox;
     
     func[11].name = (const uint8_t*)"setCollectAndroidID";
     func[11].functionData = NULL;
@@ -369,9 +347,9 @@ void AFExtContextInitializer(void* extData, const uint8_t* ctxType, FREContext c
     func[13].functionData = NULL;
     func[13].function = &handlePushNotification;
     
-    func[14].name = (const uint8_t*)"setGCMProjectNumber";
+    func[14].name = (const uint8_t*)"sendDeepLinkData";
     func[14].functionData = NULL;
-    func[14].function = &setGCMProjectNumber;
+    func[14].function = &sendDeepLinkData;
     
     func[15].name = (const uint8_t*)"registerUninstall";
     func[15].functionData = NULL;
@@ -388,18 +366,6 @@ void AFExtContextInitializer(void* extData, const uint8_t* ctxType, FREContext c
     func[18].name = (const uint8_t*)"validateAndTrackInAppPurchase";
     func[18].functionData = NULL;
     func[18].function = &validateAndTrackInAppPurchase;
-    
-    func[19].name = (const uint8_t*)"registerValidatorListener";
-    func[19].functionData = NULL;
-    func[19].function = &registerValidatorListener;
-    
-    func[20].name = (const uint8_t*)"useReceiptValidationSandbox";
-    func[20].functionData = NULL;
-    func[20].function = &useReceiptValidationSandbox;
-    
-    func[21].name = (const uint8_t*)"sendDeepLinkData";
-    func[21].functionData = NULL;
-    func[21].function = &sendDeepLinkData;
     
     *functionsToSet = func;
     
