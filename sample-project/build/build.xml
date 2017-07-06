@@ -3,7 +3,6 @@
 	
 	<property name="BUILD_DIR" value="${basedir}/build"/>
 	<loadproperties srcFile="${BUILD_DIR}/build.properties"/>
-	<!-- Custom properties per dev env. File ignored by Mercurial -->
 	<loadproperties srcFile="${BUILD_DIR}/build.custom.properties"/>
 	
 	<taskdef resource="net/sf/antcontrib/antcontrib.properties"/>
@@ -29,6 +28,7 @@
 	<property name="APP_SWF_FILE" value="${APP_NAME}.swf"/>
 	<property name="PACKAGE_DIR" value="${BUILD_DIR}/package-target"/>
 	<property name="COMPILER_OUTPUT_PATH" value="${PACKAGE_DIR}/${APP_SWF_FILE}"/>
+	<property name="MAIN_CLASS" value="Main.as"/>
 	<property name="version.number" value="${app.version}b${build.number}"/>
 	
 	<scriptdef language="javascript" name="lower">
@@ -48,7 +48,7 @@
 				<echo message="Building market version." />
 				<property name="ANDROID_KEYSTORE" value="${CERT_DIR}/${android.cert}" />
 				<property name="IOS_KEYSTORE" value="${CERT_DIR}/${ios.cert.name}"/>
-				<property name="IOS_PROVISIONING_PROFILE" value="${CERT_DIR}/${ios.mobileprovision.name}"/>
+				<property name="IOS_PROVISIONING_PROFILE" value="${CERT_DIR}/${ios.mobileprovision.appstore.name}"/>
 				<property name="IOS_STOREPASS" value="${ios.cert.passwd}"/>
 				<property name="ANDROID_STOREPASS" value="${android.passwd}"/>
 				<property name="IOS_TARGET" value="ipa-app-store" />
@@ -57,11 +57,11 @@
 			</then>
 			<else>
 				<echo message="Building adhoc version." />
-				<property name="ANDROID_KEYSTORE" value="${CERT_DIR}/android_cert_trembit.p12" />
+				<property name="ANDROID_KEYSTORE" value="${CERT_DIR}/${android.cert}" />
+				<property name="ANDROID_STOREPASS" value="${android.passwd}"/>
 				<property name="IOS_KEYSTORE" value="${CERT_DIR}/${ios.cert.name}"/>
 				<property name="IOS_PROVISIONING_PROFILE" value="${CERT_DIR}/${ios.mobileprovision.name}"/>
 				<property name="IOS_STOREPASS" value="${ios.cert.passwd}"/>
-				<property name="ANDROID_STOREPASS" value="123qwe"/>
 				<property name="IOS_TARGET" value="ipa-ad-hoc" />
 				<property name="SHOW_DEBUG_INFO" value="false"/>
 				<property name="version.number" value="${app.version}b${build.number}"/>
@@ -91,22 +91,17 @@
 	</target>
 	
     <target name="buildMobile" depends="adjustMobileProperties">
-		<property name="APP_ROOT_FILE" value="Main.as"/>
+		<property name="APP_ROOT_FILE" value="${MAIN_CLASS}"/>
 		<antcall target="compileMobile"/>
 		<antcall target="resources"/>
         <antcall target="packageMobile"/>
 		<antcall target="clear"/>
     </target>
 	
-	<target name="package-apk-device" depends="adjustMobileProperties">
-		<property name="APP_ROOT_FILE" value="Main.as"/>
-		<antcall target="compileMobile"/>
-		<antcall target="resources"/>
-        <antcall target="packageMobile"/>
+	<target name="package-apk-device" depends="buildMobile">
 		<exec executable="${ADB_PATH}">
 			<arg line="install -r ${PACKAGE_BUNDLE_PATH}"/>
 		</exec>
-		<antcall target="clear"/>
     </target>
 	
     <target name="info">
@@ -130,8 +125,6 @@
 				   maxmemory="1536m"
 				   optimize="true"
 				   warnings="false">
-				 
-				<!--swf-version>31</swf-version-->
 				
 				<source-path path-element="${SRC_DIR}"/>
 				
@@ -144,10 +137,6 @@
 					<include name="*.swc"/>
 				</compiler.library-path>
 			
-				<!--compiler.library-path dir="${FLEX_HOME}/frameworks/libs/mobile">
-					<include name="**/*"/>
-				</compiler.library-path-->
-			
 				<compiler.library-path dir="${FLEX_HOME}/frameworks/locale">
 					<include name="**/*"/>
 				</compiler.library-path>
@@ -159,15 +148,6 @@
         <copy tofile="${PACKAGE_DIR}/${APP_DESCRIPTOR}"
 			  file="${SRC_DIR}/${APP_DESCRIPTOR}" 
 			  overwrite="true" />
-		<if>
-			<equals arg1="${target.platform}" arg2="iOS"/>
-			<then>
-				<!--replaceregexp file="${BUILD_DIR}/${APP_DESCRIPTOR}" match="&lt;iPhone&gt;" replace="&lt;iPhone&gt;&lt;externalSwfs&gt;externalSwfs\/SwfSoundsAssets.txt&lt;\/externalSwfs&gt;" flags="g" byline="true" /-->  
-			</then>
-			<else>
-				<replaceregexp file="${PACKAGE_DIR}/${APP_DESCRIPTOR}" match="&lt;id&gt;.*?&lt;\/id&gt;" replace="&lt;id&gt;${android.package.name}&lt;\/id&gt;" flags="g" byline="true" />
-			</else>
-		</if>
 		<replace file="${PACKAGE_DIR}/${APP_DESCRIPTOR}" casesensitive="true">
 			<replacefilter token="0.0.1" value="${app.version}"/>
 			<replacefilter token="${app.version} Build local" value="${app.version}"/>
@@ -206,6 +186,12 @@
 			<arg value="-C"/>
 			<arg value="${PACKAGE_DIR}"/>
             <arg value="${APP_SWF_FILE}"/>
+			<arg value="-C"/>
+			<arg value="${APP_ROOT_DIR}/assets/ios/splashcreens"/>
+			<arg value="."/>
+			<arg value="-C"/>
+			<arg value="${APP_ROOT_DIR}/assets/ios"/>
+			<arg value="./icons"/>
         </java>
         <echo message="Finished package ipa"/>
     </target>
@@ -228,6 +214,9 @@
 			<arg value="-C"/>
 			<arg value="${PACKAGE_DIR}"/>
 			<arg value="${APP_SWF_FILE}"/>
+			<arg value="-C"/>
+			<arg value="${APP_ROOT_DIR}/assets/android"/>
+			<arg value="./icons"/>
 		</java>
 		<echo message="Finished package apk"/>
 	</target>
