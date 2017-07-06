@@ -29,9 +29,6 @@ public class AppsFlyerInterface extends  EventDispatcher {
 	public function setAppUserId(appUserId:String):void {
 	}
 
-	public function setGCMProjectNumber(id:String):void {
-    }
-
     public function setImeiData(imei:String):void {
     }
 
@@ -55,15 +52,6 @@ public class AppsFlyerInterface extends  EventDispatcher {
 
 	public function setDebug(value:Boolean):void{
 
-	}
-
-
-	public function getAdvertiserId():String {
-		return "-1";
-	}
-
-	public function getAdvertiserIdEnabled():Boolean {
-		return false;
 	}
 
 	public function handlePushNotification(userInfo:String):void{

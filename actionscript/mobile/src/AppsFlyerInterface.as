@@ -58,10 +58,6 @@ public class AppsFlyerInterface extends EventDispatcher {
 		context.call("setAppUserId", appUserId);
 	}
 
-	public function setGCMProjectNumber(id:String):void {
-		context.call("setGCMProjectNumber", id);
-	}
-
 	public function registerUninstall(deviceToken:String):void {
          context.call("registerUninstall", deviceToken.replace(/[ <>]/g, ""));
     }
@@ -99,14 +95,6 @@ public class AppsFlyerInterface extends EventDispatcher {
 	public function handlePushNotification(userInfo:String):void{
     	context.call("handlePushNotification", userInfo);
     }
-
-	public function getAdvertiserId():String {
-		return context.call("getAdvertiserId") as String;
-	}
-
-	public function getAdvertiserIdEnabled():Boolean {
-		return context.call("getAdvertiserIdEnabled") as Boolean;
-	}
 
     public function sendDeepLinkData():void {
         context.call("sendDeepLinkData");

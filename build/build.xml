@@ -73,15 +73,10 @@
             </classpath>
         </javac>
         
-        <!-- <mkdir dir="../android/temp/zip"/>
-         <unzip src="../android/google-play-services_lib/libs/google-play-services.jar" dest="../android/temp/zip" />
-         <copydir src="../android/temp/zip/com" dest="../android/temp/classes/com"/>
-         <copy todir="../temp/android/res/">
-         <fileset dir="../android/google-play-services_lib/bin/res"/>
-         </copy> -->
-        
          <copy todir="../temp/android/res/values/">
-             <fileset dir="../android/google-play-services_lib/res/values"/>
+             <fileset dir="../android/google-play-services_lib/res/values">
+                <exclude name="wallet_styles.xml" />
+            </fileset>
          </copy>
         
         <mkdir dir="../temp/android/"/>
@@ -91,9 +86,6 @@
         </delete>
         <delete dir="../android/temp/classes/com/appsflyer/adobeair/lib"/>
         <jar basedir="../android/temp/classes" destfile="../temp/android/lib${name}.jar"/>
-        <!--         <copy todir="../temp/android/res/">
-         <fileset dir="../android/res"/>
-         </copy> -->
         <copy todir="../temp/android">
             <fileset dir="../res"/>
         </copy>
@@ -126,8 +118,6 @@
             <env key="AIR_SDK_HOME" value="${air.sdk}"/>
             <arg line='-source-path ../actionscript/mobile/src'/>
             <arg line='-output ../temp/swc/${name}.swc'/>
-            <!--arg line='-swf-version=28'/>
-            <arg line='-target-player=17.0'/-->
             <arg line='-external-library-path+="${air.sdk}/frameworks/libs/air/airglobal.swc"'/>
             <arg line='-include-classes ${classlist}'/>
         </exec>
@@ -154,8 +144,6 @@
             <env key="AIR_SDK_HOME" value="${air.sdk}"/>
             <arg line='-source-path ../actionscript/default/src'/>
             <arg line='-output ../temp/swc/${name}.swc'/>
-            <!--arg line='-target-player=17.0'/>
-            <arg line='-swf-version=28'/-->
             <arg line='-external-library-path+="${air.sdk}/frameworks/libs/air/airglobal.swc"'/>
             <arg line='-include-classes ${classlist}'/>
         </exec>
@@ -163,6 +151,8 @@
         <unzip src="../temp/swc/${name}.swc" dest="../temp/swc/content" overwrite="true"/>
         <copy file="../temp/swc/content/library.swf" todir="../temp/default" overwrite="true"/>
         <delete dir="../temp/swc/content/"/>
+
+        <copy file="../temp/swc/${name}.swc" todir="../bin" overwrite="true" />
     </target>
     
     <!-- Package -->
