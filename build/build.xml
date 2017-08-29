@@ -4,7 +4,7 @@
     <!-- Config -->
     <property file="build.config"/>
     
-    <target name="all" depends="android,ios,swc-mobile,swc-default,package,package_without_gp,clear" description="Full build of extension"/>
+    <target name="all" depends="android,ios,swc-default,swc-mobile,package,package_without_gp,clear" description="Full build of extension"/>
     
     <target name="all-android-debug" depends="android-debug,ios,swc-mobile,swc-default,package,package_without_gp,clear"
         description="Full build of extension w/debugging on Android"
