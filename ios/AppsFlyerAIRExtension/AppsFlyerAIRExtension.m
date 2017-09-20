@@ -69,17 +69,25 @@
 
 @end
 
+// Reports app open from a Universal Link for iOS 9
 static IMP __original_continueUserActivity_Imp;
 BOOL continueUserActivity(id self, SEL _cmd, UIApplication* application, NSUserActivity* userActivity, RestorationHandler restorationHandler) {
     NSLog(@"continueUserActivity: %@", self);
     [[AppsFlyerTracker sharedTracker] continueUserActivity:userActivity restorationHandler:restorationHandler];
     return ((BOOL(*)(id,SEL,UIApplication*,NSUserActivity*, RestorationHandler))__original_continueUserActivity_Imp)(self, _cmd, application, userActivity, restorationHandler);
 }
-static IMP __original_openURL_Imp;
-BOOL openURL(id self, SEL _cmd, UIApplication* application, NSURL* url, NSString* sourceApplication, id annotation) {
+// Reports app open from deeplink for iOS 8 or below (DEPRECATED)
+static IMP __original_openURLDeprecated_Imp;
+BOOL openURLDeprecated(id self, SEL _cmd, UIApplication* application, NSURL* url, NSString* sourceApplication, id annotation) {
     NSLog(@"openURL: %@", self);
     [[AppsFlyerTracker sharedTracker] handleOpenURL:url sourceApplication:sourceApplication withAnnotation:annotation];
-    return ((BOOL(*)(id, SEL, UIApplication*, NSURL*, NSString*, id))__original_openURL_Imp)(self, _cmd, application, url, sourceApplication, annotation);
+    return ((BOOL(*)(id, SEL, UIApplication*, NSURL*, NSString*, id))__original_openURLDeprecated_Imp)(self, _cmd, application, url, sourceApplication, annotation);
+}
+// Reports app open from deeplink for iOS 10
+static IMP __original_openURL_Imp;
+BOOL openURL(id self, SEL _cmd, UIApplication* application, NSURL* url, NSDictionary * options) {
+    [[AppsFlyerTracker sharedTracker] handleOpenUrl:url options:options];
+    return ((BOOL(*)(id, SEL, UIApplication*, NSURL*, NSDictionary*))__original_openURL_Imp)(self, _cmd, application, url, options);
 }
 
 static IMP __original_didReceiveRemoteNotification_Imp;
@@ -277,14 +285,17 @@ void AFExtContextInitializer(void* extData, const uint8_t* ctxType, FREContext c
     Class objectClass = object_getClass(delegate);
     
     SEL originalContinueUserActivitySelector = @selector(application:continueUserActivity:restorationHandler:);
+    SEL originalOpenURLDeprecatedSelector = @selector(application:openURL:sourceApplication:annotation:);
     SEL originalOpenURLSelector = @selector(application:openURL:options:);
     SEL originalDidReceiveRemoteNotificationSelector = @selector(application:didReceiveRemoteNotification:);
     
     Method originalContinueUserActivityMethod = class_getInstanceMethod(objectClass, originalContinueUserActivitySelector);
+    Method originalOpenURLDeprecatedMethod = class_getInstanceMethod(objectClass, originalOpenURLDeprecatedSelector);
     Method originalOpenURLMethod = class_getInstanceMethod(objectClass, originalOpenURLSelector);
     Method originalDidReceiveRemoteNotificationMethod = class_getInstanceMethod(objectClass, originalDidReceiveRemoteNotificationSelector);
 
     __original_continueUserActivity_Imp = method_setImplementation(originalContinueUserActivityMethod, (IMP)continueUserActivity);
+    __original_openURLDeprecated_Imp = method_setImplementation(originalOpenURLDeprecatedMethod, (IMP)openURLDeprecated);
     __original_openURL_Imp = method_setImplementation(originalOpenURLMethod, (IMP)openURL);
     __original_didReceiveRemoteNotification_Imp = method_setImplementation(originalDidReceiveRemoteNotificationMethod, (IMP)didReceiveRemoteNotificationHandler);
     
