@@ -2,11 +2,15 @@
 //  AppsFlyerTracker.h
 //  AppsFlyerLib
 //
-//  AppsFlyer iOS SDK 4.7.11
+//  AppsFlyer iOS SDK 4.8.3 (625)
 //  Copyright (c) 2013 AppsFlyer Ltd. All rights reserved.
 //
 
 #import <Foundation/Foundation.h>
+#import "AppsFlyerCrossPromotionHelper.h"
+#import "AppsFlyerShareInviteHelper.h"
+
+
 
 // In app event names constants
 #define AFEventLevelAchieved            @"af_level_achieved"
@@ -31,12 +35,11 @@
 #define AFEventUpdate                   @"af_update"
 #define AFEventOpenedFromPushNotification @"af_opened_from_push_notification"
 #define AFEventLocation                 @"af_location_coordinates"
-#define AFEventOrderId                  @"af_order_id"
 #define AFEventCustomerSegment          @"af_customer_segment"
 
 
-
 // In app event parameter names
+#define AFEventParamContent                @"af_content"
 #define AFEventParamAchievenmentId         @"af_achievement_id"
 #define AFEventParamLevel                  @"af_level"
 #define AFEventParamScore                  @"af_score"
@@ -44,7 +47,7 @@
 #define AFEventParamPrice                  @"af_price"
 #define AFEventParamContentType            @"af_content_type"
 #define AFEventParamContentId              @"af_content_id"
-#define AFEventParamContentList            @"ad_content_list"
+#define AFEventParamContentList            @"af_content_list"
 #define AFEventParamCurrency               @"af_currency"
 #define AFEventParamQuantity               @"af_quantity"
 #define AFEventParamRegistrationMethod     @"af_registration_method"
@@ -65,6 +68,7 @@
 #define AFEventParamCustomerUserId         @"af_customer_user_id"
 #define AFEventParamValidated              @"af_validated"
 #define AFEventParamRevenue                @"af_revenue"
+#define AFEventProjectedParamRevenue       @"af_projected_revenue"
 #define AFEventParamReceiptId              @"af_receipt_id"
 #define AFEventParamTutorialId             @"af_tutorial_id"
 #define AFEventParamAchievenmentId         @"af_achievement_id"
@@ -74,6 +78,7 @@
 #define AFEventParamNewVersion             @"af_new_version"
 #define AFEventParamReviewText             @"af_review_text"
 #define AFEventParamCouponCode             @"af_coupon_code"
+#define AFEventParamOrderId                @"af_order_id"
 #define AFEventParam1                      @"af_param_1"
 #define AFEventParam2                      @"af_param_2"
 #define AFEventParam3                      @"af_param_3"
@@ -114,6 +119,14 @@
 #define AFEventParamPreferredNumStops       @"af_preferred_num_stops"
 
 
+#define kAppsFlyerOneLinkVersion @"oneLinkVersion"
+#define kAppsFlyerOneLinkScheme  @"oneLinkScheme"
+#define kAppsFlyerOneLinkDomain  @"oneLinkDomain"
+#define kDefaultOneLink          @"go.onelink.me"
+#define kNoOneLinkFallback       @"https://app.appsflyer.com"
+#define kINviteAppleAppID        @"af_siteid"
+
+
 
 
 typedef enum  {
@@ -137,13 +150,7 @@ typedef enum  {
 @end
 
 @interface AppsFlyerTracker : NSObject {
-
-    BOOL _isDebug;
-    BOOL didCollectIAdData;
-    BOOL _useReceiptValidationSandbox;
-    BOOL _useUninstallSandbox;
-    EmailCryptType emailCryptType;
-    NSArray *userEmails;
+    BOOL permitAggregateiAdData;
 }
 
 +(AppsFlyerTracker*) sharedTracker;
@@ -167,10 +174,6 @@ typedef enum  {
  */
 @property (nonatomic, strong) NSString *currencyCode;
 
-
-/* AppsFlyer's SDK send the data to AppsFlyer's servers over HTTPS. You can set the isHTTPS property to NO in order to use regular HTTP. */
-//@property BOOL isHTTPS;
-
 /* 
  * AppsFLyer SDK collect Apple's advertisingIdentifier if the AdSupport framework included in the SDK.
  * You can disable this behavior by setting the following property to YES.
@@ -184,11 +187,13 @@ typedef enum  {
 @property (nonatomic, setter = setIsDebug:) BOOL isDebug;
 
 
-/*
- * Set this flag to NO, to not collect the device name.
+/*!
+ *  Set this flag to `YES`, to collect the current device name. Default value is `NO`
  */
 @property (nonatomic, setter = setShouldCollectDeviceName:) BOOL shouldCollectDeviceName;
 
+
+@property (nonatomic, setter = setAppInviteOneLink:) NSString* appInviteOneLinkID;
 
 /*
  * Opt-out tracking for specific user
@@ -203,7 +208,6 @@ typedef enum  {
 /*
  * AppsFlyer delegate. See AppsFlyerTrackerDelegate abvoe
  */
-//@property (unsafe_unretained, nonatomic) id<AppsFlyerTrackerDelegate> delegate; //RD-5419
 @property (weak, nonatomic) id<AppsFlyerTrackerDelegate> delegate;
 
 /*
@@ -279,12 +283,12 @@ typedef enum  {
 /*
  * In case you want to track deep linking, call this method from your delegate's openURL method.
  */
-- (void) handleOpenURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication __attribute__((deprecated));
+- (void) handleOpenURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication;
 
 /*
  * In case you want to track deep linking, call this method from your delegate's openURL method with refferer.
  */
-- (void) handleOpenURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication withAnnotation:(id) annotation __attribute__((deprecated));
+- (void) handleOpenURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication withAnnotation:(id) annotation;
 
 
 - (void) handleOpenUrl:(NSURL *) url options:(NSDictionary *)options;
@@ -310,5 +314,29 @@ typedef enum  {
 
 
 - (void) remoteDebuggingCallWithData:(NSString *) data;
+
+/*!
+ *  @brief This property accepts a string value representing the host name for all enpoints.
+ *  @warning To use `default` SDK endpoint – set value to `nil`.
+ *  @code
+ *  Objective-C:
+ *  [[AppsFlyerTracker sharedTracker] setHost:@"example.com"];
+ *  Swift:
+ *  AppsFlyerTracker.shared().host = "example.com"
+ *  @endcode
+ */
+
+@property (nonatomic, strong) NSString *host;
+
+/*!
+ *  This property is responsible for timeout between sessions in seconds.
+ *  Default value is 5 seconds.
+ */
+@property (atomic) NSUInteger minTimeBetweenSessions;
+
+/*!
+ *  WARNING! This will disable all requests from AppsFlyer SDK
+ */
+@property (atomic) BOOL isStopTracking;
 
 @end

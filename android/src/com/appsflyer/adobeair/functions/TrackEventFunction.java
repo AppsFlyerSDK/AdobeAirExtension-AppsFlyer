@@ -47,7 +47,6 @@ public class TrackEventFunction implements FREFunction {
 
         if (eventValues.isEmpty()) {
             if (eventName == null || eventName.isEmpty()) {
-                //AppsFlyerLib.getInstance().sendTrackingWithEvent(context, null, null);
                 AppsFlyerLib.getInstance().trackEvent(context, null, null);
             } else {
                 AppsFlyerLib.getInstance().trackEvent(context, eventName, null);

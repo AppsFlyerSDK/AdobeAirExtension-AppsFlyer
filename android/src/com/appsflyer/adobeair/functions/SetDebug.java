@@ -1,8 +1,10 @@
 package com.appsflyer.adobeair.functions;
 
+import android.util.Log;
 import com.adobe.fre.FREContext;
 import com.adobe.fre.FREFunction;
 import com.adobe.fre.FREObject;
+import com.appsflyer.AFLogger;
 import com.appsflyer.AppsFlyerLib;
 
 public class SetDebug implements FREFunction {
@@ -11,10 +13,11 @@ public class SetDebug implements FREFunction {
         Boolean debugLog = false;
         try {
             debugLog = freObjects[0].getAsBool();
-            AppsFlyerLib.getInstance().setDebugLog(debugLog);
         } catch (Exception e) {
             e.printStackTrace();
         }
+
+        AppsFlyerLib.getInstance().setLogLevel(debugLog ? AFLogger.LogLevel.VERBOSE : AFLogger.LogLevel.INFO);
         return null;
     }
 }

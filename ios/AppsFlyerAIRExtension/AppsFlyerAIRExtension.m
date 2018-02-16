@@ -99,7 +99,7 @@ BOOL didReceiveRemoteNotificationHandler(id self, SEL _cmd, UIApplication* appli
 
 AppsFlyerDelegate * conversionDelegate;
 
-DEFINE_ANE_FUNCTION(setDeveloperKey)
+DEFINE_ANE_FUNCTION(startTracking)
 {
     NSString *developerKey = [AppsFlyerAIRExtension getString: argv[0]];
     NSString *appId = [AppsFlyerAIRExtension getString: argv[1]];
@@ -107,7 +107,25 @@ DEFINE_ANE_FUNCTION(setDeveloperKey)
     [AppsFlyerTracker sharedTracker].appsFlyerDevKey = developerKey;
     [AppsFlyerTracker sharedTracker].appleAppID = appId;
     
+    [AppsFlyerTracker sharedTracker].delegate = conversionDelegate;
+    
     return NULL;
+}
+
+DEFINE_ANE_FUNCTION(stopTracking)
+{
+    uint32_t value;
+    FREGetObjectAsBool(argv[0], &value);
+    [AppsFlyerTracker sharedTracker].isStopTracking = value;
+    return NULL;
+}
+
+DEFINE_ANE_FUNCTION(isTrackingStopped)
+{
+    FREObject result = nil;
+    uint32_t isStoppedTracking = [[AppsFlyerTracker sharedTracker] isStopTracking];
+    FRENewObjectFromBool(isStoppedTracking, &result);
+    return result;
 }
 
 DEFINE_ANE_FUNCTION(trackAppLaunch)
@@ -144,6 +162,22 @@ DEFINE_ANE_FUNCTION(setAppUserId)
     
     [AppsFlyerTracker sharedTracker].customerUserID = appUserId;
     
+    return NULL;
+}
+
+DEFINE_ANE_FUNCTION(setUserEmails)
+{
+    FREObject arr = argv[0];
+    uint32_t arr_len;
+    FREGetArrayLength(arr, &arr_len);
+    NSMutableArray *emails = [[NSMutableArray alloc] init];
+    for(int32_t i=arr_len-1; i>=0;i--){
+        FREObject element;
+        FREGetArrayElementAt(arr, i, &element);
+        [emails addObject: [AppsFlyerAIRExtension getString: element]];
+    }
+    
+    [[AppsFlyerTracker sharedTracker] setUserEmails:emails withCryptType:EmailCryptTypeSHA1];
     return NULL;
 }
 
@@ -184,7 +218,7 @@ DEFINE_ANE_FUNCTION(registerUninstall)
     NSString *deviceTokenStr = [AppsFlyerAIRExtension getString: argv[0]];
     NSData *deviceToken = [AppsFlyerAIRExtension dataFromHexString:deviceTokenStr];
     [[AppsFlyerTracker sharedTracker] registerUninstall:deviceToken];
-    return nil;
+    return NULL;
 }
 
 DEFINE_ANE_FUNCTION(registerConversionListener)
@@ -226,7 +260,7 @@ DEFINE_ANE_FUNCTION(validateAndTrackInAppPurchase)
                                                                 
                                                                 [AppsFlyerAIRExtension dispatchStatusEvent: conversionDelegate.ctx withType: @"validateInAppFailure" level:errorString];
                                                             }];
-    return nil;
+    return NULL;
 }
 
 DEFINE_ANE_FUNCTION(useReceiptValidationSandbox)
@@ -299,12 +333,28 @@ void AFExtContextInitializer(void* extData, const uint8_t* ctxType, FREContext c
     __original_openURL_Imp = method_setImplementation(originalOpenURLMethod, (IMP)openURL);
     __original_didReceiveRemoteNotification_Imp = method_setImplementation(originalDidReceiveRemoteNotificationMethod, (IMP)didReceiveRemoteNotificationHandler);
     
-    *numFunctionsToTest = 19;
+    *numFunctionsToTest = 23;
     FRENamedFunction* func = (FRENamedFunction*)malloc(sizeof(FRENamedFunction) * *numFunctionsToTest);
     
-    func[0].name = (const uint8_t*)"setDeveloperKey";
+    func[19].name = (const uint8_t*)"init";
+    func[19].functionData = NULL;
+    func[19].function = &startTracking;
+    
+    func[20].name = (const uint8_t*)"stopTracking";
+    func[20].functionData = NULL;
+    func[20].function = &stopTracking;
+    
+    func[21].name = (const uint8_t*)"isTrackingStopped";
+    func[21].functionData = NULL;
+    func[21].function = &isTrackingStopped;
+    
+    func[22].name = (const uint8_t*)"setUserEmails";
+    func[22].functionData = NULL;
+    func[22].function = &setUserEmails;
+    
+    func[0].name = (const uint8_t*)"startTracking";
     func[0].functionData = NULL;
-    func[0].function = &setDeveloperKey;
+    func[0].function = &startTracking;
     
     func[1].name = (const uint8_t*)"trackAppLaunch";
     func[1].functionData = NULL;
