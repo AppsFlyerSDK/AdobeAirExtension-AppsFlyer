@@ -37,13 +37,14 @@ public class AppsFlyerContext extends FREContext {
         map.put("setCollectIMEI", new SetCollectIMEI());
         map.put("getAppsFlyerUID", new GetAppsFlyerUID());
         map.put("setAppUserId", new SetCustomerUserId());
+        map.put("waitForCustomerUserID", new WaitForCustomerUserID());
+        map.put("setCustomerIdAndTrack", new SetCustomerIdAndTrack());
         map.put("setUserEmails", new SetUserEmails());
         map.put("setDebug", new SetDebug());
         map.put("sendDeepLinkData", new SendDeepLinkData());
         map.put("validateAndTrackInAppPurchase", new ValidateAndTrackInAppPurchaseFunction());
         map.put("registerValidatorListener", new RegisterValidatorListenerFunction());
         map.put("useReceiptValidationSandbox", new UseReceiptValidationSandboxFunction());
-
 
         return map;
     }

@@ -309,6 +309,18 @@ DEFINE_ANE_FUNCTION(setCollectIMEI)
     return NULL;
 }
 
+DEFINE_ANE_FUNCTION(waitForCustomerUserId)
+{
+    NSLog(@"waitForCustomerUserId method is not supported on iOS");
+    return NULL;
+}
+
+DEFINE_ANE_FUNCTION(setCustomerIdAndTrack)
+{
+    NSLog(@"setCustomerIdAndTrack method is not supported on iOS");
+    return NULL;
+}
+
 void AFExtContextInitializer(void* extData, const uint8_t* ctxType, FREContext ctx, uint32_t* numFunctionsToTest, const FRENamedFunction** functionsToSet)
 {
 
@@ -333,7 +345,7 @@ void AFExtContextInitializer(void* extData, const uint8_t* ctxType, FREContext c
     __original_openURL_Imp = method_setImplementation(originalOpenURLMethod, (IMP)openURL);
     __original_didReceiveRemoteNotification_Imp = method_setImplementation(originalDidReceiveRemoteNotificationMethod, (IMP)didReceiveRemoteNotificationHandler);
     
-    *numFunctionsToTest = 23;
+    *numFunctionsToTest = 25;
     FRENamedFunction* func = (FRENamedFunction*)malloc(sizeof(FRENamedFunction) * *numFunctionsToTest);
     
     func[19].name = (const uint8_t*)"init";
@@ -351,6 +363,14 @@ void AFExtContextInitializer(void* extData, const uint8_t* ctxType, FREContext c
     func[22].name = (const uint8_t*)"setUserEmails";
     func[22].functionData = NULL;
     func[22].function = &setUserEmails;
+    
+    func[23].name = (const uint8_t*)"waitForCustomerUserId";
+    func[23].functionData = NULL;
+    func[23].function = &waitForCustomerUserId;
+    
+    func[24].name = (const uint8_t*)"setCustomerIdAndTrack";
+    func[24].functionData = NULL;
+    func[24].function = &setCustomerIdAndTrack;
     
     func[0].name = (const uint8_t*)"startTracking";
     func[0].functionData = NULL;

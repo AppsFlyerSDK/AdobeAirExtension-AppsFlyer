@@ -75,6 +75,14 @@ public class AppsFlyerInterface extends EventDispatcher {
 		context.call("setAppUserId", appUserId);
 	}
 
+	public function waitForCustomerUserID(value:Boolean):void {
+    	context.call("waitForCustomerUserID", value);
+    }
+
+	public function setCustomerIdAndTrack(value:String):void {
+        context.call("setCustomerIdAndTrack", value);
+    }
+
 	public function registerUninstall(deviceToken:String):void {
          context.call("registerUninstall", deviceToken.replace(/[ <>]/g, ""));
     }

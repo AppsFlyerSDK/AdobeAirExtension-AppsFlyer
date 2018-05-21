@@ -42,6 +42,12 @@ public class AppsFlyerInterface extends  EventDispatcher {
 	public function setAppUserId(appUserId:String):void {
 	}
 
+	public function waitForCustomerUserID(value:Boolean):void {
+    }
+
+    public function setCustomerIdAndTrack(value:String):void {
+    }
+
     public function setImeiData(imei:String):void {
     }
 
