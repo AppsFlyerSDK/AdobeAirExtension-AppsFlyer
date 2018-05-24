@@ -183,6 +183,9 @@
     
     <target name="package_without_gp" description="Create the extension package without Google play services">
         <delete file="../temp/android/google-play-services.jar"/>
+        <delete file="../temp/android/firebase-common.jar"/>
+        <delete file="../temp/android/firebase-iid.jar"/>
+        <delete file="../temp/android/firebase-messaging.jar"/>
         <delete dir="../temp/android/res"/>
         <exec executable="${air.sdk}/bin/adt${bin.ext}" failonerror="true" dir="../temp">
             <arg value="-package"/>
@@ -202,6 +205,7 @@
     </target>
 
     <target name="package_without_gp_and_support_lib" description="Create the extension package without Google play services and Support lib">
+        <delete file="../temp/android/android-support-v4.jar"/>
         <exec executable="${air.sdk}/bin/adt${bin.ext}" failonerror="true" dir="../temp">
             <arg value="-package"/>
             <arg value="-target"/>
