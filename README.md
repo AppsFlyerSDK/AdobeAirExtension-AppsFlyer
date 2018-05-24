@@ -10,6 +10,8 @@
 
 - Supports iOS 6+
 
+- iOS SDK v4.8.4
+- Android SDK v4.8.11
 
 Changelog
 ------------

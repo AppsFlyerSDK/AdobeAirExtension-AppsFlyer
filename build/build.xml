@@ -4,9 +4,9 @@
     <!-- Config -->
     <property file="build.config"/>
     
-    <target name="all" depends="android,ios,swc-default,swc-mobile,package,package_without_gp,clear" description="Full build of extension"/>
+    <target name="all" depends="android,ios,swc-default,swc-mobile,package,package_without_gp,package_without_gp_and_support_lib,clear" description="Full build of extension"/>
     
-    <target name="all-android-debug" depends="android-debug,ios,swc-mobile,swc-default,package,package_without_gp,clear"
+    <target name="all-android-debug" depends="android-debug,ios,swc-mobile,swc-default,package,package_without_gp,package_without_gp_and_support_lib,clear"
         description="Full build of extension w/debugging on Android"
     />
     
@@ -199,6 +199,24 @@
         </exec>
     
         <move file="../temp/${name}-witout-gp.ane" todir="../bin"/>
+    </target>
+
+    <target name="package_without_gp_and_support_lib" description="Create the extension package without Google play services and Support lib">
+        <exec executable="${air.sdk}/bin/adt${bin.ext}" failonerror="true" dir="../temp">
+            <arg value="-package"/>
+            <arg value="-target"/>
+            <arg value="ane"/>
+            <arg value="${name}-witout-gp-support.ane"/>
+            <arg value="../build/extension.xml"/>
+            <arg line="-swc swc/${name}.swc"/>
+            
+            <arg line="-platform iPhone-ARM -platformoptions ../build/platform-ios.xml -C ios/ ."/>
+            <arg line="-platform Android-ARM -platformoptions ../build/platform-android-without-gp-support.xml -C android/ ."/>
+            <arg line="-platform Android-x86 -platformoptions ../build/platform-android-without-gp-support.xml -C android/ ."/>
+            <arg line="-platform default -C default/ ."/>
+        </exec>
+    
+        <move file="../temp/${name}-witout-gp-support.ane" todir="../bin"/>
     </target>
     
     <target name="clear">
