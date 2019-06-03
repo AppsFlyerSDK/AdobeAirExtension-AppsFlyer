@@ -181,6 +181,22 @@ DEFINE_ANE_FUNCTION(setUserEmails)
     return NULL;
 }
 
+DEFINE_ANE_FUNCTION(setResolveDeepLinkURLs)
+{
+    FREObject arr = argv[0];
+    uint32_t arr_len;
+    FREGetArrayLength(arr, &arr_len);
+    NSMutableArray *urls = [[NSMutableArray alloc] init];
+    for(int32_t i=arr_len-1; i>=0;i--){
+        FREObject element;
+        FREGetArrayElementAt(arr, i, &element);
+        [urls addObject: [AppsFlyerAIRExtension getString: element]];
+    }
+    
+    [[AppsFlyerTracker sharedTracker] setResolveDeepLinkURLs:urls];
+    return NULL;
+}
+
 DEFINE_ANE_FUNCTION(getConversionData)
 {
     [AppsFlyerTracker sharedTracker].delegate = conversionDelegate;
@@ -345,7 +361,7 @@ void AFExtContextInitializer(void* extData, const uint8_t* ctxType, FREContext c
     __original_openURL_Imp = method_setImplementation(originalOpenURLMethod, (IMP)openURL);
     __original_didReceiveRemoteNotification_Imp = method_setImplementation(originalDidReceiveRemoteNotificationMethod, (IMP)didReceiveRemoteNotificationHandler);
     
-    *numFunctionsToTest = 25;
+    *numFunctionsToTest = 26;
     FRENamedFunction* func = (FRENamedFunction*)malloc(sizeof(FRENamedFunction) * *numFunctionsToTest);
     
     func[19].name = (const uint8_t*)"init";
@@ -371,6 +387,10 @@ void AFExtContextInitializer(void* extData, const uint8_t* ctxType, FREContext c
     func[24].name = (const uint8_t*)"setCustomerIdAndTrack";
     func[24].functionData = NULL;
     func[24].function = &setCustomerIdAndTrack;
+    
+    func[25].name = (const uint8_t*)"setResolveDeepLinkURLs";
+    func[25].functionData = NULL;
+    func[25].function = &setResolveDeepLinkURLs;
     
     func[0].name = (const uint8_t*)"startTracking";
     func[0].functionData = NULL;

@@ -40,6 +40,10 @@ public class AppsFlyerInterface extends EventDispatcher {
        context.call("setUserEmails", emails);
     }
 
+    public function setResolveDeepLinkURLs(urls:Array):void {
+       context.call("setResolveDeepLinkURLs", urls);
+    }
+
 	public function trackAppLaunch():void {
 		context.call("trackAppLaunch");
 	}

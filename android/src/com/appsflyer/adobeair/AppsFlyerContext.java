@@ -42,6 +42,7 @@ public class AppsFlyerContext extends FREContext {
         map.put("setUserEmails", new SetUserEmails());
         map.put("setDebug", new SetDebug());
         map.put("sendDeepLinkData", new SendDeepLinkData());
+        map.put("setResolveDeepLinkURLs", new SetResolveDeepLinkURLsFunction());
         map.put("validateAndTrackInAppPurchase", new ValidateAndTrackInAppPurchaseFunction());
         map.put("registerValidatorListener", new RegisterValidatorListenerFunction());
         map.put("useReceiptValidationSandbox", new UseReceiptValidationSandboxFunction());

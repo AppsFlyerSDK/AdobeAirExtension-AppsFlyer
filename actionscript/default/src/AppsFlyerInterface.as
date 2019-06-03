@@ -24,6 +24,9 @@ public class AppsFlyerInterface extends  EventDispatcher {
     public function setUserEmails(emails:Array):void {
     }
 
+    public function setResolveDeepLinkURLs(urls:Array):void {
+    }
+
 	public function registerConversionListener():void {
     }
 
