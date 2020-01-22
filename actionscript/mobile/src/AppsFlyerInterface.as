@@ -19,9 +19,30 @@ public class AppsFlyerInterface extends EventDispatcher {
 
 	private const EXTENSION_TYPE:String = "AIR";
 
-	public function setDeveloperKey(key:String, appId:String):void {
-		context.call("setDeveloperKey", key, appId);
+	public function init(key:String, appId:String):void {
+	    context.call("init", key, appId);
 	}
+
+    [Deprecated(replacement="registerConversionListener")]
+	public function startTracking(key:String, appId:String):void {
+	    context.call("startTracking", key, appId);
+	}
+
+	public function stopTracking(isTrackingStopped:Boolean):void {
+	    context.call("stopTracking", isTrackingStopped);
+    }
+
+    public function isTrackingStopped():Boolean {
+        return context.call("isTrackingStopped") as Boolean;
+    }
+
+    public function setUserEmails(emails:Array):void {
+       context.call("setUserEmails", emails);
+    }
+
+    public function setResolveDeepLinkURLs(urls:Array):void {
+       context.call("setResolveDeepLinkURLs", urls);
+    }
 
 	public function trackAppLaunch():void {
 		context.call("trackAppLaunch");
@@ -57,6 +78,14 @@ public class AppsFlyerInterface extends EventDispatcher {
 	public function setAppUserId(appUserId:String):void {
 		context.call("setAppUserId", appUserId);
 	}
+
+	public function waitForCustomerUserID(value:Boolean):void {
+    	context.call("waitForCustomerUserID", value);
+    }
+
+	public function setCustomerIdAndTrack(value:String):void {
+        context.call("setCustomerIdAndTrack", value);
+    }
 
 	public function registerUninstall(deviceToken:String):void {
          context.call("registerUninstall", deviceToken.replace(/[ <>]/g, ""));

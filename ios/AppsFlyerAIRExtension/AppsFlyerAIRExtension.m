@@ -69,17 +69,25 @@
 
 @end
 
+// Reports app open from a Universal Link for iOS 9
 static IMP __original_continueUserActivity_Imp;
 BOOL continueUserActivity(id self, SEL _cmd, UIApplication* application, NSUserActivity* userActivity, RestorationHandler restorationHandler) {
     NSLog(@"continueUserActivity: %@", self);
     [[AppsFlyerTracker sharedTracker] continueUserActivity:userActivity restorationHandler:restorationHandler];
     return ((BOOL(*)(id,SEL,UIApplication*,NSUserActivity*, RestorationHandler))__original_continueUserActivity_Imp)(self, _cmd, application, userActivity, restorationHandler);
 }
-static IMP __original_openURL_Imp;
-BOOL openURL(id self, SEL _cmd, UIApplication* application, NSURL* url, NSString* sourceApplication, id annotation) {
+// Reports app open from deeplink for iOS 8 or below (DEPRECATED)
+static IMP __original_openURLDeprecated_Imp;
+BOOL openURLDeprecated(id self, SEL _cmd, UIApplication* application, NSURL* url, NSString* sourceApplication, id annotation) {
     NSLog(@"openURL: %@", self);
     [[AppsFlyerTracker sharedTracker] handleOpenURL:url sourceApplication:sourceApplication withAnnotation:annotation];
-    return ((BOOL(*)(id, SEL, UIApplication*, NSURL*, NSString*, id))__original_openURL_Imp)(self, _cmd, application, url, sourceApplication, annotation);
+    return ((BOOL(*)(id, SEL, UIApplication*, NSURL*, NSString*, id))__original_openURLDeprecated_Imp)(self, _cmd, application, url, sourceApplication, annotation);
+}
+// Reports app open from deeplink for iOS 10
+static IMP __original_openURL_Imp;
+BOOL openURL(id self, SEL _cmd, UIApplication* application, NSURL* url, NSDictionary * options) {
+    [[AppsFlyerTracker sharedTracker] handleOpenUrl:url options:options];
+    return ((BOOL(*)(id, SEL, UIApplication*, NSURL*, NSDictionary*))__original_openURL_Imp)(self, _cmd, application, url, options);
 }
 
 static IMP __original_didReceiveRemoteNotification_Imp;
@@ -91,7 +99,7 @@ BOOL didReceiveRemoteNotificationHandler(id self, SEL _cmd, UIApplication* appli
 
 AppsFlyerDelegate * conversionDelegate;
 
-DEFINE_ANE_FUNCTION(setDeveloperKey)
+DEFINE_ANE_FUNCTION(startTracking)
 {
     NSString *developerKey = [AppsFlyerAIRExtension getString: argv[0]];
     NSString *appId = [AppsFlyerAIRExtension getString: argv[1]];
@@ -99,7 +107,25 @@ DEFINE_ANE_FUNCTION(setDeveloperKey)
     [AppsFlyerTracker sharedTracker].appsFlyerDevKey = developerKey;
     [AppsFlyerTracker sharedTracker].appleAppID = appId;
     
+    [AppsFlyerTracker sharedTracker].delegate = conversionDelegate;
+    
     return NULL;
+}
+
+DEFINE_ANE_FUNCTION(stopTracking)
+{
+    uint32_t value;
+    FREGetObjectAsBool(argv[0], &value);
+    [AppsFlyerTracker sharedTracker].isStopTracking = value;
+    return NULL;
+}
+
+DEFINE_ANE_FUNCTION(isTrackingStopped)
+{
+    FREObject result = nil;
+    uint32_t isStoppedTracking = [[AppsFlyerTracker sharedTracker] isStopTracking];
+    FRENewObjectFromBool(isStoppedTracking, &result);
+    return result;
 }
 
 DEFINE_ANE_FUNCTION(trackAppLaunch)
@@ -136,6 +162,38 @@ DEFINE_ANE_FUNCTION(setAppUserId)
     
     [AppsFlyerTracker sharedTracker].customerUserID = appUserId;
     
+    return NULL;
+}
+
+DEFINE_ANE_FUNCTION(setUserEmails)
+{
+    FREObject arr = argv[0];
+    uint32_t arr_len;
+    FREGetArrayLength(arr, &arr_len);
+    NSMutableArray *emails = [[NSMutableArray alloc] init];
+    for(int32_t i=arr_len-1; i>=0;i--){
+        FREObject element;
+        FREGetArrayElementAt(arr, i, &element);
+        [emails addObject: [AppsFlyerAIRExtension getString: element]];
+    }
+    
+    [[AppsFlyerTracker sharedTracker] setUserEmails:emails withCryptType:EmailCryptTypeSHA1];
+    return NULL;
+}
+
+DEFINE_ANE_FUNCTION(setResolveDeepLinkURLs)
+{
+    FREObject arr = argv[0];
+    uint32_t arr_len;
+    FREGetArrayLength(arr, &arr_len);
+    NSMutableArray *urls = [[NSMutableArray alloc] init];
+    for(int32_t i=arr_len-1; i>=0;i--){
+        FREObject element;
+        FREGetArrayElementAt(arr, i, &element);
+        [urls addObject: [AppsFlyerAIRExtension getString: element]];
+    }
+    
+    [[AppsFlyerTracker sharedTracker] setResolveDeepLinkURLs:urls];
     return NULL;
 }
 
@@ -176,7 +234,7 @@ DEFINE_ANE_FUNCTION(registerUninstall)
     NSString *deviceTokenStr = [AppsFlyerAIRExtension getString: argv[0]];
     NSData *deviceToken = [AppsFlyerAIRExtension dataFromHexString:deviceTokenStr];
     [[AppsFlyerTracker sharedTracker] registerUninstall:deviceToken];
-    return nil;
+    return NULL;
 }
 
 DEFINE_ANE_FUNCTION(registerConversionListener)
@@ -218,7 +276,7 @@ DEFINE_ANE_FUNCTION(validateAndTrackInAppPurchase)
                                                                 
                                                                 [AppsFlyerAIRExtension dispatchStatusEvent: conversionDelegate.ctx withType: @"validateInAppFailure" level:errorString];
                                                             }];
-    return nil;
+    return NULL;
 }
 
 DEFINE_ANE_FUNCTION(useReceiptValidationSandbox)
@@ -267,6 +325,18 @@ DEFINE_ANE_FUNCTION(setCollectIMEI)
     return NULL;
 }
 
+DEFINE_ANE_FUNCTION(waitForCustomerUserId)
+{
+    NSLog(@"waitForCustomerUserId method is not supported on iOS");
+    return NULL;
+}
+
+DEFINE_ANE_FUNCTION(setCustomerIdAndTrack)
+{
+    NSLog(@"setCustomerIdAndTrack method is not supported on iOS");
+    return NULL;
+}
+
 void AFExtContextInitializer(void* extData, const uint8_t* ctxType, FREContext ctx, uint32_t* numFunctionsToTest, const FRENamedFunction** functionsToSet)
 {
 
@@ -277,23 +347,54 @@ void AFExtContextInitializer(void* extData, const uint8_t* ctxType, FREContext c
     Class objectClass = object_getClass(delegate);
     
     SEL originalContinueUserActivitySelector = @selector(application:continueUserActivity:restorationHandler:);
+    SEL originalOpenURLDeprecatedSelector = @selector(application:openURL:sourceApplication:annotation:);
     SEL originalOpenURLSelector = @selector(application:openURL:options:);
     SEL originalDidReceiveRemoteNotificationSelector = @selector(application:didReceiveRemoteNotification:);
     
     Method originalContinueUserActivityMethod = class_getInstanceMethod(objectClass, originalContinueUserActivitySelector);
+    Method originalOpenURLDeprecatedMethod = class_getInstanceMethod(objectClass, originalOpenURLDeprecatedSelector);
     Method originalOpenURLMethod = class_getInstanceMethod(objectClass, originalOpenURLSelector);
     Method originalDidReceiveRemoteNotificationMethod = class_getInstanceMethod(objectClass, originalDidReceiveRemoteNotificationSelector);
 
     __original_continueUserActivity_Imp = method_setImplementation(originalContinueUserActivityMethod, (IMP)continueUserActivity);
+    __original_openURLDeprecated_Imp = method_setImplementation(originalOpenURLDeprecatedMethod, (IMP)openURLDeprecated);
     __original_openURL_Imp = method_setImplementation(originalOpenURLMethod, (IMP)openURL);
     __original_didReceiveRemoteNotification_Imp = method_setImplementation(originalDidReceiveRemoteNotificationMethod, (IMP)didReceiveRemoteNotificationHandler);
     
-    *numFunctionsToTest = 19;
+    *numFunctionsToTest = 26;
     FRENamedFunction* func = (FRENamedFunction*)malloc(sizeof(FRENamedFunction) * *numFunctionsToTest);
     
-    func[0].name = (const uint8_t*)"setDeveloperKey";
+    func[19].name = (const uint8_t*)"init";
+    func[19].functionData = NULL;
+    func[19].function = &startTracking;
+    
+    func[20].name = (const uint8_t*)"stopTracking";
+    func[20].functionData = NULL;
+    func[20].function = &stopTracking;
+    
+    func[21].name = (const uint8_t*)"isTrackingStopped";
+    func[21].functionData = NULL;
+    func[21].function = &isTrackingStopped;
+    
+    func[22].name = (const uint8_t*)"setUserEmails";
+    func[22].functionData = NULL;
+    func[22].function = &setUserEmails;
+    
+    func[23].name = (const uint8_t*)"waitForCustomerUserId";
+    func[23].functionData = NULL;
+    func[23].function = &waitForCustomerUserId;
+    
+    func[24].name = (const uint8_t*)"setCustomerIdAndTrack";
+    func[24].functionData = NULL;
+    func[24].function = &setCustomerIdAndTrack;
+    
+    func[25].name = (const uint8_t*)"setResolveDeepLinkURLs";
+    func[25].functionData = NULL;
+    func[25].function = &setResolveDeepLinkURLs;
+    
+    func[0].name = (const uint8_t*)"startTracking";
     func[0].functionData = NULL;
-    func[0].function = &setDeveloperKey;
+    func[0].function = &startTracking;
     
     func[1].name = (const uint8_t*)"trackAppLaunch";
     func[1].functionData = NULL;

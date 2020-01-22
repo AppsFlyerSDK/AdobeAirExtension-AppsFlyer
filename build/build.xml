@@ -4,9 +4,9 @@
     <!-- Config -->
     <property file="build.config"/>
     
-    <target name="all" depends="android,ios,swc-mobile,swc-default,package,package_without_gp,clear" description="Full build of extension"/>
+    <target name="all" depends="android,ios,swc-default,swc-mobile,package,package_without_gp,package_without_gp_and_support_lib,clear" description="Full build of extension"/>
     
-    <target name="all-android-debug" depends="android-debug,ios,swc-mobile,swc-default,package,package_without_gp,clear"
+    <target name="all-android-debug" depends="android-debug,ios,swc-mobile,swc-default,package,package_without_gp,package_without_gp_and_support_lib,clear"
         description="Full build of extension w/debugging on Android"
     />
     
@@ -59,16 +59,23 @@
             <arg path="${android.sdk}/android.jar" />
         </exec>
         
-        <javac source="1.6" target="1.6" destdir="../android/temp/classes" includeantruntime="false" debug="${ANDROID_DEBUG}">
+        <javac source="1.7" target="1.7" destdir="../android/temp/classes" includeantruntime="false" debug="${ANDROID_DEBUG}">
             <src path="${source.dir}"/>
             <src path="${gen.absolute.dir}"/>
             <classpath>
                 <pathelement location="${android.sdk}/android.jar"/>
                 <pathelement location="${air.sdk}/lib/android/FlashRuntimeExtensions.jar"/>
-                <pathelement location="../android/libs/android-support-v4.jar"/>
                 <pathelement location="../android/google-play-services_lib/libs/google-play-services.jar"/>
+
                 <pathelement location="../res/${appsflyer.sdk.lib}.jar"/>
                 <pathelement location="../res/json-simple-1.1.1.jar"/>
+
+                <pathelement location="../res/android-support-v4.jar"/>
+                <!--pathelement location="../res/support-annotations-27.0.2.jar"/-->
+                <pathelement location="../res/firebase-common.jar"/>
+                <pathelement location="../res/firebase-messaging.jar"/>
+                <pathelement location="../res/firebase-iid.jar"/>
+                <pathelement location="../res/installreferrer-1.0.jar"/>
                 
             </classpath>
         </javac>
@@ -176,6 +183,9 @@
     
     <target name="package_without_gp" description="Create the extension package without Google play services">
         <delete file="../temp/android/google-play-services.jar"/>
+        <delete file="../temp/android/firebase-common.jar"/>
+        <delete file="../temp/android/firebase-iid.jar"/>
+        <delete file="../temp/android/firebase-messaging.jar"/>
         <delete dir="../temp/android/res"/>
         <exec executable="${air.sdk}/bin/adt${bin.ext}" failonerror="true" dir="../temp">
             <arg value="-package"/>
@@ -192,6 +202,25 @@
         </exec>
     
         <move file="../temp/${name}-witout-gp.ane" todir="../bin"/>
+    </target>
+
+    <target name="package_without_gp_and_support_lib" description="Create the extension package without Google play services and Support lib">
+        <delete file="../temp/android/android-support-v4.jar"/>
+        <exec executable="${air.sdk}/bin/adt${bin.ext}" failonerror="true" dir="../temp">
+            <arg value="-package"/>
+            <arg value="-target"/>
+            <arg value="ane"/>
+            <arg value="${name}-witout-gp-support.ane"/>
+            <arg value="../build/extension.xml"/>
+            <arg line="-swc swc/${name}.swc"/>
+            
+            <arg line="-platform iPhone-ARM -platformoptions ../build/platform-ios.xml -C ios/ ."/>
+            <arg line="-platform Android-ARM -platformoptions ../build/platform-android-without-gp-support.xml -C android/ ."/>
+            <arg line="-platform Android-x86 -platformoptions ../build/platform-android-without-gp-support.xml -C android/ ."/>
+            <arg line="-platform default -C default/ ."/>
+        </exec>
+    
+        <move file="../temp/${name}-witout-gp-support.ane" todir="../bin"/>
     </target>
     
     <target name="clear">

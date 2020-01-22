@@ -8,8 +8,24 @@ public class AppsFlyerInterface extends  EventDispatcher {
 	public function AppsFlyerInterface() {
 	}
 
-	public function setDeveloperKey(key:String, appId:String):void {
+	public function init(key:String, appId:String):void {
 	}
+
+	public function startTracking(key:String, appId:String):void {
+	}
+
+	public function stopTracking(isTrackingStopped:Boolean):void {
+    }
+
+    public function isTrackingStopped():Boolean {
+        return false;
+    }
+
+    public function setUserEmails(emails:Array):void {
+    }
+
+    public function setResolveDeepLinkURLs(urls:Array):void {
+    }
 
 	public function registerConversionListener():void {
     }
@@ -28,6 +44,12 @@ public class AppsFlyerInterface extends  EventDispatcher {
 
 	public function setAppUserId(appUserId:String):void {
 	}
+
+	public function waitForCustomerUserID(value:Boolean):void {
+    }
+
+    public function setCustomerIdAndTrack(value:String):void {
+    }
 
     public function setImeiData(imei:String):void {
     }

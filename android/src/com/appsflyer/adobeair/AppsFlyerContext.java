@@ -21,25 +21,31 @@ public class AppsFlyerContext extends FREContext {
     @Override
     public Map<String, FREFunction> getFunctions() {
         Map<String, FREFunction> map = new HashMap<String, FREFunction>();
-        map.put("setDeveloperKey", new AppsFlyerInit());
+        map.put("init", new AppsFlyerInit());
+        map.put("registerConversionListener", new RegisterConversionListener());
+        map.put("startTracking", new StartTracking());
+        map.put("stopTracking", new StopTracking());
+        map.put("isTrackingStopped", new IsTrackingStopped());
         map.put("trackAppLaunch", new TrackAppLaunchFunction());
         map.put("trackEvent", new TrackEventFunction());
         map.put("registerUninstall", new RegisterUninstallFunction());
-        map.put("registerConversionListener", new RegisterConversionListener());
         map.put("setCurrency", new SetCurrency());
-        map.put("setAppUserId", new SetAppUserId());
         map.put("getConversionData", new GetConversionData());
         map.put("setAndroidIdData", new SetAndroidIdData());
         map.put("setImeiData", new SetImeiData());
         map.put("setCollectAndroidID", new SetCollectAndroidID());
         map.put("setCollectIMEI", new SetCollectIMEI());
         map.put("getAppsFlyerUID", new GetAppsFlyerUID());
+        map.put("setAppUserId", new SetCustomerUserId());
+        map.put("waitForCustomerUserID", new WaitForCustomerUserID());
+        map.put("setCustomerIdAndTrack", new SetCustomerIdAndTrack());
+        map.put("setUserEmails", new SetUserEmails());
         map.put("setDebug", new SetDebug());
         map.put("sendDeepLinkData", new SendDeepLinkData());
+        map.put("setResolveDeepLinkURLs", new SetResolveDeepLinkURLsFunction());
         map.put("validateAndTrackInAppPurchase", new ValidateAndTrackInAppPurchaseFunction());
         map.put("registerValidatorListener", new RegisterValidatorListenerFunction());
         map.put("useReceiptValidationSandbox", new UseReceiptValidationSandboxFunction());
-
 
         return map;
     }

@@ -1,4 +1,4 @@
-<extension xmlns="http://ns.adobe.com/air/extension/17.0">
+<extension xmlns="http://ns.adobe.com/air/extension/32.0">
     <id>com.appsflyer.adobeair</id> 
     <versionNumber>0.0.3</versionNumber>
     <platforms> 
