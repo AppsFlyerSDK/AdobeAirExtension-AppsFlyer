@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<application xmlns="http://ns.adobe.com/air/application/32.0">
+	<id>com.trembit.pushnotifications</id>
+	<filename>AppsFlyerTest</filename>
+	<name>AppsFlyerTest</name>
+	<versionNumber>1.0.9</versionNumber>
+	<initialWindow>
+		<content>[This value will be overwritten by Flash Builder in the output app.xml]</content>
+		<autoOrients>true</autoOrients>
+		<fullScreen>false</fullScreen>
+		<visible>true</visible>
+		<softKeyboardBehavior>none</softKeyboardBehavior>
+	</initialWindow>
+	<icon>
+		<image29x29>icons/Icon-App-29x29@1x.png</image29x29>
+		<image40x40>icons/Icon-App-40x40@1x.png</image40x40>
+		<image57x57>icons/Icon-App-57x57@1x.png</image57x57>
+		<image58x58>icons/Icon-App-29x29@2x.png</image58x58>
+		<image60x60>icons/Icon-App-60x60@1x.png</image60x60>
+		<image72x72>icons/Icon-App-72x72@1x.png</image72x72>
+		<image76x76>icons/Icon-App-76x76@1x.png</image76x76>
+		<image80x80>icons/Icon-App-40x40@2x.png</image80x80>
+		<image87x87>icons/Icon-App-29x29@3x.png</image87x87>
+		<image120x120>icons/Icon-App-60x60@2x.png</image120x120>
+		<image152x152>icons/Icon-App-76x76@2x.png</image152x152>
+		<image167x167>icons/Icon-App-83.5x83.5@2x.png</image167x167>
+		<image180x180>icons/Icon-App-60x60@3x.png</image180x180>
+		<image512x512>icons/iTunesArtwork@1x.png</image512x512>
+		<image1024x1024>icons/iTunesArtwork@2x.png</image1024x1024>
+	</icon>
+	<android>
+		<colorDepth>16bit</colorDepth>
+		<manifestAdditions><![CDATA[
+			<manifest android:installLocation="auto">
+			    <uses-permission android:name="android.permission.INTERNET"/>
+
+			    <uses-permission android:name="android.permission.READ_PHONE_STATE"/>
+
+			    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+			    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
+			    <application android:enabled="true">
+					<activity android:excludeFromRecents="false">
+						<intent-filter>
+							<action android:name="android.intent.action.MAIN"/>
+							<category android:name="android.intent.category.LAUNCHER"/>
+						</intent-filter>
+							<meta-data android:name="CHANNEL" android:value="amazon" />
+					</activity>
+					<receiver android:name="com.appsflyer.AppsFlyerLib" android:exported="true">
+ 						<intent-filter> 
+						 	<action android:name="com.android.vending.INSTALL_REFERRER" /> 
+						</intent-filter> 
+					</receiver>
+				    <meta-data android:name="com.google.android.gms.version" android:value="@integer/google_play_services_version" />
+				   </application>
+			</manifest>
+		]]></manifestAdditions>
+	</android>
+	<iPhone>
+        <Entitlements><![CDATA[
+                <key>get-task-allow</key>
+                <false/>
+        ]]>
+        </Entitlements>
+        <InfoAdditions><![CDATA[
+             <key>UIDeviceFamily</key>
+             <array>
+                  <!--<string>1</string>-->
+                  <string>2</string>
+             </array>
+        ]]></InfoAdditions>
+        <requestedDisplayResolution>high</requestedDisplayResolution>
+	</iPhone>
+
+
+	<extensions>
+		<extensionID>com.appsflyer.adobeair</extensionID>
+        <extensionID>com.freshplanet.ane.AirPushNotification</extensionID>
+		<extensionID>com.freshplanet.ane.AirInAppPurchase</extensionID>
+	</extensions>
+</application>
