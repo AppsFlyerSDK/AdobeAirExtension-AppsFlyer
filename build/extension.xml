@@ -9,6 +9,13 @@
                 <finalizer>com.appsflyer.adobeair.AppsFlyerExtension</finalizer>
             </applicationDeployment> 
         </platform>
+        <platform name="Android-ARM64">
+            <applicationDeployment>
+                <nativeLibrary>libAppsFlyerAIRExtension.jar</nativeLibrary>
+                <initializer>com.appsflyer.adobeair.AppsFlyerExtension</initializer>
+                <finalizer>com.appsflyer.adobeair.AppsFlyerExtension</finalizer>
+            </applicationDeployment> 
+        </platform>
         <platform name="Android-x86">
             <applicationDeployment>
                 <nativeLibrary>libAppsFlyerAIRExtension.jar</nativeLibrary>
