@@ -57,7 +57,7 @@ public class Utils {
         return list;
     }
 
-    public static String mapToJsonString(Map<String, String> data) {
+    public static String mapToJsonString(Map data) {
         StringWriter out = new StringWriter();
         try {
             JSONValue.writeJSONString(data, out);
@@ -66,4 +66,5 @@ public class Utils {
         }
         return out.toString();
     }
+
 }
