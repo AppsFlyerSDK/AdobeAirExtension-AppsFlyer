@@ -23,7 +23,6 @@ public class AppsFlyerInterface extends EventDispatcher {
 	    context.call("init", key, appId);
 	}
 
-    [Deprecated(replacement="registerConversionListener")]
 	public function startTracking(key:String, appId:String):void {
 	    context.call("startTracking", key, appId);
 	}
