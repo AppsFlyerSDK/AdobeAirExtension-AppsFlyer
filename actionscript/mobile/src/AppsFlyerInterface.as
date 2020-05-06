@@ -90,7 +90,7 @@ public class AppsFlyerInterface extends EventDispatcher {
             context.call("registerUninstall", deviceToken.replace(/[ <>]/g, ""));
    	}
 
-    [Deprecated(replacement="registerConversionListener")]
+	[Deprecated(replacement="registerConversionListener")]
 	public function getConversionData():void {
 		context.addEventListener(StatusEvent.STATUS, _handleStatusEvents);
 		context.call("getConversionData");
@@ -110,30 +110,29 @@ public class AppsFlyerInterface extends EventDispatcher {
 
 	public function setImeiData(imei:String):void {
 	    context.call("setImeiData", imei);
-    }
+	}
 
 	public function getAppsFlyerUID():String {
-		return context.call("getAppsFlyerUID") as String;
+	    return context.call("getAppsFlyerUID") as String;
 	}
 
 	public function setDebug(value:Boolean):void{
-		context.call("setDebug", value);
+	    context.call("setDebug", value);
 	}
 
 	public function handlePushNotification(userInfo:String):void{
-    	context.call("handlePushNotification", userInfo);
-    }
-
-    public function sendDeepLinkData():void {
-        context.call("sendDeepLinkData");
-    }
-
-	protected function _handleStatusEvents(e:StatusEvent):void {
-		var event:AppsFlyerEvent = new AppsFlyerEvent(e.code, e.level);
-		if (event != null) {
-			this.dispatchEvent(event);
-		}
+    	    context.call("handlePushNotification", userInfo);
 	}
 
-}
+	public function sendDeepLinkData():void {
+	    context.call("sendDeepLinkData");
+	}
+
+	protected function _handleStatusEvents(e:StatusEvent):void {
+	    var event:AppsFlyerEvent = new AppsFlyerEvent(e.code, e.level);
+	    if (event != null) {
+		this.dispatchEvent(event);
+	    }
+	}
+    }
 }
