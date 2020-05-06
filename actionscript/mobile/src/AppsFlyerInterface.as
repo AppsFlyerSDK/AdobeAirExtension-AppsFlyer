@@ -50,7 +50,7 @@ public class AppsFlyerInterface extends EventDispatcher {
 	public function registerConversionListener():void {
 	    context.addEventListener(StatusEvent.STATUS, _handleStatusEvents);
     	    context.call("registerConversionListener");
-    }
+	}
 
 	public function trackEvent(eventName:String, json:String):void {
 	    context.call("trackEvent", eventName, json);
