@@ -29,66 +29,66 @@ public class AppsFlyerInterface extends EventDispatcher {
 
 	public function stopTracking(isTrackingStopped:Boolean):void {
 	    context.call("stopTracking", isTrackingStopped);
-    }
+	}
 
-    public function isTrackingStopped():Boolean {
-        return context.call("isTrackingStopped") as Boolean;
-    }
+	public function isTrackingStopped():Boolean {
+	    return context.call("isTrackingStopped") as Boolean;
+	}
 
-    public function setUserEmails(emails:Array):void {
-       context.call("setUserEmails", emails);
-    }
+	public function setUserEmails(emails:Array):void {
+	    context.call("setUserEmails", emails);
+	}
 
-    public function setResolveDeepLinkURLs(urls:Array):void {
-       context.call("setResolveDeepLinkURLs", urls);
-    }
+	public function setResolveDeepLinkURLs(urls:Array):void {
+	    context.call("setResolveDeepLinkURLs", urls);
+	}
 
 	public function trackAppLaunch():void {
-		context.call("trackAppLaunch");
+	    context.call("trackAppLaunch");
 	}
 
 	public function registerConversionListener():void {
 	    context.addEventListener(StatusEvent.STATUS, _handleStatusEvents);
-    	context.call("registerConversionListener");
+    	    context.call("registerConversionListener");
     }
 
 	public function trackEvent(eventName:String, json:String):void {
-		context.call("trackEvent", eventName, json);
+	    context.call("trackEvent", eventName, json);
 	}
 
 	public function validateAndTrackInAppPurchase(publicKey:String, signature:String, purchaseData:String, price:String,
                                                       currency:String, additionalParameters:String):void {
-    	context.call("validateAndTrackInAppPurchase", publicKey, signature, purchaseData, price, currency, additionalParameters);
-    }
+    	    context.call("validateAndTrackInAppPurchase", publicKey, signature, purchaseData, price, currency, additionalParameters);
+	}
 
-    public function useReceiptValidationSandbox(value:Boolean):void {
-        context.call("useReceiptValidationSandbox", value);
-    }
+	public function useReceiptValidationSandbox(value:Boolean):void {
+	    context.call("useReceiptValidationSandbox", value);
+	}
 
-    public function registerValidatorListener():void {
-        context.addEventListener(StatusEvent.STATUS, _handleStatusEvents);
-        context.call("registerValidatorListener");
-    }
+	public function registerValidatorListener():void {
+	    context.addEventListener(StatusEvent.STATUS, _handleStatusEvents);
+	    context.call("registerValidatorListener");
+	}
 
 	public function setCurrency(currency:String):void {
-		context.call("setCurrency", currency);
+	    context.call("setCurrency", currency);
 	}
 
 	public function setAppUserId(appUserId:String):void {
-		context.call("setAppUserId", appUserId);
+	    context.call("setAppUserId", appUserId);
 	}
 
 	public function waitForCustomerUserID(value:Boolean):void {
-    	context.call("waitForCustomerUserID", value);
-    }
+    	    context.call("waitForCustomerUserID", value);
+	}
 
 	public function setCustomerIdAndTrack(value:String):void {
-        context.call("setCustomerIdAndTrack", value);
-    }
+             context.call("setCustomerIdAndTrack", value);
+   	}
 
 	public function registerUninstall(deviceToken:String):void {
-         context.call("registerUninstall", deviceToken.replace(/[ <>]/g, ""));
-    }
+            context.call("registerUninstall", deviceToken.replace(/[ <>]/g, ""));
+   	}
 
     [Deprecated(replacement="registerConversionListener")]
 	public function getConversionData():void {
