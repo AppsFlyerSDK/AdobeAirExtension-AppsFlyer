@@ -5,6 +5,7 @@
 #import "AppsFlyerAIRExtension.h"
 
 #import <UIKit/UIApplication.h>
+#import <UserNotifications/UserNotifications.h>
 
 #import <objc/runtime.h>
 #import <objc/message.h>
@@ -67,6 +68,10 @@
     return stringData;
 }
 
++ (void) sendLaunch:(UIApplication *)application {
+    [[AppsFlyerTracker sharedTracker] trackAppLaunch];
+}
+
 @end
 
 // Reports app open from a Universal Link for iOS 9
@@ -99,17 +104,23 @@ BOOL didReceiveRemoteNotificationHandler(id self, SEL _cmd, UIApplication* appli
 
 AppsFlyerDelegate * conversionDelegate;
 
-DEFINE_ANE_FUNCTION(startTracking)
+DEFINE_ANE_FUNCTION(init)
 {
     NSString *developerKey = [AppsFlyerAIRExtension getString: argv[0]];
     NSString *appId = [AppsFlyerAIRExtension getString: argv[1]];
-    
+   
     [AppsFlyerTracker sharedTracker].appsFlyerDevKey = developerKey;
     [AppsFlyerTracker sharedTracker].appleAppID = appId;
-    
-    [AppsFlyerTracker sharedTracker].delegate = conversionDelegate;
-    
     return NULL;
+}
+
+DEFINE_ANE_FUNCTION(startTracking)
+{
+    // Creating an observer to track background-foreground transitions
+    [[NSNotificationCenter defaultCenter] addObserver:application //self - not sure if we can have access to the application (UIApplication) instance here.
+    selector:@selector(sendLaunch:)
+    name:UIApplicationDidBecomeActiveNotification
+    object:nil];
 }
 
 DEFINE_ANE_FUNCTION(stopTracking)
