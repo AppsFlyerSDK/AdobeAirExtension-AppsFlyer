@@ -117,7 +117,8 @@ DEFINE_ANE_FUNCTION(init)
 DEFINE_ANE_FUNCTION(startTracking)
 {
     // Creating an observer to track background-foreground transitions
-    [[NSNotificationCenter defaultCenter] addObserver:application //self - not sure if we can have access to the application (UIApplication) instance here.
+    UIApplication *application = UIApplication.sharedApplication;
+    [[NSNotificationCenter defaultCenter] addObserver:application //or self? -> not sure if we can have access to the application (UIApplication) instance here.
     selector:@selector(sendLaunch:)
     name:UIApplicationDidBecomeActiveNotification
     object:nil];
