@@ -379,7 +379,7 @@ void AFExtContextInitializer(void* extData, const uint8_t* ctxType, FREContext c
     
     func[19].name = (const uint8_t*)"init";
     func[19].functionData = NULL;
-    func[19].function = &startTracking;
+    func[19].function = &init;
     
     func[20].name = (const uint8_t*)"stopTracking";
     func[20].functionData = NULL;
