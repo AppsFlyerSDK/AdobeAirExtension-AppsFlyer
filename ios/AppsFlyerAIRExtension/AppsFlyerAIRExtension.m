@@ -122,6 +122,7 @@ DEFINE_ANE_FUNCTION(startTracking)
     selector:@selector(sendLaunch:)
     name:UIApplicationDidBecomeActiveNotification
     object:nil];
+    [[AppsFlyerTracker sharedTracker] trackAppLaunch];
 }
 
 DEFINE_ANE_FUNCTION(stopTracking)
