@@ -8,10 +8,10 @@
 
 @synthesize ctx;
 
-- (void)onConversionDataSuccess:(NSDictionary *)conversionInfo
+- (void) onConversionDataReceived:(NSDictionary*) installData
 {
     NSError *error;
-    NSData *jsonData = [NSJSONSerialization dataWithJSONObject:conversionInfo
+    NSData *jsonData = [NSJSONSerialization dataWithJSONObject:installData
                                                        options:NSJSONWritingPrettyPrinted // Pass 0 if you don't care about the readability of the generated string
                                                          error:&error];
     
@@ -21,16 +21,6 @@
         NSString *jsonString = [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
         dispatchStatusEvent(ctx,@"installConversionDataLoaded",jsonString);
     }
-
-}
-
-
-- (void)onConversionDataFail:(NSError *)error
-{
-    NSDictionary *userInfo = [error userInfo];
-    NSString *errorString = [[userInfo objectForKey:NSUnderlyingErrorKey] localizedDescription];
-    NSLog(@"The error is: %@", errorString);
-    dispatchStatusEvent(ctx, @"installConversionFailure", error.localizedDescription);
 }
 
 - (void) onAppOpenAttribution:(NSDictionary*) installData {
@@ -45,6 +35,14 @@
         NSString *jsonString = [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
         dispatchStatusEvent(ctx,@"appOpenAttribution",jsonString);
     }
+}
+
+- (void) onConversionDataRequestFailure:(NSError *)error
+{
+    NSDictionary *userInfo = [error userInfo];
+    NSString *errorString = [[userInfo objectForKey:NSUnderlyingErrorKey] localizedDescription];
+    NSLog(@"The error is: %@", errorString);
+    dispatchStatusEvent(ctx, @"installConversionFailure", error.localizedDescription);
 }
 
 - (void) onAppOpenAttributionFailure:(NSError *)error
