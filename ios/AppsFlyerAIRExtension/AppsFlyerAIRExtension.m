@@ -118,10 +118,11 @@ DEFINE_ANE_FUNCTION(startTracking)
 {
     // Creating an observer to track background-foreground transitions
     UIApplication *application = UIApplication.sharedApplication;
-    [[NSNotificationCenter defaultCenter] addObserver:application //or self? -> not sure if we can have access to the application (UIApplication) instance here.
+    [[NSNotificationCenter defaultCenter] addObserver:application
     selector:@selector(sendLaunch:)
     name:UIApplicationDidBecomeActiveNotification
-    object:nil];
+    object:nil];    
+    return NULL;
 }
 
 DEFINE_ANE_FUNCTION(stopTracking)
@@ -378,7 +379,7 @@ void AFExtContextInitializer(void* extData, const uint8_t* ctxType, FREContext c
     
     func[19].name = (const uint8_t*)"init";
     func[19].functionData = NULL;
-    func[19].function = &startTracking;
+    func[19].function = &init;
     
     func[20].name = (const uint8_t*)"stopTracking";
     func[20].functionData = NULL;
