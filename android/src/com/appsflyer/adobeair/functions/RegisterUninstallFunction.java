@@ -10,7 +10,7 @@ public class RegisterUninstallFunction implements FREFunction {
     @Override
     public FREObject call(FREContext freContext, FREObject[] freObjects) {
         try {
-            AppsFlyerLib.getInstance().updateServerUninstallToken(freContext.getActivity().getApplicationContext(), freObjects[0].getAsString());
+            AppsFlyerLib.getInstance().enableUninstallTracking(freObjects[0].getAsString());
         } catch (Exception e) {
             e.printStackTrace();
         }

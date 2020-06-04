@@ -68,10 +68,6 @@
     return stringData;
 }
 
-+ (void) sendLaunch:(UIApplication *)application {
-    [[AppsFlyerTracker sharedTracker] trackAppLaunch];
-}
-
 @end
 
 // Reports app open from a Universal Link for iOS 9
@@ -116,12 +112,11 @@ DEFINE_ANE_FUNCTION(init)
 
 DEFINE_ANE_FUNCTION(startTracking)
 {
-    // Creating an observer to track background-foreground transitions
-    UIApplication *application = UIApplication.sharedApplication;
-    [[NSNotificationCenter defaultCenter] addObserver:application
+    [[NSNotificationCenter defaultCenter] addObserver:conversionDelegate
     selector:@selector(sendLaunch:)
     name:UIApplicationDidBecomeActiveNotification
-    object:nil];    
+    object:nil];
+    [[AppsFlyerTracker sharedTracker] trackAppLaunch];
     return NULL;
 }
 

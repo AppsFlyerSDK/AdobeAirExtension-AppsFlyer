@@ -10,6 +10,8 @@
     FREContext ctx;
 }
 
+- (void) sendLaunch:(UIApplication *)application;
+
 @property (nonatomic,assign) FREContext ctx;
 
 @end

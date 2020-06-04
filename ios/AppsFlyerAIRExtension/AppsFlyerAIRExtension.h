@@ -15,7 +15,6 @@ FOUNDATION_EXPORT NSString *const EXTENSION_TYPE;
 + (NSString*) getString:(FREObject*)value;
 + (void) dispatchStatusEvent:(FREContext) ctx withType: (NSString*) eventType level: (NSString*) eventLevel;
 + (NSData *)dataFromHexString:(NSString *)string;
-+ (void) sendLaunch:(UIApplication *)application;
 @end
 
 typedef void (^ RestorationHandler)(NSArray*);
