@@ -15,15 +15,14 @@ In order for us to provide optimal support, we would kindly ask you to submit an
 - [SDK versions](#plugin-build-for)
 - [Installation](#installation)
 - [Usage](#Usage)
-- [Android: initialisation and session tracking](#android-init)
-- [iOS: initialisation and session tracking](#ios-init)
+- [Initialisation and session tracking](#init)
 - [API Methods](#api-methods)
 - [Tracking In-App Events](#event-tracking)
+- [Sending sessions manually](#trackAppLaunch)
 - [Setting App User ID](#appUserId)
 - [Setting App User Email](#appUserEmail)
 - [Setting  Currency](#currency)
 - [StopTracking (Opt-Out)](#opt)
-- [In-App Purchase Validation](#iapp-validation)
 - [Enable / Disable AppsFlyer Debug-Logs](#debugLogs)
 - [Deep Linking](#dl)
 - [Setting up Deep Links in Adobe Air applications](#dl-su)
@@ -69,33 +68,24 @@ private static var appsFlyer:AppsFlyerInterface;
 appsFlyer = new AppsFlyerInterface();
 ```
 
-### <a id="android-init"> Android: initialisation and  install/session tracking
+### <a id="init"> Initialisation and  install/session tracking
+	
+(Optional) If you want to perform deep linking or access AppsFlyer conversion data from the application, register Conversion Listener:
+```
+appsFlyer.registerConversionListener();
+```	
 Set the Developer key and Initialise the SDK:
 ```
 appsFlyer.appsFlyer.init("DevKey");
 ```
 Initialise session tracking (automatically track app launches and background-to-foreground transitions)
 ```
-appsFlyer.startTracking("DevKey");
-```
-If you wish to track sessions manually (send a session tracking event, regardless of app state) use the trackAppLaunch method:
-```
-appsFlyer.trackAppLaunch();
+appsFlyer.startTracking("DevKey", "iOSAppID");
 ```
 
-### <a id="ios-init"> iOS: initialisation and  install/session tracking
-
-Set the Developer key, the App ID and Initialise the SDK:
-```
-appsFlyer.startTracking("DevKey", "AppID");
-```
-Track a session whenever the application is launched / moved from background-to-foreground:
-```
-appsFlyer.trackAppLaunch();
-```
 ## <a id="api-methods"> API Methods
 
-### <a id="event-tracking"> Tracking In-App Events
+#### <a id="event-tracking"> Tracking In-App Events
 In-App  Events can be tracked using the `trackEvent("eventName", "eventValue") API.
 For Example: 
 ```
@@ -104,7 +94,13 @@ var value:String = '{"amount":10, "FTDLevel":"-"}';
 appsFlyer.trackEvent(param, value);         
 ```
 
-#### <a id="appUserID"> Setting App User ID
+#### <a id="trackAppLaunch"> Sending sessions manually
+Use this method if you wish to send a session tracking event, regardless of app state:
+```
+appsFlyer.trackAppLaunch();
+```
+
+#### <a id="appUserId"> Setting App User ID
 ```
 appsFlyer.setAppUserId("user_id_as_used_in_the_app");
 ```
