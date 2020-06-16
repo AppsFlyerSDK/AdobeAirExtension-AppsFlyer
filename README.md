@@ -36,11 +36,17 @@ In order for us to provide optimal support, we would kindly ask you to submit an
 - Android
 - iOS 6+
 
-### <a id="plugin-build-for"> This plugin is built for
+---
+
+### <a id="plugin-build-for"> This plugin is built based on
 
 - iOS AppsFlyerSDK **v4.10.0**
 - Android AppsFlyerSDK **v4.10.0**
 
+
+NOTE: If you currently use ANE with higher SDK version (5.2.0), please downgrade to this one and make sure to check oyur integration code. Version 5.2.0 of AIR ANE was affected by the major issue and should not be used
+
+---
 
 ## <a id="installation"> Installation
 Download the [AppsFlyerAIRExtension.ane](https://github.com/AppsFlyerSDK/AdobeAirExtension-AppsFlyer/blob/master/bin/AppsFlyerAIRExtension.ane "AppsFlyerAIRExtension.ane")  file from the bin folder
