@@ -23,7 +23,7 @@ public class StartTracking implements FREFunction {
             AppsFlyerLib.getInstance().trackAppLaunch(cnt.getActivity(), devKey); // manually sending first session because Android onResume has already happened at this point
             AppsFlyerLib.getInstance().startTracking(cnt.getActivity().getApplication());
         } else {
-            AppsFlyerLib.getInstance().trackAppLaunch(cnt.getActivity(), devKey) // manually sending first session because Android onResume has already happened at this point
+            AppsFlyerLib.getInstance().trackAppLaunch(cnt.getActivity(), devKey); // manually sending first session because Android onResume has already happened at this point
             AppsFlyerLib.getInstance().startTracking(cnt.getActivity().getApplication(), devKey);
         }
 
