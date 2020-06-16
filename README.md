@@ -12,10 +12,8 @@ In order for us to provide optimal support, we would kindly ask you to submit an
 ## Table of content
 
 - [Supported Platforms](#supported-platforms)
-- [SDK versions](#plugin-build-for)
 - [Installation](#installation)
 - [Usage](#Usage)
-- [Initialisation and session tracking](#init)
 - [API Methods](#api-methods)
 - [Tracking In-App Events](#event-tracking)
 - [Sending sessions manually](#trackAppLaunch)
@@ -77,14 +75,18 @@ appsFlyer = new AppsFlyerInterface();
 ### <a id="init"> Initialisation and  install/session tracking
 	
 (Optional) If you want to perform deep linking or access AppsFlyer conversion data from the application, register Conversion Listener:
+
 ```
 appsFlyer.registerConversionListener();
-```	
+```
+
 Set the Developer key and Initialise the SDK:
+
 ```
 appsFlyer.appsFlyer.init("DevKey");
 ```
 Initialise session tracking (automatically track app launches and background-to-foreground transitions)
+
 ```
 appsFlyer.startTracking("DevKey", "iOSAppID");
 ```
@@ -94,6 +96,7 @@ appsFlyer.startTracking("DevKey", "iOSAppID");
 #### <a id="event-tracking"> Tracking In-App Events
 In-App  Events can be tracked using the `trackEvent("eventName", "eventValue") API.
 For Example: 
+	
 ```
 var param:String = "Deposit";
 var value:String = '{"amount":10, "FTDLevel":"-"}';
@@ -102,15 +105,19 @@ appsFlyer.trackEvent(param, value);
 
 #### <a id="trackAppLaunch"> Sending sessions manually
 Use this method if you wish to send a session tracking event, regardless of app state:
+
 ```
 appsFlyer.trackAppLaunch();
 ```
 
 #### <a id="appUserId"> Setting App User ID
+	
 ```
 appsFlyer.setAppUserId("user_id_as_used_in_the_app");
 ```
+
 #### <a id="appUserEmail"> Setting App User Email
+
 ```
 appsFlyer.setUserEmails("example@example.com");
 ```
