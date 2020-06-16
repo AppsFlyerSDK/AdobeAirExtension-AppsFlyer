@@ -72,10 +72,10 @@ appsFlyer.registerConversionListener();
 Set the Developer key and iOS app ID (optional) and Initialise the SDK:
 
 ```
-appsFlyer.appsFlyer.init("DevKey", "iOSAppId");
+appsFlyer.appsFlyer.init("DevKey", "iOSAppID");
 ```
 
-Initialise session tracking (automatically track app launches and background-to-foreground transitions)
+Initialise session tracking (automatically track app launches and background-to-foreground transitions) with DevKey and iOS app ID (optional):
 
 ```
 appsFlyer.startTracking("DevKey", "iOSAppID");
