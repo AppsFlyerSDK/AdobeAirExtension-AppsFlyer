@@ -153,8 +153,6 @@ appsFlyer.setAndroidIdData("AndroidIDString");
 
 ---
 
----
-
 ## <a id="api-methods"> API Methods
 
 ### <a id="event-tracking"> Tracking In-App Events
