@@ -44,7 +44,7 @@ In order for us to provide optimal support, we would kindly ask you to submit an
 - Android AppsFlyerSDK **v4.10.0**
 
 
-NOTE: If you currently use ANE with higher SDK version (5.2.0), please downgrade to this one and make sure to check oyur integration code. Version 5.2.0 of AIR ANE was affected by the major issue and should not be used
+**NOTE**: If you currently use ANE with higher SDK version (5.2.0), please downgrade to this one and make sure to check oyur integration code. Version 5.2.0 of AIR ANE was affected by the major issue and **should not be used**
 
 ---
 
