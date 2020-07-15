@@ -37,7 +37,7 @@ classes
 out
 
 
-google-play-services_lib
+#google-play-services_lib
 sample-project/ext
 cer
 /sample-project/extentions
