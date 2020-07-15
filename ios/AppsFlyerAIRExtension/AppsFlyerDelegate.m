@@ -54,6 +54,7 @@
 }
 
 - (void) sendLaunch:(UIApplication *)application {
+    NSLog(@"[AppsFlyerAIRExtension] launch (from notification)");
     [[AppsFlyerTracker sharedTracker] trackAppLaunch];
 }
 

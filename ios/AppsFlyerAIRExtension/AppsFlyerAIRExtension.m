@@ -13,7 +13,71 @@
 
 #define DEFINE_ANE_FUNCTION(fn) FREObject (fn)(FREContext context, void* functionData, uint32_t argc, FREObject argv[])
 
-@implementation AppsFlyerAIRExtension 
+@implementation AppsFlyerAIRExtension
+
+static IMP __original_applicationDidBecomeActive_Imp;
+void applicationDidBecomeActive(id self, SEL _cmd, UIApplication* application) {
+    NSLog(@"[AppsFlyerAIRExtension] applicationDidBecomeActive: %@", self);
+    return ((void(*)(id, SEL, UIApplication*))__original_applicationDidBecomeActive_Imp)(self, _cmd, application);
+}
+
+// Reports app open from a Universal Link for iOS 9
+static IMP __original_continueUserActivity_Imp;
+BOOL continueUserActivity(id self, SEL _cmd, UIApplication* application, NSUserActivity* userActivity, RestorationHandler restorationHandler) {
+    NSLog(@"[AppsFlyerAIRExtension] continueUserActivity: %@", self);
+    [[AppsFlyerTracker sharedTracker] continueUserActivity:userActivity restorationHandler:restorationHandler];
+    return ((BOOL(*)(id,SEL,UIApplication*,NSUserActivity*, RestorationHandler))__original_continueUserActivity_Imp)(self, _cmd, application, userActivity, restorationHandler);
+}
+// Reports app open from deeplink for iOS 8 or below (DEPRECATED)
+static IMP __original_openURLDeprecated_Imp;
+BOOL openURLDeprecated(id self, SEL _cmd, UIApplication* application, NSURL* url, NSString* sourceApplication, id annotation) {
+    NSLog(@"[AppsFlyerAIRExtension] openURLDeprecated: %@", self);
+    [[AppsFlyerTracker sharedTracker] handleOpenURL:url sourceApplication:sourceApplication withAnnotation:annotation];
+    return ((BOOL(*)(id, SEL, UIApplication*, NSURL*, NSString*, id))__original_openURLDeprecated_Imp)(self, _cmd, application, url, sourceApplication, annotation);
+}
+// Reports app open from deeplink for iOS 10
+static IMP __original_openURL_Imp;
+BOOL openURL(id self, SEL _cmd, UIApplication* application, NSURL* url, NSDictionary * options) {
+    NSLog(@"[AppsFlyerAIRExtension] openURL: %@", self);
+    [[AppsFlyerTracker sharedTracker] handleOpenUrl:url options:options];
+    return ((BOOL(*)(id, SEL, UIApplication*, NSURL*, NSDictionary*))__original_openURL_Imp)(self, _cmd, application, url, options);
+}
+
+static IMP __original_didReceiveRemoteNotification_Imp;
+BOOL didReceiveRemoteNotificationHandler(id self, SEL _cmd, UIApplication* application, NSDictionary* userInfo) {
+    NSLog(@"[AppsFlyerAIRExtension] didReceiveRemoteNotification: %@", self);
+    [[AppsFlyerTracker sharedTracker] handlePushNotification:userInfo];
+    return ((BOOL(*)(id, SEL, UIApplication*, NSDictionary*))__original_didReceiveRemoteNotification_Imp)(self, _cmd, application, userInfo);
+}
+
++ (void) load {
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        NSLog(@"[AppsFlyerAIRExtension] swizzling START");
+        Class objectClass = NSClassFromString(@"CTAppController");
+        if (!objectClass) {
+            NSLog(@"[AppsFlyerAIRExtension] unable to swizzle CTAppController");
+        } else {
+            SEL originalApplicationDidBecomeActiveSelector = @selector(applicationDidBecomeActive:);
+            SEL originalContinueUserActivitySelector = @selector(application:continueUserActivity:restorationHandler:);
+            SEL originalOpenURLDeprecatedSelector = @selector(application:openURL:sourceApplication:annotation:);
+            SEL originalOpenURLSelector = @selector(application:openURL:options:);
+            SEL originalDidReceiveRemoteNotificationSelector = @selector(application:didReceiveRemoteNotification:);
+
+            Method originalApplicationDidBecomeActiveMethod = class_getInstanceMethod(objectClass, originalApplicationDidBecomeActiveSelector);
+            Method originalContinueUserActivityMethod = class_getInstanceMethod(objectClass, originalContinueUserActivitySelector);
+            Method originalOpenURLDeprecatedMethod = class_getInstanceMethod(objectClass, originalOpenURLDeprecatedSelector);
+            Method originalOpenURLMethod = class_getInstanceMethod(objectClass, originalOpenURLSelector);
+            Method originalDidReceiveRemoteNotificationMethod = class_getInstanceMethod(objectClass, originalDidReceiveRemoteNotificationSelector);
+
+            __original_applicationDidBecomeActive_Imp = method_setImplementation(originalApplicationDidBecomeActiveMethod, (IMP)applicationDidBecomeActive);
+            __original_continueUserActivity_Imp = method_setImplementation(originalContinueUserActivityMethod, (IMP)continueUserActivity);
+            __original_openURLDeprecated_Imp = method_setImplementation(originalOpenURLDeprecatedMethod, (IMP)openURLDeprecated);
+            __original_openURL_Imp = method_setImplementation(originalOpenURLMethod, (IMP)openURL);
+            __original_didReceiveRemoteNotification_Imp = method_setImplementation(originalDidReceiveRemoteNotificationMethod, (IMP)didReceiveRemoteNotificationHandler);
+        }
+    });
+}
 
 + (NSDictionary*) convertFromJSonString:(NSString*)jsonString
 {
@@ -67,62 +131,6 @@
     }
     return stringData;
 }
-	
-// Reports app open from a Universal Link for iOS 9
-static IMP __original_continueUserActivity_Imp;
-BOOL continueUserActivity(id self, SEL _cmd, UIApplication* application, NSUserActivity* userActivity, RestorationHandler restorationHandler) {
-    NSLog(@"continueUserActivity: %@", self);
-    [[AppsFlyerTracker sharedTracker] continueUserActivity:userActivity restorationHandler:restorationHandler];
-    return ((BOOL(*)(id,SEL,UIApplication*,NSUserActivity*, RestorationHandler))__original_continueUserActivity_Imp)(self, _cmd, application, userActivity, restorationHandler);
-}
-// Reports app open from deeplink for iOS 8 or below (DEPRECATED)
-static IMP __original_openURLDeprecated_Imp;
-BOOL openURLDeprecated(id self, SEL _cmd, UIApplication* application, NSURL* url, NSString* sourceApplication, id annotation) {
-    NSLog(@"openURL: %@", url);
-    [[AppsFlyerTracker sharedTracker] handleOpenURL:url sourceApplication:sourceApplication withAnnotation:annotation];
-    return ((BOOL(*)(id, SEL, UIApplication*, NSURL*, NSString*, id))__original_openURLDeprecated_Imp)(self, _cmd, application, url, sourceApplication, annotation);
-}
-// Reports app open from deeplink for iOS 10
-static IMP __original_openURL_Imp;
-BOOL openURL(id self, SEL _cmd, UIApplication* application, NSURL* url, NSDictionary * options) {
-    NSLog(@"handleOpenUrl: %@", url);
-    [[AppsFlyerTracker sharedTracker] handleOpenUrl:url options:options];
-    return ((BOOL(*)(id, SEL, UIApplication*, NSURL*, NSDictionary*))__original_openURL_Imp)(self, _cmd, application, url, options);
-}
-
-static IMP __original_didReceiveRemoteNotification_Imp;
-BOOL didReceiveRemoteNotificationHandler(id self, SEL _cmd, UIApplication* application, NSDictionary* userInfo) {
-    NSLog(@"didReceiveRemoteNotification: %@", self);
-    [[AppsFlyerTracker sharedTracker] handlePushNotification:userInfo];
-    return ((BOOL(*)(id, SEL, UIApplication*, NSDictionary*))__original_didReceiveRemoteNotification_Imp)(self, _cmd, application, userInfo);
-}
-
-+ (void)load {
-    NSLog(@"methods swizzling");
-    static dispatch_once_t onceToken;
-    dispatch_once(&onceToken, ^{
-        UIApplication *application = UIApplication.sharedApplication;
-
-        id delegate = application.delegate;
-        
-        Class objectClass = object_getClass(delegate);
-        
-        SEL originalContinueUserActivitySelector = @selector(application:continueUserActivity:restorationHandler:);
-        SEL originalOpenURLDeprecatedSelector = @selector(application:openURL:sourceApplication:annotation:);
-        SEL originalOpenURLSelector = @selector(application:openURL:options:);
-        SEL originalDidReceiveRemoteNotificationSelector = @selector(application:didReceiveRemoteNotification:);
-        
-        Method originalContinueUserActivityMethod = class_getInstanceMethod(objectClass, originalContinueUserActivitySelector);
-        Method originalOpenURLDeprecatedMethod = class_getInstanceMethod(objectClass, originalOpenURLDeprecatedSelector);
-        Method originalOpenURLMethod = class_getInstanceMethod(objectClass, originalOpenURLSelector);
-        Method originalDidReceiveRemoteNotificationMethod = class_getInstanceMethod(objectClass, originalDidReceiveRemoteNotificationSelector);
-
-        __original_continueUserActivity_Imp = method_setImplementation(originalContinueUserActivityMethod, (IMP)continueUserActivity);
-        __original_openURLDeprecated_Imp = method_setImplementation(originalOpenURLDeprecatedMethod, (IMP)openURLDeprecated);
-        __original_openURL_Imp = method_setImplementation(originalOpenURLMethod, (IMP)openURL);
-        __original_didReceiveRemoteNotification_Imp = method_setImplementation(originalDidReceiveRemoteNotificationMethod, (IMP)didReceiveRemoteNotificationHandler);
-    });
-}
 
 @end
 
@@ -144,7 +152,6 @@ DEFINE_ANE_FUNCTION(startTracking)
     selector:@selector(sendLaunch:)
     name:UIApplicationDidBecomeActiveNotification
     object:nil];
-    [[AppsFlyerTracker sharedTracker] trackAppLaunch];
     return NULL;
 }
 
@@ -371,11 +378,10 @@ DEFINE_ANE_FUNCTION(setCustomerIdAndTrack)
 {
     NSLog(@"setCustomerIdAndTrack method is not supported on iOS");
     return NULL;
-}	
+}
 
 void AFExtContextInitializer(void* extData, const uint8_t* ctxType, FREContext ctx, uint32_t* numFunctionsToTest, const FRENamedFunction** functionsToSet)
 {
-    
     *numFunctionsToTest = 26;
     FRENamedFunction* func = (FRENamedFunction*)malloc(sizeof(FRENamedFunction) * *numFunctionsToTest);
     
