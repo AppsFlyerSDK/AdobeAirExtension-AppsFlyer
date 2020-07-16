@@ -57,7 +57,7 @@ To add those files (with the help of **automated** script):
 - keystore that was used to sign the apk
 - [af_apk_fix.sh script](https://github.com/AppsFlyerSDK/AdobeAirExtension-AppsFlyer/blob/master/bin/af_apk_fix.sh)  
 
-2. Run ./af_apk_fix.sh and enter requested info when prompted
+2. Run `./af_apk_fix.sh` and enter requested info when prompted
 
 Here is what the script is doing. In case of any issues you can perform those steps **manually**: 
 
