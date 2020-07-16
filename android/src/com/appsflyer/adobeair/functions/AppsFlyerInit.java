@@ -1,6 +1,5 @@
 package com.appsflyer.adobeair.functions;
 
-import android.content.Context;
 import android.util.Log;
 import com.adobe.fre.FREContext;
 import com.adobe.fre.FREFunction;
@@ -45,13 +44,15 @@ public class AppsFlyerInit implements FREFunction {
                     cnt.dispatchStatusEventAsync("attributionFailure", cnt.getLastConversionData());
                 }
 
-                public void onInstallConversionDataLoaded(java.util.Map<java.lang.String, java.lang.String> conversionData) {
+                @Override
+                public void onConversionDataSuccess(Map<String, Object> map) {
                     Log.i(LOG, "AppsFlyerConversionListener onInstallConversionDataLoaded");
-                    cnt.setLastConversionData(Utils.mapToJsonString(conversionData));
+                    cnt.setLastConversionData(Utils.mapToJsonString(map));
                     cnt.dispatchStatusEventAsync("installConversionDataLoaded", cnt.getLastConversionData());
                 }
 
-                public void onInstallConversionFailure(String errorMessage) {
+                @Override
+                public void onConversionDataFail(String errorMessage) {
                     Log.i("AppsFlyer: ", "AppsFlyerConversionListener errorMessage");
                     cnt.setLastConversionData("Error retrieving conversion data " + errorMessage);
                     cnt.dispatchStatusEventAsync("installConversionFailure", cnt.getLastConversionData());

@@ -26,15 +26,15 @@ In order for us to provide optimal support, we would kindly ask you to submit an
 
 This plugin is built based on
 
-- iOS AppsFlyerSDK **v4.10.0**
-- Android AppsFlyerSDK **v4.10.0**
+- iOS AppsFlyerSDK **v5.4.1**
+- Android AppsFlyerSDK **v5.4.1**
 
 **NOTE**: If you currently use ANE with higher SDK version (5.2.0), please downgrade to this one and make sure to check oyur integration code. Version 5.2.0 of AIR ANE was affected by the major issue and **should not be used**
 
 ---
 
 ## <a id="installation"> Installation
-Download the [AppsFlyerAIRExtension.ane](https://github.com/AppsFlyerSDK/AdobeAirExtension-AppsFlyer/blob/master/bin/AppsFlyerAIRExtension.ane "AppsFlyerAIRExtension.ane")  file from the bin folder
+Download the [AppsFlyerAIRExtension.ane](https://github.com/AppsFlyerSDK/AdobeAirExtension-AppsFlyer/blob/master/bin/AppsFlyerAIRExtension.ane "AppsFlyerAIRExtension.ane") file from the bin folder
 Add the ANE to your project and make sure the IDE is marked to package it.
 
 If the following was not added automatically please add it to the APP_NAME-app.xml:
@@ -44,9 +44,42 @@ If the following was not added automatically please add it to the APP_NAME-app.x
 	<extensionID>com.appsflyer.adobeair</extensionID> 
 </extensions>
 ```
-> **Note for Android applications:**
+**Notes for Android applications:**
 > On AppsFlyer's dashboard you will need to add "air." prefix to the package name as this is added automatically by Air.  For example -  an app with the package name "**com.test.android**"  ,  should set the app id on AppsFlyer's Dashboard as "**air.com.test.android**".
 
+**IMPORTANT**  
+Due to some limitations in the ADT, after you Android APK is built it is missing important files.
+
+To add those files:
+ 
+ 1. Place into single directory of your choice:
+- apk file
+- keystore that was used to sign the apk
+- [af_apk_fix.sh script](https://github.com/AppsFlyerSDK/AdobeAirExtension-AppsFlyer/blob/master/bin/af_apk_fix.sh)  
+
+2. Run ./af_apk_fix.sh and enter requested info when prompted
+
+Here what the script is doing. In case of any issues you can perform those steps manually: 
+
+1. Decode the apk using [apktool](https://ibotpeaches.github.io/Apktool/). This will create app_name folder.  
+`apktool d app_name.apk`
+2. Download the [AppsFlyer SDK jar/aar](https://repo.maven.apache.org/maven2/com/appsflyer/af-android-sdk/5.4.1/af-android-sdk-5.4.1.aar) of the same version that was used in the apk
+3. Extract files `a-` and `b-` from the jar (by renaming jar into a zip) and place them into the folder with the decompiled apk to `app_name/unknown/com/appsflyer/internal`
+
+4. Edit `apktool.yml` by adding these lines under `unknownFiles:` like in the screenshot below:
+```
+com/appsflyer/internal/b-: '0'
+com/appsflyer/internal/a-: '0'
+```
+
+![image](https://user-images.githubusercontent.com/50541317/87637508-05ae3900-c74b-11ea-8a22-9757c088c4c4.png)
+
+
+5. Build the apk back (will appear under `app_name/dist` folder)  
+`apktool b app`
+
+6. Sign the apk  
+`jarsigner -verbose -sigalg SHA1withRSA -digestalg SHA1 -keystore myKeystore.keystore  app_name/dist/app_name.apk myKey`   
 ---
 
 ## <a id="Usage"> Usage
