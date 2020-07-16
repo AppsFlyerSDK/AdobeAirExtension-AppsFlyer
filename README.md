@@ -44,13 +44,13 @@ If the following was not added automatically please add it to the APP_NAME-app.x
 	<extensionID>com.appsflyer.adobeair</extensionID> 
 </extensions>
 ```
-**Notes for Android applications:**
+### <a id="android_notes"> **Notes for Android applications:**
 > On AppsFlyer's dashboard you will need to add "air." prefix to the package name as this is added automatically by Air.  For example -  an app with the package name "**com.test.android**"  ,  should set the app id on AppsFlyer's Dashboard as "**air.com.test.android**".
 
 **IMPORTANT**  
-Due to some limitations in the ADT, after you Android APK is built it is missing important files.
+Due to some limitations in the [ADT](https://help.adobe.com/en_US/air/build/WS5b3ccc516d4fbf351e63e3d118666ade46-7fd9.html), after APK is built it is missing some important files.
 
-To add those files:
+To add those files (with the help of **automated** script):
  
  1. Place into single directory of your choice:
 - apk file
@@ -59,7 +59,7 @@ To add those files:
 
 2. Run ./af_apk_fix.sh and enter requested info when prompted
 
-Here what the script is doing. In case of any issues you can perform those steps manually: 
+Here is what the script is doing. In case of any issues you can perform those steps **manually**: 
 
 1. Decode the apk using [apktool](https://ibotpeaches.github.io/Apktool/). This will create app_name folder.  
 `apktool d app_name.apk`
