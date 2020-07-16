@@ -28,7 +28,7 @@
     NSString *errorString = [[userInfo objectForKey:NSUnderlyingErrorKey] localizedDescription];
     NSLog(@"The error is: %@", errorString);
     dispatchStatusEvent(ctx, @"installConversionFailure", error.localizedDescription);
-}	}
+}
 
 - (void) onAppOpenAttribution:(NSDictionary*) installData {
     NSError *error;
