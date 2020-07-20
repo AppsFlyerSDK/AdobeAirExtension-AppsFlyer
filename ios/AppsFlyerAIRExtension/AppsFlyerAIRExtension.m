@@ -235,7 +235,20 @@ DEFINE_ANE_FUNCTION(setCurrency)
     return NULL;
 }
 
-DEFINE_ANE_FUNCTION(setAppUserId)
+DEFINE_ANE_FUNCTION(trackEvent)
+{
+    if(argv[0] != NULL) {
+        NSString *eventName = [AppsFlyerAIRExtension getString: argv[0]];
+        NSString *eventValue = [AppsFlyerAIRExtension getString: argv[1]];
+        NSDictionary *values = [AppsFlyerAIRExtension convertFromJSonString:eventValue];
+    
+        [[AppsFlyerTracker sharedTracker] trackEvent:eventName withValues:values];
+    }
+    
+    return NULL;
+}
+
+DEFINE_ANE_FUNCTION(setCustomerUserId)
 {
     NSString *appUserId = [AppsFlyerAIRExtension getString: argv[0]];
     
@@ -418,7 +431,7 @@ DEFINE_ANE_FUNCTION(setCustomerIdAndTrack)
 
 void AFExtContextInitializer(void* extData, const uint8_t* ctxType, FREContext ctx, uint32_t* numFunctionsToTest, const FRENamedFunction** functionsToSet)
 {
-    *numFunctionsToTest = 29;
+    *numFunctionsToTest = 30;
     FRENamedFunction* func = (FRENamedFunction*)malloc(sizeof(FRENamedFunction) * *numFunctionsToTest);
     
     func[19].name = (const uint8_t*)"init";
@@ -460,6 +473,10 @@ void AFExtContextInitializer(void* extData, const uint8_t* ctxType, FREContext c
     func[28].name = (const uint8_t*)"setSharingFilterForAllPartners";
     func[28].functionData = NULL;
     func[28].function = &setSharingFilterForAllPartners;
+ 
+    func[29].name = (const uint8_t*)"trackEvent";
+    func[29].functionData = NULL;
+    func[29].function = &trackEvent;
     
     func[0].name = (const uint8_t*)"startTracking";
     func[0].functionData = NULL;
@@ -477,9 +494,9 @@ void AFExtContextInitializer(void* extData, const uint8_t* ctxType, FREContext c
     func[3].functionData = NULL;
     func[3].function = &setCurrency;
     
-    func[4].name = (const uint8_t*)"setAppUserId";
+    func[4].name = (const uint8_t*)"setCustomerUserId";
     func[4].functionData = NULL;
-    func[4].function = &setAppUserId;
+    func[4].function = &setCustomerUserId;
     
     func[5].name = (const uint8_t*)"getConversionData";
     func[5].functionData = NULL;

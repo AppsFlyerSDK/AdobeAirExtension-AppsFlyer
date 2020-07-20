@@ -54,7 +54,11 @@ public class AppsFlyerInterface extends  EventDispatcher {
 	public function setCurrency(currency:String):void {
 	}
 
+    [Deprecated(replacement="setCustomerUserId")]
 	public function setAppUserId(appUserId:String):void {
+	}
+
+	public function setCustomerUserId(appUserId:String):void {
 	}
 
 	public function waitForCustomerUserID(value:Boolean):void {

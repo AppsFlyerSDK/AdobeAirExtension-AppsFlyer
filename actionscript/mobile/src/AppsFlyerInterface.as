@@ -89,8 +89,13 @@ public class AppsFlyerInterface extends EventDispatcher {
 	    context.call("setCurrency", currency);
 	}
 
+    [Deprecated(replacement="setCustomerUserId")]
 	public function setAppUserId(appUserId:String):void {
-	    context.call("setAppUserId", appUserId);
+	    context.call("setCustomerUserId", appUserId);
+	}
+
+	public function setCustomerUserId(customerUserId:String):void {
+	    context.call("setCustomerUserId", customerUserId);
 	}
 
 	public function waitForCustomerUserID(value:Boolean):void {
@@ -139,6 +144,7 @@ public class AppsFlyerInterface extends EventDispatcher {
     	    context.call("handlePushNotification", userInfo);
 	}
 
+    [Deprecated]
 	public function sendDeepLinkData():void {
 	    context.call("sendDeepLinkData");
 	}

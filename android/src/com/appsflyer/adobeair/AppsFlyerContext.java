@@ -48,6 +48,8 @@ public class AppsFlyerContext extends FREContext {
         map.put("performOnAppAttribution", new PerformOnAppAttribution());
         map.put("setSharingFilter", new SetSharingFilter());
         map.put("setSharingFilterForAllPartners", new SetSharingFilterForAllPartners());
+        map.put("setCustomerUserId", new SetCustomerUserId());
+        map.put("setUserEmails", new SetUserEmails());
         return map;
     }
 
