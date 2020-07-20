@@ -177,15 +177,51 @@ DEFINE_ANE_FUNCTION(trackAppLaunch)
     return NULL;
 }
 
-DEFINE_ANE_FUNCTION(trackEvent)
+DEFINE_ANE_FUNCTION(setOneLinkCustomDomain)
 {
-    if(argv[0] != NULL) {
-        NSString *eventName = [AppsFlyerAIRExtension getString: argv[0]];
-        NSString *eventValue = [AppsFlyerAIRExtension getString: argv[1]];
-        NSDictionary *values = [AppsFlyerAIRExtension convertFromJSonString:eventValue];
-        
-        [[AppsFlyerTracker sharedTracker] trackEvent:eventName withValues:values];
+    FREObject arr = argv[0];
+    uint32_t arr_len;
+    FREGetArrayLength(arr, &arr_len);
+    NSMutableArray *domains = [[NSMutableArray alloc] init];
+    for(int32_t i=arr_len-1; i>=0;i--){
+        FREObject element;
+        FREGetArrayElementAt(arr, i, &element);
+        [domains addObject: [AppsFlyerAIRExtension getString: element]];
     }
+    
+    [[AppsFlyerTracker sharedTracker] setOneLinkCustomDomains:domains];
+
+    return NULL;
+}
+
+DEFINE_ANE_FUNCTION(setSharingFilter)
+{
+    FREObject arr = argv[0];
+    uint32_t arr_len;
+    FREGetArrayLength(arr, &arr_len);
+    NSMutableArray *filters = [[NSMutableArray alloc] init];
+    for(int32_t i=arr_len-1; i>=0;i--){
+        FREObject element;
+        FREGetArrayElementAt(arr, i, &element);
+        [filters addObject: [AppsFlyerAIRExtension getString: element]];
+    }
+    
+    [AppsFlyerTracker sharedTracker].sharingFilter = filters;
+
+    return NULL;
+}
+
+DEFINE_ANE_FUNCTION(setSharingFilterForAllPartners)
+{
+    [[AppsFlyerTracker sharedTracker] setSharingFilterForAllPartners];
+    return NULL;
+}
+
+DEFINE_ANE_FUNCTION(performOnAppAttribution)
+{
+    NSString *strUrl = [AppsFlyerAIRExtension getString: argv[0]];
+    NSURL *url = [NSURL URLWithString: strUrl];
+    [[AppsFlyerTracker sharedTracker] performOnAppAttributionWithURL:url];
     
     return NULL;
 }
@@ -382,7 +418,7 @@ DEFINE_ANE_FUNCTION(setCustomerIdAndTrack)
 
 void AFExtContextInitializer(void* extData, const uint8_t* ctxType, FREContext ctx, uint32_t* numFunctionsToTest, const FRENamedFunction** functionsToSet)
 {
-    *numFunctionsToTest = 26;
+    *numFunctionsToTest = 29;
     FRENamedFunction* func = (FRENamedFunction*)malloc(sizeof(FRENamedFunction) * *numFunctionsToTest);
     
     func[19].name = (const uint8_t*)"init";
@@ -413,6 +449,18 @@ void AFExtContextInitializer(void* extData, const uint8_t* ctxType, FREContext c
     func[25].functionData = NULL;
     func[25].function = &setResolveDeepLinkURLs;
     
+    func[26].name = (const uint8_t*)"performOnAppAttribution";
+    func[26].functionData = NULL;
+    func[26].function = &performOnAppAttribution;
+    
+    func[27].name = (const uint8_t*)"setSharingFilter";
+    func[27].functionData = NULL;
+    func[27].function = &setSharingFilter;
+    
+    func[28].name = (const uint8_t*)"setSharingFilterForAllPartners";
+    func[28].functionData = NULL;
+    func[28].function = &setSharingFilterForAllPartners;
+    
     func[0].name = (const uint8_t*)"startTracking";
     func[0].functionData = NULL;
     func[0].function = &startTracking;
@@ -441,9 +489,9 @@ void AFExtContextInitializer(void* extData, const uint8_t* ctxType, FREContext c
     func[6].functionData = NULL;
     func[6].function = &getAppsFlyerUID;
     
-    func[7].name = (const uint8_t*)"trackEvent";
+    func[7].name = (const uint8_t*)"setOneLinkCustomDomain";
     func[7].functionData = NULL;
-    func[7].function = &trackEvent;
+    func[7].function = &setOneLinkCustomDomain;
     
     func[8].name = (const uint8_t*)"setDebug";
     func[8].functionData = NULL;

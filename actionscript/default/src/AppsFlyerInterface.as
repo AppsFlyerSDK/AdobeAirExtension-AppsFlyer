@@ -27,6 +27,18 @@ public class AppsFlyerInterface extends  EventDispatcher {
     public function setResolveDeepLinkURLs(urls:Array):void {
     }
 
+    public function setSharingFilter(filters:Array):void {
+    }
+
+    public function setSharingFilterForAllPartners():void {
+    }
+
+    public function performOnAppAttribution(uri:String): void {
+    }
+
+    public function setOneLinkCustomDomain(domains:Array):void {
+    }
+
 	public function registerConversionListener():void {
     }
 
