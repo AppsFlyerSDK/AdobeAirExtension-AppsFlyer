@@ -39,9 +39,24 @@ public class AppsFlyerInterface extends EventDispatcher {
 	    context.call("setUserEmails", emails);
 	}
 
+	public function performOnAppAttribution(uri:String): void {
+        context.call("performOnAppAttribution", uri);
+    }
+
+    public function setSharingFilter(filters:Array):void {
+        context.call("setSharingFilter", filters);
+    }
+
+    public function setSharingFilterForAllPartners():void {
+    }
+
 	public function setResolveDeepLinkURLs(urls:Array):void {
 	    context.call("setResolveDeepLinkURLs", urls);
 	}
+
+	public function setOneLinkCustomDomain(domains:Array):void {
+	    context.call("setOneLinkCustomDomain", domains);
+    }
 
 	public function trackAppLaunch():void {
 	    context.call("trackAppLaunch");
@@ -74,8 +89,13 @@ public class AppsFlyerInterface extends EventDispatcher {
 	    context.call("setCurrency", currency);
 	}
 
+    [Deprecated(replacement="setCustomerUserId")]
 	public function setAppUserId(appUserId:String):void {
-	    context.call("setAppUserId", appUserId);
+	    context.call("setCustomerUserId", appUserId);
+	}
+
+	public function setCustomerUserId(customerUserId:String):void {
+	    context.call("setCustomerUserId", customerUserId);
 	}
 
 	public function waitForCustomerUserID(value:Boolean):void {
@@ -124,6 +144,7 @@ public class AppsFlyerInterface extends EventDispatcher {
     	    context.call("handlePushNotification", userInfo);
 	}
 
+    [Deprecated]
 	public function sendDeepLinkData():void {
 	    context.call("sendDeepLinkData");
 	}

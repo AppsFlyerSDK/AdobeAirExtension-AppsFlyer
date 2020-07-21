@@ -27,6 +27,18 @@ public class AppsFlyerInterface extends  EventDispatcher {
     public function setResolveDeepLinkURLs(urls:Array):void {
     }
 
+    public function setSharingFilter(filters:Array):void {
+    }
+
+    public function setSharingFilterForAllPartners():void {
+    }
+
+    public function performOnAppAttribution(uri:String): void {
+    }
+
+    public function setOneLinkCustomDomain(domains:Array):void {
+    }
+
 	public function registerConversionListener():void {
     }
 
@@ -42,7 +54,11 @@ public class AppsFlyerInterface extends  EventDispatcher {
 	public function setCurrency(currency:String):void {
 	}
 
+    [Deprecated(replacement="setCustomerUserId")]
 	public function setAppUserId(appUserId:String):void {
+	}
+
+	public function setCustomerUserId(appUserId:String):void {
 	}
 
 	public function waitForCustomerUserID(value:Boolean):void {
