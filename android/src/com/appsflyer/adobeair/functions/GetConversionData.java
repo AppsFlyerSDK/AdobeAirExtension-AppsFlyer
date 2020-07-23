@@ -23,7 +23,6 @@ public class GetConversionData implements FREFunction {
     public FREObject call(final FREContext freContext, FREObject[] freObjects) {
 
         try {
-            //Context context = freContext.getActivity().getApplicationContext();
             final AppsFlyerContext cnt = (AppsFlyerContext) freContext;
             if (cnt.getLastConversionData() != null) {
                 freContext.dispatchStatusEventAsync("installConversionDataLoaded", cnt.getLastConversionData());

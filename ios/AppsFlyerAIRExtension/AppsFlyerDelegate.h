@@ -5,6 +5,7 @@
 #import <Foundation/Foundation.h>
 #import "AppsFlyerTracker.h"
 #import "FlashRuntimeExtensions.h"
+#import <UIKit/UIKit.h>
 
 @interface AppsFlyerDelegate : NSObject<AppsFlyerTrackerDelegate> {
     FREContext ctx;

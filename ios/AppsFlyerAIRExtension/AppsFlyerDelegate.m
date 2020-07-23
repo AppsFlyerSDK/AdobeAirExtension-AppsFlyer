@@ -8,13 +8,12 @@
 
 @synthesize ctx;
 
-- (void) onConversionDataReceived:(NSDictionary*) installData
+- (void) onConversionDataSuccess:(NSDictionary*) conversionInfo
 {
     NSError *error;
-    NSData *jsonData = [NSJSONSerialization dataWithJSONObject:installData
+    NSData *jsonData = [NSJSONSerialization dataWithJSONObject:conversionInfo
                                                        options:NSJSONWritingPrettyPrinted // Pass 0 if you don't care about the readability of the generated string
                                                          error:&error];
-    
     if (! jsonData) {
         NSLog(@"Got an error: %@", error);
     } else {
@@ -23,26 +22,25 @@
     }
 }
 
+- (void)onConversionDataFail:(NSError *)error
+{
+    NSDictionary *userInfo = [error userInfo];
+    NSString *errorString = [[userInfo objectForKey:NSUnderlyingErrorKey] localizedDescription];
+    NSLog(@"The error is: %@", errorString);
+    dispatchStatusEvent(ctx, @"installConversionFailure", error.localizedDescription);
+}
+
 - (void) onAppOpenAttribution:(NSDictionary*) installData {
     NSError *error;
     NSData *jsonData = [NSJSONSerialization dataWithJSONObject:installData
                                                        options:NSJSONWritingPrettyPrinted
                                                          error:&error];
-    
     if (! jsonData) {
         NSLog(@"Got an error: %@", error);
     } else {
         NSString *jsonString = [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
         dispatchStatusEvent(ctx,@"appOpenAttribution",jsonString);
     }
-}
-
-- (void) onConversionDataRequestFailure:(NSError *)error
-{
-    NSDictionary *userInfo = [error userInfo];
-    NSString *errorString = [[userInfo objectForKey:NSUnderlyingErrorKey] localizedDescription];
-    NSLog(@"The error is: %@", errorString);
-    dispatchStatusEvent(ctx, @"installConversionFailure", error.localizedDescription);
 }
 
 - (void) onAppOpenAttributionFailure:(NSError *)error
@@ -54,6 +52,7 @@
 }
 
 - (void) sendLaunch:(UIApplication *)application {
+    NSLog(@"[AppsFlyerAIRExtension] launch (from notification)");
     [[AppsFlyerTracker sharedTracker] trackAppLaunch];
 }
 

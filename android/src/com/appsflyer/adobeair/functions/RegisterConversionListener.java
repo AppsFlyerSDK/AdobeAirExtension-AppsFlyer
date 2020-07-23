@@ -9,10 +9,7 @@ import com.appsflyer.AppsFlyerConversionListener;
 import com.appsflyer.AppsFlyerLib;
 import com.appsflyer.adobeair.AppsFlyerContext;
 import com.appsflyer.adobeair.Utils;
-import org.json.simple.JSONValue;
 
-import java.io.IOException;
-import java.io.StringWriter;
 import java.util.Map;
 
 public class RegisterConversionListener implements FREFunction {
@@ -35,28 +32,29 @@ public class RegisterConversionListener implements FREFunction {
                 public void onAppOpenAttribution(Map<String, String> map) {
                     Log.i(LOG, "AppsFlyerConversionListener onAppOpenAttribution");
                     cnt.setLastConversionData(Utils.mapToJsonString(map));
-                    freContext.dispatchStatusEventAsync("appOpenAttribution", cnt.getLastConversionData());
+                    cnt.dispatchStatusEventAsync("appOpenAttribution", cnt.getLastConversionData());
                 }
 
                 @Override
                 public void onAttributionFailure(String s) {
                     Log.i(LOG, "AppsFlyerConversionListener onAttributionFailure");
                     cnt.setLastConversionData("Error retrieving conversion data " + s);
-                    freContext.dispatchStatusEventAsync("attributionFailure", cnt.getLastConversionData());
+                    cnt.dispatchStatusEventAsync("attributionFailure", cnt.getLastConversionData());
                 }
 
-                public void onInstallConversionDataLoaded(java.util.Map<java.lang.String, java.lang.String> conversionData) {
+                @Override
+                public void onConversionDataSuccess(Map<String, Object> map) {
                     Log.i(LOG, "AppsFlyerConversionListener onInstallConversionDataLoaded");
-                    cnt.setLastConversionData(Utils.mapToJsonString(conversionData));
-                    freContext.dispatchStatusEventAsync("installConversionDataLoaded", cnt.getLastConversionData());
+                    cnt.setLastConversionData(Utils.mapToJsonString(map));
+                    cnt.dispatchStatusEventAsync("installConversionDataLoaded", cnt.getLastConversionData());
                 }
 
-                public void onInstallConversionFailure(String errorMessage) {
+                @Override
+                public void onConversionDataFail(String errorMessage) {
                     Log.i("AppsFlyer: ", "AppsFlyerConversionListener errorMessage");
                     cnt.setLastConversionData("Error retrieving conversion data " + errorMessage);
-                    freContext.dispatchStatusEventAsync("installConversionFailure", cnt.getLastConversionData());
+                    cnt.dispatchStatusEventAsync("installConversionFailure", cnt.getLastConversionData());
                 }
-
             });
         } catch (Exception e) {
             Log.e("AppsFlyer: ", "Exception RegisterConversionListener: " + e);

@@ -7,20 +7,19 @@ import com.appsflyer.AppsFlyerLib;
 
 public class SetCustomerUserId implements FREFunction {
 
-    @Override
+        @Override
     public FREObject call(FREContext freContext, FREObject[] freObjects) {
 
-        String appUserId = "";
-        try {
-            appUserId = freObjects[0].getAsString();
-        } catch (Exception e) {
-            e.printStackTrace();
-            return null;
+                try {
+                    String userId = freObjects[0].getAsString();
+                    AppsFlyerLib.getInstance().setCustomerUserId(userId);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    return null;
+                }
+
+
+                return null;
+            }
+
         }
-        AppsFlyerLib.getInstance().setCustomerUserId(appUserId);
-
-        return null;
-
-    }
-
-}
