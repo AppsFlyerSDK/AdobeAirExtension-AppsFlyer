@@ -11,6 +11,7 @@ In order for us to provide optimal support, we would kindly ask you to submit an
 
 - [Supported Platforms](#supported-platforms)
 - [Installation](#installation)
+  - [Notes for Android apps](#android_notes)
 - [Usage](#Usage)
 - [Deep Linking](#dl)
 - [IMEI And Android ID Collection  (Android Only)](#imei-id)
