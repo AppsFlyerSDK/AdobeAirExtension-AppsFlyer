@@ -2,6 +2,7 @@ package com.appsflyer.adobeair;
 
 import com.adobe.fre.FREContext;
 import com.adobe.fre.FREExtension;
+import com.appsflyer.AppsFlyerLib;
 
 public class AppsFlyerExtension implements FREExtension {
 
@@ -16,6 +17,7 @@ public class AppsFlyerExtension implements FREExtension {
 
     @Override
     public void initialize() {
+        AppsFlyerLib.getInstance().setExtension("adobe_air");
     }
 
 }
