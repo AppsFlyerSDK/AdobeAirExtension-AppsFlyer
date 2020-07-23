@@ -569,7 +569,6 @@ void AFExtensionInitializer(void** extDataToSet, FREContextInitializer* ctxIniti
 
 void AFExtensionFinalizer(FREContext ctx)
 {
-    [AppsFlyerTracker sharedTracker] setExtension
     return;
 }
 
