@@ -54,7 +54,7 @@ If the following was not added automatically please add it to the APP_NAME-app.x
 <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
 <uses-permission android:name="com.google.android.finsky.permission.BIND_GET_INSTALL_REFERRER_SERVICE" />
 ```
-- Add the following metatag to Android Manifest within the application tag (in the app description `APP_NAME-app.xml`):
+- Add the following metatag to Android Manifest within the application tag (in the app description `APP_NAME-app.xml`): 
 `<meta-data android:name="com.google.android.gms.version" android:value="@integer/google_play_services_version" />`
 
 As a result, you should see your Manifest like this:
