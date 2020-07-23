@@ -30,8 +30,6 @@ This plugin is built based on
 - iOS AppsFlyerSDK **v5.4.1**
 - Android AppsFlyerSDK **v5.4.1**
 
-**NOTE**: If you currently use ANE with higher SDK version (5.2.0), please downgrade to this one and make sure to check oyur integration code. Version 5.2.0 of AIR ANE was affected by the major issue and **should not be used**
-
 ---
 
 ## <a id="installation"> Installation
