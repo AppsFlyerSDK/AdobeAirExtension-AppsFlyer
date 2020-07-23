@@ -47,7 +47,20 @@ If the following was not added automatically please add it to the APP_NAME-app.x
 ### <a id="android_notes"> **Notes for Android applications:**
 - On AppsFlyer's dashboard you will need to add "air." prefix to the package name as this is added automatically by Air.  For example -  an app with the package name "**com.test.android**"  ,  should set the app id on AppsFlyer's Dashboard as "**air.com.test.android**".
 
-- Add `<uses-permission android:name="com.google.android.finsky.permission.BIND_GET_INSTALL_REFERRER_SERVICE" />` to Android Manifest (in the app description `APP_NAME-app.xml`) to allow Google install referrer collection
+- Add the following permissions to Android Manifest (in the app description `APP_NAME-app.xml`): 
+```
+<uses-permission android:name="android.permission.INTERNET"/>
+<uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+<uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
+<uses-permission android:name="com.google.android.finsky.permission.BIND_GET_INSTALL_REFERRER_SERVICE" />
+```
+- Add the following metatag to Android Manifest within the application tag (in the app description `APP_NAME-app.xml`):
+`<meta-data android:name="com.google.android.gms.version" android:value="@integer/google_play_services_version" />`
+
+As a result, you should see your Manifest like this:
+
+![image](https://user-images.githubusercontent.com/50541317/88154121-047b8100-cc0f-11ea-9647-5dae37e9817f.png)
+
 
 **IMPORTANT**  
 Due to some limitations in the [ADT](https://help.adobe.com/en_US/air/build/WS5b3ccc516d4fbf351e63e3d118666ade46-7fd9.html), after APK is built it is missing some important files.
