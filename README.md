@@ -11,6 +11,7 @@ In order for us to provide optimal support, we would kindly ask you to submit an
 
 - [Supported Platforms](#supported-platforms)
 - [Installation](#installation)
+  - [Notes for Android apps](#android_notes)
 - [Usage](#Usage)
 - [Deep Linking](#dl)
 - [IMEI And Android ID Collection  (Android Only)](#imei-id)
@@ -47,14 +48,14 @@ If the following was not added automatically please add it to the APP_NAME-app.x
 ### <a id="android_notes"> **Notes for Android applications:**
 - On AppsFlyer's dashboard you will need to add "air." prefix to the package name as this is added automatically by Air.  For example -  an app with the package name "**com.test.android**"  ,  should set the app id on AppsFlyer's Dashboard as "**air.com.test.android**".
 
-- Add the following permissions to Android Manifest (in the app description `APP_NAME-app.xml`): 
+- Add the following permissions to Android Manifest (in the app description `APP_NAME-app.xml`):  
 ```
 <uses-permission android:name="android.permission.INTERNET"/>
 <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
 <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
 <uses-permission android:name="com.google.android.finsky.permission.BIND_GET_INSTALL_REFERRER_SERVICE" />
 ```
-- Add the following metatag to Android Manifest within the application tag (in the app description `APP_NAME-app.xml`):
+- Add the following metatag to Android Manifest within the application tag (in the app description `APP_NAME-app.xml`):  
 `<meta-data android:name="com.google.android.gms.version" android:value="@integer/google_play_services_version" />`
 
 As a result, you should see your Manifest like this:
