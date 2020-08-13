@@ -53,7 +53,7 @@
 
 - (void) sendLaunch:(UIApplication *)application {
     NSLog(@"[AppsFlyerAIRExtension] launch (from notification)");
-    [[AppsFlyerTracker sharedTracker] trackAppLaunch];
+    [[AppsFlyerLib shared] start];
 }
 
 void dispatchStatusEvent(FREContext ctx,NSString *eventType, NSString *eventLevel) {

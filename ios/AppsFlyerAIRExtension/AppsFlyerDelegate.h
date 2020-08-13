@@ -3,11 +3,11 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "AppsFlyerTracker.h"
+#import "AppsFlyerLib.h"
 #import "FlashRuntimeExtensions.h"
 #import <UIKit/UIKit.h>
 
-@interface AppsFlyerDelegate : NSObject<AppsFlyerTrackerDelegate> {
+@interface AppsFlyerDelegate : NSObject<AppsFlyerLibDelegate> {
     FREContext ctx;
 }
 

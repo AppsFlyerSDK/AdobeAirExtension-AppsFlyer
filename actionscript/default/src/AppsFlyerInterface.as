@@ -3,21 +3,21 @@ import flash.events.EventDispatcher;
 
 //	import flash.external.ExtensionContext;
 
-public class AppsFlyerInterface extends  EventDispatcher {
+public class AppsFlyerInterface extends EventDispatcher {
 
-	public function AppsFlyerInterface() {
-	}
-
-	public function init(key:String, appId:String):void {
-	}
-
-	public function startTracking(key:String, appId:String):void {
-	}
-
-	public function stopTracking(isTrackingStopped:Boolean):void {
+    public function AppsFlyerInterface() {
     }
 
-    public function isTrackingStopped():Boolean {
+    public function init(key:String, appId:String):void {
+    }
+
+    public function start(key:String, appId:String):void {
+    }
+
+    public function stop(shouldStop:Boolean):void {
+    }
+
+    public function isStopped():Boolean {
         return false;
     }
 
@@ -39,32 +39,29 @@ public class AppsFlyerInterface extends  EventDispatcher {
     public function setOneLinkCustomDomain(domains:Array):void {
     }
 
-	public function registerConversionListener():void {
+    public function registerConversionListener():void {
     }
 
-	public function registerUninstall(deviceToken:String):void {
+    public function registerUninstall(deviceToken:String):void {
     }
 
-	public function trackAppLaunch():void {
+    public function logEvent(eventName:String, json:String):void {
     }
 
-	public function trackEvent(eventName:String, json:String):void {
-	}
-
-	public function setCurrency(currency:String):void {
-	}
+    public function setCurrency(currency:String):void {
+    }
 
     [Deprecated(replacement="setCustomerUserId")]
-	public function setAppUserId(appUserId:String):void {
-	}
+    public function setAppUserId(appUserId:String):void {
+    }
 
-	public function setCustomerUserId(appUserId:String):void {
+    public function setCustomerUserId(appUserId:String):void {
 	}
 
 	public function waitForCustomerUserID(value:Boolean):void {
     }
 
-    public function setCustomerIdAndTrack(value:String):void {
+    public function startWithCUID(value:String):void {
     }
 
     public function setImeiData(imei:String):void {
@@ -95,8 +92,8 @@ public class AppsFlyerInterface extends  EventDispatcher {
 	public function handlePushNotification(userInfo:String):void{
     }
 
-    public function validateAndTrackInAppPurchase(publicKey:String, signature:String, purchaseData:String, price:String,
-                                                         currency:String, additionalParameters:String):void {
+    public function validateAndLogInAppPurchase(publicKey:String, signature:String, purchaseData:String, price:String,
+                                                currency:String, additionalParameters:String):void {
     }
 
     public function useReceiptValidationSandbox(value:Boolean):void {
