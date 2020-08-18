@@ -38,7 +38,6 @@ public class AppsFlyerContext extends FREContext {
         map.put("waitForCustomerUserID", new WaitForCustomerUserID());
         map.put("startWithCUID", new StartWithCUID());
         map.put("setDebug", new SetDebug());
-        map.put("sendDeepLinkData", new SendDeepLinkData());
         map.put("setResolveDeepLinkURLs", new SetResolveDeepLinkURLsFunction());
         map.put("validateAndLogInAppPurchase", new ValidateAndLogInAppPurchaseFunction());
         map.put("registerValidatorListener", new RegisterValidatorListenerFunction());
