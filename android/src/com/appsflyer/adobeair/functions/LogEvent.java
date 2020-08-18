@@ -4,13 +4,11 @@ import android.content.Context;
 import com.adobe.fre.*;
 import com.appsflyer.AppsFlyerLib;
 import com.appsflyer.adobeair.Utils;
-import org.json.JSONArray;
-import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.*;
 
-public class TrackEventFunction implements FREFunction {
+public class LogEvent implements FREFunction {
 
     @Override
     public FREObject call(FREContext freContext, FREObject[] freObjects) {
@@ -19,7 +17,7 @@ public class TrackEventFunction implements FREFunction {
 
         String eventName = null;
         String value = null;
-        Map<String,Object> eventValues = new HashMap<String, Object>();
+        Map<String, Object> eventValues = new HashMap<String, Object>();
 
         if (freObjects[0] == null) {
             AppsFlyerLib.getInstance().trackEvent(context, eventName, eventValues);

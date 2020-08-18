@@ -1,17 +1,15 @@
 package com.appsflyer.adobeair.functions;
 
 import android.content.Context;
-import android.util.Log;
 import com.adobe.fre.*;
 import com.appsflyer.AppsFlyerLib;
 import com.appsflyer.adobeair.Utils;
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.*;
 
-public class ValidateAndTrackInAppPurchaseFunction implements FREFunction {
+public class ValidateAndLogInAppPurchaseFunction implements FREFunction {
 
     private final static String LOG = "AppsFlyer";
 

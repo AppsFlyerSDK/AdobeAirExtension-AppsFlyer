@@ -5,24 +5,16 @@ import com.adobe.fre.FREFunction;
 import com.adobe.fre.FREObject;
 import com.appsflyer.AppsFlyerLib;
 
-
-public class SetCustomerIdAndTrack implements FREFunction {
-
-    private final static String LOG = "AppsFlyer";
-
+public class IsStopped implements FREFunction {
     @Override
     public FREObject call(FREContext freContext, FREObject[] freObjects) {
-
-        String id = "";
+        FREObject result = null;
         try {
-            id = freObjects[0].getAsString();
+            result = FREObject.newObject(AppsFlyerLib.getInstance().isTrackingStopped());
         } catch (Exception e) {
             e.printStackTrace();
         }
 
-        AppsFlyerLib.getInstance().setCustomerIdAndTrack(id, freContext.getActivity().getApplicationContext());
-
-        return null;
+        return result;
     }
-
 }

@@ -6,19 +6,26 @@ import com.adobe.fre.FREObject;
 import com.appsflyer.AppsFlyerLib;
 import com.appsflyer.adobeair.AppsFlyerContext;
 
-public class StopTracking implements FREFunction {
+public class Start implements FREFunction {
 
     @Override
     public FREObject call(FREContext freContext, FREObject[] freObjects) {
 
-        final AppsFlyerContext cnt = (AppsFlyerContext)freContext;
-        boolean isTrackingStopped = false;
+        final AppsFlyerContext cnt = (AppsFlyerContext) freContext;
+        String devKey = null;
         try {
-            isTrackingStopped = freObjects[0].getAsBool();
+            devKey = freObjects[0].getAsString();
         } catch (Exception e) {
             e.printStackTrace();
         }
-        AppsFlyerLib.getInstance().stopTracking(isTrackingStopped, cnt.getActivity().getApplicationContext());
+
+        if(devKey == null) {
+            AppsFlyerLib.getInstance().startTracking(cnt.getActivity());
+        } else {
+            AppsFlyerLib.getInstance().startTracking(cnt.getActivity(), devKey);
+        }
+
+        cnt.setDevKey(devKey);
 
         return null;
     }
