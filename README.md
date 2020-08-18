@@ -20,7 +20,7 @@ In order for us to provide optimal support, we would kindly ask you to submit an
 
 ---
 
-## <a id="plugin-info"> plugin info
+## <a id="plugin-info"> Plugin info
 
 Supported platforms:
 
