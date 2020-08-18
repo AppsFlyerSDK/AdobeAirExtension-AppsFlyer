@@ -30,6 +30,10 @@ This plugin is built based on
 - iOS AppsFlyerSDK **v5.4.1**
 - Android AppsFlyerSDK **v5.4.1**
 
+ANE built with:
+
+SWF-version=43
+
 ---
 
 ## <a id="installation"> Installation
