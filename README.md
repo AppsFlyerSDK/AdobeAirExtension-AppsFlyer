@@ -9,7 +9,7 @@ In order for us to provide optimal support, we would kindly ask you to submit an
 
 ## Table of content
 
-- [Supported Platforms](#supported-platforms)
+- [Plugin info](#plugin-info)
 - [Installation](#installation)
   - [Notes for Android apps](#android_notes)
 - [Usage](#Usage)
@@ -20,19 +20,21 @@ In order for us to provide optimal support, we would kindly ask you to submit an
 
 ---
 
-## <a id="supported-platforms"> Supported Platforms
+## <a id="plugin-info"> plugin info
+
+Supported platforms:
 
 - Android
 - iOS 6+
 
-This plugin is built based on
+Based on:
 
 - iOS AppsFlyerSDK **v5.4.1**
 - Android AppsFlyerSDK **v5.4.1**
 
-ANE built with:
+Built with:
 
-SWF-version=43
+- SWF-version=43
 
 ---
 
