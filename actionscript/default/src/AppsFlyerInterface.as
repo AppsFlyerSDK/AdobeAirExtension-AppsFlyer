@@ -67,11 +67,6 @@ public class AppsFlyerInterface extends EventDispatcher {
     public function setImeiData(imei:String):void {
     }
 
-    [Deprecated(replacement="registerConversionListener")]
-	public function getConversionData():String {
-		return "conversionData";
-	}
-
 	public function setAndroidIdData(androidId:String):void {
 	}
 
@@ -99,12 +94,15 @@ public class AppsFlyerInterface extends EventDispatcher {
     public function useReceiptValidationSandbox(value:Boolean):void {
     }
 
-    public function sendDeepLinkData():void {
-    }
 
     public function registerValidatorListener():void {
-
     }
+
+    public function waitForAdvertisingIdentifier():void {
+    }
+
+//    public function requestATTPermission():void{
+//    }
 
 }
 }

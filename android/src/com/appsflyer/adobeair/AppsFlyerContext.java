@@ -29,7 +29,6 @@ public class AppsFlyerContext extends FREContext {
         map.put("logEvent", new LogEvent());
         map.put("registerUninstall", new RegisterUninstall());
         map.put("setCurrency", new SetCurrency());
-        map.put("getConversionData", new GetConversionData());
         map.put("setAndroidIdData", new SetAndroidIdData());
         map.put("setImeiData", new SetImeiData());
         map.put("setCollectAndroidID", new SetCollectAndroidID());
@@ -48,6 +47,7 @@ public class AppsFlyerContext extends FREContext {
         map.put("setSharingFilterForAllPartners", new SetSharingFilterForAllPartners());
         map.put("setCustomerUserId", new SetCustomerUserId());
         map.put("setUserEmails", new SetUserEmails());
+        map.put("waitForAdvertisingIdentifier", new WaitForAdvertisingIdentifier());
         return map;
     }
 

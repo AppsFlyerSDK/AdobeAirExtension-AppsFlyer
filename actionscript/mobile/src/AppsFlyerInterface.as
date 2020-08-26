@@ -106,12 +106,6 @@ public class AppsFlyerInterface extends EventDispatcher {
 		context.call("registerUninstall", deviceToken.replace(/[ <>]/g, ""));
 	}
 
-	[Deprecated(replacement="registerConversionListener")]
-	public function getConversionData():void {
-		context.addEventListener(StatusEvent.STATUS, _handleStatusEvents);
-		context.call("getConversionData");
-	}
-
 	public function setCollectAndroidID(collect:Boolean):void {
 		context.call("setCollectAndroidID", collect);
 	}
@@ -125,31 +119,34 @@ public class AppsFlyerInterface extends EventDispatcher {
 	}
 
 	public function setImeiData(imei:String):void {
-	    context.call("setImeiData", imei);
+		context.call("setImeiData", imei);
 	}
 
 	public function getAppsFlyerUID():String {
-	    return context.call("getAppsFlyerUID") as String;
+		return context.call("getAppsFlyerUID") as String;
 	}
 
-	public function setDebug(value:Boolean):void{
-	    context.call("setDebug", value);
+	public function setDebug(value:Boolean):void {
+		context.call("setDebug", value);
 	}
 
-	public function handlePushNotification(userInfo:String):void{
-    	    context.call("handlePushNotification", userInfo);
+	public function handlePushNotification(userInfo:String):void {
+		context.call("handlePushNotification", userInfo);
 	}
 
-    [Deprecated]
-	public function sendDeepLinkData():void {
-	    context.call("sendDeepLinkData");
+	public function waitForAdvertisingIdentifier(timeout:int):void {
+		context.call("waitForAdvertisingIdentifier", timeout);
 	}
+
+//	public function requestATTPermission():void{
+//		context.call("requestATTPermission");
+//	}
 
 	protected function _handleStatusEvents(e:StatusEvent):void {
-	    var event:AppsFlyerEvent = new AppsFlyerEvent(e.code, e.level);
-	    if (event != null) {
-		this.dispatchEvent(event);
-	    }
+		var event:AppsFlyerEvent = new AppsFlyerEvent(e.code, e.level);
+		if (event != null) {
+			this.dispatchEvent(event);
+		}
 	}
-    }
+}
 }

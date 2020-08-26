@@ -213,8 +213,8 @@
                     </array>
                 </dict>
             </array>
-
-
+            <key>NSUserTrackingUsageDescription</key>
+            <string>Please allow us to read your IDFA</string>
             <!--<key>UIStatusBarStyle</key>-->
             <!--<string>UIStatusBarStyleBlackOpaque</string>-->
             <!--<key>UIRequiresPersistentWiFi</key>-->

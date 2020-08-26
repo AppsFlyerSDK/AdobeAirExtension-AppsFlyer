@@ -6,6 +6,7 @@
 
 #import <UIKit/UIApplication.h>
 #import <UserNotifications/UserNotifications.h>
+#import <AppTrackingTransparency/AppTrackingTransparency.h>
 
 #import <objc/runtime.h>
 #import <objc/message.h>
@@ -111,6 +112,12 @@ BOOL didReceiveRemoteNotificationHandler(id self, SEL _cmd, UIApplication* appli
     return [NSString stringWithUTF8String:(char*)string];
 }
 
++ (int) getInt:(FREObject*)value {
+    int32_t nativeInt = 0;
+    FREGetObjectAsInt32(value, &nativeInt);
+    return nativeInt;
+}
+
 + (void) dispatchStatusEvent:(FREContext) ctx withType: (NSString*) eventType level: (NSString*) eventLevel {
     const uint8_t* levelCode = (const uint8_t*) [eventLevel UTF8String];
     const uint8_t* eventCode = (const uint8_t*) [eventType UTF8String];
@@ -159,14 +166,14 @@ DEFINE_ANE_FUNCTION(stop)
 {
     uint32_t value;
     FREGetObjectAsBool(argv[0], &value);
-    [AppsFlyerLib shared].isStop = value;
+    [AppsFlyerLib shared].isStopped = value;
     return NULL;
 }
 
 DEFINE_ANE_FUNCTION(isStopped)
 {
     FREObject result = nil;
-    uint32_t isStopped = [[AppsFlyerLib shared] isStop];
+    uint32_t isStopped = [[AppsFlyerLib shared] isStopped];
     FRENewObjectFromBool(isStopped, &result);
     return result;
 }
@@ -283,12 +290,6 @@ DEFINE_ANE_FUNCTION(setResolveDeepLinkURLs)
     return NULL;
 }
 
-DEFINE_ANE_FUNCTION(getConversionData)
-{
-    [AppsFlyerLib shared].delegate = conversionDelegate;
-    return NULL;
-}
-
 DEFINE_ANE_FUNCTION(getAppsFlyerUID)
 {
     FREObject uid = nil;
@@ -374,58 +375,74 @@ DEFINE_ANE_FUNCTION(useReceiptValidationSandbox)
     return NULL;
 }
 
-DEFINE_ANE_FUNCTION(sendDeepLinkData)
-{
-    NSLog(@"sendDeepLinkData method is not supported on iOS");
-    return NULL;
-}
-
 DEFINE_ANE_FUNCTION(registerValidatorListener)
 {
-    NSLog(@"registerValidatorListener method is not supported on iOS");
+    NSLog(@"[AppsFlyerAIRExtension] registerValidatorListener method is not supported on iOS");
     return NULL;
 }
 
 
 DEFINE_ANE_FUNCTION(setCollectAndroidID)
 {
-    NSLog(@"setCollectAndroidID method is not supported on iOS");
+    NSLog(@"[AppsFlyerAIRExtension] setCollectAndroidID method is not supported on iOS");
     return NULL;
 }
 
 DEFINE_ANE_FUNCTION(setAndroidIdData)
 {
-    NSLog(@"setAndroidIdData method is not supported on iOS");
+    NSLog(@"[AppsFlyerAIRExtension] setAndroidIdData method is not supported on iOS");
     return NULL;
 }
 
 DEFINE_ANE_FUNCTION(setImeiData)
 {
-    NSLog(@"setImeiData method is not supported on iOS");
+    NSLog(@"[AppsFlyerAIRExtension] setImeiData method is not supported on iOS");
     return NULL;
 }
 
 DEFINE_ANE_FUNCTION(setCollectIMEI)
 {
-    NSLog(@"setCollectIMEI method is not supported on iOS");
+    NSLog(@"[AppsFlyerAIRExtension] setCollectIMEI method is not supported on iOS");
     return NULL;
 }
 
 DEFINE_ANE_FUNCTION(waitForCustomerUserId)
 {
-    NSLog(@"waitForCustomerUserId method is not supported on iOS");
+    NSLog(@"[AppsFlyerAIRExtension] waitForCustomerUserId method is not supported on iOS");
     return NULL;
 }
 
 DEFINE_ANE_FUNCTION(startWithCUID)
 {
-    NSLog(@"startWithCUID method is not supported on iOS");
+    NSString *appUserId = [AppsFlyerAIRExtension getString: argv[0]];
+    [AppsFlyerLib shared].customerUserID = appUserId;
+    [[AppsFlyerLib shared] start];
     return NULL;
 }
 
+DEFINE_ANE_FUNCTION(waitForAdvertisingIdentifier)
+{
+    if (@available(iOS 14, *)) {
+        int interval = [AppsFlyerAIRExtension getInt: argv[0]];
+        double timeoutInterval = (double)interval;
+        [[AppsFlyerLib shared] waitForAdvertisingIdentifierWithTimeoutInterval:timeoutInterval];
+    }
+
+    return NULL;
+}
+
+// DEFINE_ANE_FUNCTION(requestATTPermission){
+//     if (@available(iOS 14, *)) {
+//         [ATTrackingManager requestTrackingAuthorizationWithCompletionHandler:^(ATTrackingManagerAuthorizationStatus status) {
+//             //....
+//         }];
+//     }
+//     return NULL;
+// }
+
 void AFExtContextInitializer(void* extData, const uint8_t* ctxType, FREContext ctx, uint32_t* numFunctionsToTest, const FRENamedFunction** functionsToSet)
 {
-    *numFunctionsToTest = 29;
+    *numFunctionsToTest = 28;
     FRENamedFunction* func = (FRENamedFunction*)malloc(sizeof(FRENamedFunction) * *numFunctionsToTest);
     
     func[19].name = (const uint8_t*)"init";
@@ -463,10 +480,6 @@ void AFExtContextInitializer(void* extData, const uint8_t* ctxType, FREContext c
     func[27].name = (const uint8_t*)"setSharingFilter";
     func[27].functionData = NULL;
     func[27].function = &setSharingFilter;
-    
-    func[28].name = (const uint8_t*)"setSharingFilterForAllPartners";
-    func[28].functionData = NULL;
-    func[28].function = &setSharingFilterForAllPartners;
 
     func[0].name = (const uint8_t*)"start";
     func[0].functionData = NULL;
@@ -488,9 +501,9 @@ void AFExtContextInitializer(void* extData, const uint8_t* ctxType, FREContext c
     func[4].functionData = NULL;
     func[4].function = &setCustomerUserId;
     
-    func[5].name = (const uint8_t*)"getConversionData";
+    func[5].name = (const uint8_t*)"setSharingFilterForAllPartners";
     func[5].functionData = NULL;
-    func[5].function = &getConversionData;
+    func[5].function = &setSharingFilterForAllPartners;
     
     func[6].name = (const uint8_t*)"getAppsFlyerUID";
     func[6].functionData = NULL;
@@ -524,9 +537,9 @@ void AFExtContextInitializer(void* extData, const uint8_t* ctxType, FREContext c
     func[13].functionData = NULL;
     func[13].function = &handlePushNotification;
     
-    func[14].name = (const uint8_t*)"sendDeepLinkData";
+    func[14].name = (const uint8_t*)"waitForAdvertisingIdentifier";
     func[14].functionData = NULL;
-    func[14].function = &sendDeepLinkData;
+    func[14].function = &waitForAdvertisingIdentifier;
     
     func[15].name = (const uint8_t*)"registerUninstall";
     func[15].functionData = NULL;

@@ -1,13 +1,13 @@
-<extension xmlns="http://ns.adobe.com/air/extension/32.0">
-    <id>com.appsflyer.adobeair</id> 
-    <versionNumber>5.4.3</versionNumber>
-    <platforms> 
+<extension xmlns="http://ns.adobe.com/air/extension/33.1">
+    <id>com.appsflyer.adobeair</id>
+    <versionNumber>6.0.1</versionNumber>
+    <platforms>
         <platform name="Android-ARM">
             <applicationDeployment>
                 <nativeLibrary>libAppsFlyerAIRExtension.jar</nativeLibrary>
                 <initializer>com.appsflyer.adobeair.AppsFlyerExtension</initializer>
                 <finalizer>com.appsflyer.adobeair.AppsFlyerExtension</finalizer>
-            </applicationDeployment> 
+            </applicationDeployment>
         </platform>
         <platform name="Android-ARM64">
             <applicationDeployment>

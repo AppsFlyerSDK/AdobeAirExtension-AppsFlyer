@@ -1,9 +1,11 @@
-<platform xmlns="http://ns.adobe.com/air/extension/32.0">
+<platform xmlns="http://ns.adobe.com/air/extension/33.1">
     <sdkVersion>8.1</sdkVersion>
-	<linkerOptions>
+    <linkerOptions>
         <option>-framework iAd</option>
         <option>-framework AdSupport</option>
+        <!--        <option>-framework AppTrackingTransparency</option>-->
         <option>-liconv</option>
+        <option>-lclang_rt.ios</option>
     </linkerOptions>
     <packagedDependencies>
         <packagedDependency>libAppsFlyerLib.a</packagedDependency>
