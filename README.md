@@ -12,7 +12,7 @@ In order for us to provide optimal support, we would kindly ask you to submit an
 ## Table of content
 
 - [v6 Breaking changes](#v6-breaking-changes)
-- [Supported Platforms](#supported-platforms)
+- [Plugin info](#plugin-info)
 - [Installation](#installation)
   - [Notes for Android apps](#android_notes)
 - [Usage](#Usage)
@@ -43,15 +43,20 @@ And removed the following ones:
 
 If you have used 1 of the removed APIs, please check the integration guide for the updated instructions
 
-## <a id="supported-platforms"> Supported Platforms
+## <a id="plugin-info"> Plugin info
 
 - Android
 - iOS 6+
 
-This plugin is built based on
+Based on:
 
 - iOS AppsFlyerSDK **v6.0.1**
 - Android AppsFlyerSDK **v5.4.1**
+
+Built with:
+
+- SWF-version = 44
+- AIR SDK version = 33.1.1.217
 
 ---
 
