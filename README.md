@@ -2,6 +2,8 @@
 
 # AppsFlyer Adobe Air extension 
 
+## This is a BETA version of the ReactNative plugin for AppsFlyer SDK that is built with BETA version of iOS SDK v6.0.1. 
+**Do not use this version on Production builds!** 
 
 In order for us to provide optimal support, we would kindly ask you to submit any issues to support@appsflyer.com
 
@@ -9,6 +11,7 @@ In order for us to provide optimal support, we would kindly ask you to submit an
 
 ## Table of content
 
+- [v6 Breaking changes](#v6-breaking-changes)
 - [Supported Platforms](#supported-platforms)
 - [Installation](#installation)
   - [Notes for Android apps](#android_notes)
@@ -20,6 +23,26 @@ In order for us to provide optimal support, we would kindly ask you to submit an
 
 ---
 
+## <a id="v6-breaking-changes"> ❗ v6 Breaking Changes
+
+We have renamed the following APIs:
+
+| Old API                       | New API                       |
+| ------------------------------|-------------------------------|
+| trackEvent                    | logEvent                      |
+| startTracking                 | start                         |
+| stopTracking                  | stop                          |
+| isTrackingStopped             | isStopped                     |
+| setCustomerIdAndTrack         | startWithCUID                 |
+| validateAndTrackInAppPurchase | validateAndLogInAppPurchase   |
+
+And removed the following ones:
+
+- trackAppLaunch -> no longer needed. See new init guide
+- sendDeepLinkData -> no longer needed
+
+If you have used 1 of the removed APIs, please check the integration guide for the updated instructions
+
 ## <a id="supported-platforms"> Supported Platforms
 
 - Android
@@ -27,7 +50,7 @@ In order for us to provide optimal support, we would kindly ask you to submit an
 
 This plugin is built based on
 
-- iOS AppsFlyerSDK **v5.4.1**
+- iOS AppsFlyerSDK **v6.0.1**
 - Android AppsFlyerSDK **v5.4.1**
 
 ---
@@ -122,10 +145,10 @@ Set the Developer key and iOS app ID (optional) and Initialise the SDK:
 appsFlyer.appsFlyer.init("DevKey", "iOSAppID");
 ```
 
-Initialise session tracking (automatically track app launches and background-to-foreground transitions) with DevKey and iOS app ID (optional):
+Initialise session reporting (automatically report app launches and background-to-foreground transitions) with DevKey and iOS app ID (optional):
 
 ```
-appsFlyer.startTracking("DevKey", "iOSAppID");
+appsFlyer.start("DevKey", "iOSAppID");
 ```
 
 ---
@@ -202,21 +225,14 @@ appsFlyer.setAndroidIdData("AndroidIDString");
 
 ## <a id="api-methods"> API Methods
 
-### <a id="event-tracking"> Tracking In-App Events
-In-App  Events can be tracked using the `trackEvent("eventName", "eventValue") API.
+### <a id="event-logging"> Logging In-App Events
+In-App  Events can be logged using the `logEvent("eventName", "eventValue") API.
 For Example: 
 	
 ```
 var param:String = "Deposit";
 var value:String = '{"amount":10, "FTDLevel":"-"}';
-appsFlyer.trackEvent(param, value);         
-```
-
-### <a id="trackAppLaunch"> Sending sessions manually
-Use this method if you wish to send a session tracking event, regardless of app state:
-
-```
-appsFlyer.trackAppLaunch();
+appsFlyer.logEvent(param, value);         
 ```
 
 ### <a id="appUserId"> Setting App User ID
@@ -237,11 +253,11 @@ appsFlyer.setUserEmails("example@example.com");
 appsFlyer.setCurrency("USD");
 ```
 
-### <a id ="opt"> StopTracking (Opt-Out)
-In some extreme cases you might want to shut down all SDK tracking due to legal and privacy compliance. This can be achieved with the isStopTracking API. Once this API is invoked, our SDK will no longer communicate with our servers and stop functioning.
+### <a id ="opt"> Stop (Opt-Out)
+In some extreme cases you might want to shut down all SDK reporting due to legal and privacy compliance. This can be achieved with the stop() API. Once this API is invoked, our SDK will no longer communicate with our servers and stop functioning.
 
 ```
-appsFlyer.stopTracking();
+appsFlyer.stop();
 ```
 
 ###  <a id="debugLogs"> Enable / Disable AppsFlyer Debug-Logs
