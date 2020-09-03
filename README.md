@@ -54,7 +54,8 @@ Based on:
 
 Built with:
 
-- SWF-version=43
+- SWF-version = 44
+- AIR SDK version = 33.1.1.217
 
 ---
 
