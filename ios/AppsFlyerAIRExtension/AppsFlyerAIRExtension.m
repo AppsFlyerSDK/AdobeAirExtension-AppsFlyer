@@ -1,11 +1,12 @@
 
 #import "FlashRuntimeExtensions.h"
-#import "AppsFlyerTracker.h"
+#import "AppsFlyerLib.h"
 #import "AppsFlyerDelegate.h"
 #import "AppsFlyerAIRExtension.h"
 
 #import <UIKit/UIApplication.h>
 #import <UserNotifications/UserNotifications.h>
+#import <AppTrackingTransparency/AppTrackingTransparency.h>
 
 #import <objc/runtime.h>
 #import <objc/message.h>
@@ -25,28 +26,28 @@ void applicationDidBecomeActive(id self, SEL _cmd, UIApplication* application) {
 static IMP __original_continueUserActivity_Imp;
 BOOL continueUserActivity(id self, SEL _cmd, UIApplication* application, NSUserActivity* userActivity, RestorationHandler restorationHandler) {
     NSLog(@"[AppsFlyerAIRExtension] continueUserActivity: %@", self);
-    [[AppsFlyerTracker sharedTracker] continueUserActivity:userActivity restorationHandler:restorationHandler];
+    [[AppsFlyerLib shared] continueUserActivity:userActivity restorationHandler:restorationHandler];
     return ((BOOL(*)(id,SEL,UIApplication*,NSUserActivity*, RestorationHandler))__original_continueUserActivity_Imp)(self, _cmd, application, userActivity, restorationHandler);
 }
 // Reports app open from deeplink for iOS 8 or below (DEPRECATED)
 static IMP __original_openURLDeprecated_Imp;
 BOOL openURLDeprecated(id self, SEL _cmd, UIApplication* application, NSURL* url, NSString* sourceApplication, id annotation) {
     NSLog(@"[AppsFlyerAIRExtension] openURLDeprecated: %@", self);
-    [[AppsFlyerTracker sharedTracker] handleOpenURL:url sourceApplication:sourceApplication withAnnotation:annotation];
+    [[AppsFlyerLib shared] handleOpenURL:url sourceApplication:sourceApplication withAnnotation:annotation];
     return ((BOOL(*)(id, SEL, UIApplication*, NSURL*, NSString*, id))__original_openURLDeprecated_Imp)(self, _cmd, application, url, sourceApplication, annotation);
 }
 // Reports app open from deeplink for iOS 10
 static IMP __original_openURL_Imp;
 BOOL openURL(id self, SEL _cmd, UIApplication* application, NSURL* url, NSDictionary * options) {
     NSLog(@"[AppsFlyerAIRExtension] openURL: %@", self);
-    [[AppsFlyerTracker sharedTracker] handleOpenUrl:url options:options];
+    [[AppsFlyerLib shared] handleOpenUrl:url options:options];
     return ((BOOL(*)(id, SEL, UIApplication*, NSURL*, NSDictionary*))__original_openURL_Imp)(self, _cmd, application, url, options);
 }
 
 static IMP __original_didReceiveRemoteNotification_Imp;
 BOOL didReceiveRemoteNotificationHandler(id self, SEL _cmd, UIApplication* application, NSDictionary* userInfo) {
     NSLog(@"[AppsFlyerAIRExtension] didReceiveRemoteNotification: %@", self);
-    [[AppsFlyerTracker sharedTracker] handlePushNotification:userInfo];
+    [[AppsFlyerLib shared] handlePushNotification:userInfo];
     return ((BOOL(*)(id, SEL, UIApplication*, NSDictionary*))__original_didReceiveRemoteNotification_Imp)(self, _cmd, application, userInfo);
 }
 
@@ -111,6 +112,12 @@ BOOL didReceiveRemoteNotificationHandler(id self, SEL _cmd, UIApplication* appli
     return [NSString stringWithUTF8String:(char*)string];
 }
 
++ (int) getInt:(FREObject*)value {
+    int32_t nativeInt = 0;
+    FREGetObjectAsInt32(value, &nativeInt);
+    return nativeInt;
+}
+
 + (void) dispatchStatusEvent:(FREContext) ctx withType: (NSString*) eventType level: (NSString*) eventLevel {
     const uint8_t* levelCode = (const uint8_t*) [eventLevel UTF8String];
     const uint8_t* eventCode = (const uint8_t*) [eventType UTF8String];
@@ -141,12 +148,12 @@ DEFINE_ANE_FUNCTION(init)
     NSString *developerKey = [AppsFlyerAIRExtension getString: argv[0]];
     NSString *appId = [AppsFlyerAIRExtension getString: argv[1]];
    
-    [AppsFlyerTracker sharedTracker].appsFlyerDevKey = developerKey;
-    [AppsFlyerTracker sharedTracker].appleAppID = appId;
+    [AppsFlyerLib shared].appsFlyerDevKey = developerKey;
+    [AppsFlyerLib shared].appleAppID = appId;
     return NULL;
 }
 
-DEFINE_ANE_FUNCTION(startTracking)
+DEFINE_ANE_FUNCTION(start)
 {
     [[NSNotificationCenter defaultCenter] addObserver:conversionDelegate
     selector:@selector(sendLaunch:)
@@ -155,26 +162,20 @@ DEFINE_ANE_FUNCTION(startTracking)
     return NULL;
 }
 
-DEFINE_ANE_FUNCTION(stopTracking)
+DEFINE_ANE_FUNCTION(stop)
 {
     uint32_t value;
     FREGetObjectAsBool(argv[0], &value);
-    [AppsFlyerTracker sharedTracker].isStopTracking = value;
+    [AppsFlyerLib shared].isStopped = value;
     return NULL;
 }
 
-DEFINE_ANE_FUNCTION(isTrackingStopped)
+DEFINE_ANE_FUNCTION(isStopped)
 {
     FREObject result = nil;
-    uint32_t isStoppedTracking = [[AppsFlyerTracker sharedTracker] isStopTracking];
-    FRENewObjectFromBool(isStoppedTracking, &result);
+    uint32_t isStopped = [[AppsFlyerLib shared] isStopped];
+    FRENewObjectFromBool(isStopped, &result);
     return result;
-}
-
-DEFINE_ANE_FUNCTION(trackAppLaunch)
-{
-    [[AppsFlyerTracker sharedTracker] trackAppLaunch];
-    return NULL;
 }
 
 DEFINE_ANE_FUNCTION(setOneLinkCustomDomain)
@@ -189,7 +190,7 @@ DEFINE_ANE_FUNCTION(setOneLinkCustomDomain)
         [domains addObject: [AppsFlyerAIRExtension getString: element]];
     }
     
-    [[AppsFlyerTracker sharedTracker] setOneLinkCustomDomains:domains];
+    [[AppsFlyerLib shared] setOneLinkCustomDomains:domains];
 
     return NULL;
 }
@@ -206,14 +207,14 @@ DEFINE_ANE_FUNCTION(setSharingFilter)
         [filters addObject: [AppsFlyerAIRExtension getString: element]];
     }
     
-    [AppsFlyerTracker sharedTracker].sharingFilter = filters;
+    [AppsFlyerLib shared].sharingFilter = filters;
 
     return NULL;
 }
 
 DEFINE_ANE_FUNCTION(setSharingFilterForAllPartners)
 {
-    [[AppsFlyerTracker sharedTracker] setSharingFilterForAllPartners];
+    [[AppsFlyerLib shared] setSharingFilterForAllPartners];
     return NULL;
 }
 
@@ -221,7 +222,7 @@ DEFINE_ANE_FUNCTION(performOnAppAttribution)
 {
     NSString *strUrl = [AppsFlyerAIRExtension getString: argv[0]];
     NSURL *url = [NSURL URLWithString: strUrl];
-    [[AppsFlyerTracker sharedTracker] performOnAppAttributionWithURL:url];
+    [[AppsFlyerLib shared] performOnAppAttributionWithURL:url];
     
     return NULL;
 }
@@ -230,19 +231,19 @@ DEFINE_ANE_FUNCTION(setCurrency)
 {
     NSString *currency = [AppsFlyerAIRExtension getString: argv[0]];
     
-    [AppsFlyerTracker sharedTracker].currencyCode = currency;
+    [AppsFlyerLib shared].currencyCode = currency;
     
     return NULL;
 }
 
-DEFINE_ANE_FUNCTION(trackEvent)
+DEFINE_ANE_FUNCTION(logEvent)
 {
     if(argv[0] != NULL) {
         NSString *eventName = [AppsFlyerAIRExtension getString: argv[0]];
         NSString *eventValue = [AppsFlyerAIRExtension getString: argv[1]];
         NSDictionary *values = [AppsFlyerAIRExtension convertFromJSonString:eventValue];
     
-        [[AppsFlyerTracker sharedTracker] trackEvent:eventName withValues:values];
+        [[AppsFlyerLib shared] logEvent:eventName withValues:values];
     }
     
     return NULL;
@@ -252,7 +253,7 @@ DEFINE_ANE_FUNCTION(setCustomerUserId)
 {
     NSString *appUserId = [AppsFlyerAIRExtension getString: argv[0]];
     
-    [AppsFlyerTracker sharedTracker].customerUserID = appUserId;
+    [AppsFlyerLib shared].customerUserID = appUserId;
     
     return NULL;
 }
@@ -269,7 +270,7 @@ DEFINE_ANE_FUNCTION(setUserEmails)
         [emails addObject: [AppsFlyerAIRExtension getString: element]];
     }
     
-    [[AppsFlyerTracker sharedTracker] setUserEmails:emails withCryptType:EmailCryptTypeSHA1];
+    [[AppsFlyerLib shared] setUserEmails:emails withCryptType:EmailCryptTypeSHA1];
     return NULL;
 }
 
@@ -285,20 +286,14 @@ DEFINE_ANE_FUNCTION(setResolveDeepLinkURLs)
         [urls addObject: [AppsFlyerAIRExtension getString: element]];
     }
     
-    [[AppsFlyerTracker sharedTracker] setResolveDeepLinkURLs:urls];
-    return NULL;
-}
-
-DEFINE_ANE_FUNCTION(getConversionData)
-{
-    [AppsFlyerTracker sharedTracker].delegate = conversionDelegate;
+    [[AppsFlyerLib shared] setResolveDeepLinkURLs:urls];
     return NULL;
 }
 
 DEFINE_ANE_FUNCTION(getAppsFlyerUID)
 {
     FREObject uid = nil;
-    NSString *value = (NSString *)[[AppsFlyerTracker sharedTracker] getAppsFlyerUID];
+    NSString *value = (NSString *)[[AppsFlyerLib shared] getAppsFlyerUID];
     FRENewObjectFromUTF8(strlen((const char*)[value UTF8String]) + 1.0, (const uint8_t*)[value UTF8String], &uid);
     return uid;
 }
@@ -307,7 +302,7 @@ DEFINE_ANE_FUNCTION(setDebug)
 {
     uint32_t value;
     FREGetObjectAsBool(argv[0], &value);
-    [AppsFlyerTracker sharedTracker].isDebug = value;
+    [AppsFlyerLib shared].isDebug = value;
     return NULL;
 }
 
@@ -316,7 +311,7 @@ DEFINE_ANE_FUNCTION(handlePushNotification)
     NSString *userInfoString = [AppsFlyerAIRExtension getString: argv[0]];
     NSDictionary *userInfo = [AppsFlyerAIRExtension convertFromJSonString:userInfoString];
 
-    [[AppsFlyerTracker sharedTracker] handlePushNotification:userInfo];
+    [[AppsFlyerLib shared] handlePushNotification:userInfo];
     
     return NULL;
 }
@@ -325,17 +320,17 @@ DEFINE_ANE_FUNCTION(registerUninstall)
 {
     NSString *deviceTokenStr = [AppsFlyerAIRExtension getString: argv[0]];
     NSData *deviceToken = [AppsFlyerAIRExtension dataFromHexString:deviceTokenStr];
-    [[AppsFlyerTracker sharedTracker] registerUninstall:deviceToken];
+    [[AppsFlyerLib shared] registerUninstall:deviceToken];
     return NULL;
 }
 
 DEFINE_ANE_FUNCTION(registerConversionListener)
 {
-    [AppsFlyerTracker sharedTracker].delegate = conversionDelegate;
+    [AppsFlyerLib shared].delegate = conversionDelegate;
     return NULL;
 }
 
-DEFINE_ANE_FUNCTION(validateAndTrackInAppPurchase)
+DEFINE_ANE_FUNCTION(validateAndLogInAppPurchase)
 {
 
     NSString *productIdentifier = [AppsFlyerAIRExtension getString: argv[0]];
@@ -349,7 +344,7 @@ DEFINE_ANE_FUNCTION(validateAndTrackInAppPurchase)
         params = [AppsFlyerAIRExtension convertFromJSonString:additionalParameters];
     }
     
-    [[AppsFlyerTracker sharedTracker] validateAndTrackInAppPurchase:productIdentifier
+    [[AppsFlyerLib shared] validateAndLogInAppPurchase:productIdentifier
                                                               price:price
                                                            currency:currency
                                                       transactionId:transactionIdentifier
@@ -375,76 +370,92 @@ DEFINE_ANE_FUNCTION(useReceiptValidationSandbox)
 {
     uint32_t value;
     FREGetObjectAsBool(argv[0], &value);
-    [AppsFlyerTracker sharedTracker].useReceiptValidationSandbox = value;
+    [AppsFlyerLib shared].useReceiptValidationSandbox = value;
     
-    return NULL;
-}
-
-DEFINE_ANE_FUNCTION(sendDeepLinkData)
-{
-    NSLog(@"sendDeepLinkData method is not supported on iOS");
     return NULL;
 }
 
 DEFINE_ANE_FUNCTION(registerValidatorListener)
 {
-    NSLog(@"registerValidatorListener method is not supported on iOS");
+    NSLog(@"[AppsFlyerAIRExtension] registerValidatorListener method is not supported on iOS");
     return NULL;
 }
 
 
 DEFINE_ANE_FUNCTION(setCollectAndroidID)
 {
-    NSLog(@"setCollectAndroidID method is not supported on iOS");
+    NSLog(@"[AppsFlyerAIRExtension] setCollectAndroidID method is not supported on iOS");
     return NULL;
 }
 
 DEFINE_ANE_FUNCTION(setAndroidIdData)
 {
-    NSLog(@"setAndroidIdData method is not supported on iOS");
+    NSLog(@"[AppsFlyerAIRExtension] setAndroidIdData method is not supported on iOS");
     return NULL;
 }
 
 DEFINE_ANE_FUNCTION(setImeiData)
 {
-    NSLog(@"setImeiData method is not supported on iOS");
+    NSLog(@"[AppsFlyerAIRExtension] setImeiData method is not supported on iOS");
     return NULL;
 }
 
 DEFINE_ANE_FUNCTION(setCollectIMEI)
 {
-    NSLog(@"setCollectIMEI method is not supported on iOS");
+    NSLog(@"[AppsFlyerAIRExtension] setCollectIMEI method is not supported on iOS");
     return NULL;
 }
 
 DEFINE_ANE_FUNCTION(waitForCustomerUserId)
 {
-    NSLog(@"waitForCustomerUserId method is not supported on iOS");
+    NSLog(@"[AppsFlyerAIRExtension] waitForCustomerUserId method is not supported on iOS");
     return NULL;
 }
 
-DEFINE_ANE_FUNCTION(setCustomerIdAndTrack)
+DEFINE_ANE_FUNCTION(startWithCUID)
 {
-    NSLog(@"setCustomerIdAndTrack method is not supported on iOS");
+    NSString *appUserId = [AppsFlyerAIRExtension getString: argv[0]];
+    [AppsFlyerLib shared].customerUserID = appUserId;
+    [[AppsFlyerLib shared] start];
     return NULL;
 }
+
+DEFINE_ANE_FUNCTION(waitForAdvertisingIdentifier)
+{
+    if (@available(iOS 14, *)) {
+        int interval = [AppsFlyerAIRExtension getInt: argv[0]];
+        double timeoutInterval = (double)interval;
+        [[AppsFlyerLib shared] waitForAdvertisingIdentifierWithTimeoutInterval:timeoutInterval];
+    }
+
+    return NULL;
+}
+
+// DEFINE_ANE_FUNCTION(requestATTPermission){
+//     if (@available(iOS 14, *)) {
+//         [ATTrackingManager requestTrackingAuthorizationWithCompletionHandler:^(ATTrackingManagerAuthorizationStatus status) {
+//             //....
+//         }];
+//     }
+//     return NULL;
+// }
 
 void AFExtContextInitializer(void* extData, const uint8_t* ctxType, FREContext ctx, uint32_t* numFunctionsToTest, const FRENamedFunction** functionsToSet)
 {
-    *numFunctionsToTest = 30;
+    *numFunctionsToTest = 28;
     FRENamedFunction* func = (FRENamedFunction*)malloc(sizeof(FRENamedFunction) * *numFunctionsToTest);
     
     func[19].name = (const uint8_t*)"init";
     func[19].functionData = NULL;
     func[19].function = &init;
     
-    func[20].name = (const uint8_t*)"stopTracking";
+    func[20].name = (const uint8_t*)"stop";
     func[20].functionData = NULL;
-    func[20].function = &stopTracking;
+    func[20].function = &stop;
     
-    func[21].name = (const uint8_t*)"isTrackingStopped";
+    func[21].name = (const uint8_t*)"isStopped";
     func[21].functionData = NULL;
-    func[21].function = &isTrackingStopped;
+    func[21].function = &isStopped;
     
     func[22].name = (const uint8_t*)"setUserEmails";
     func[22].functionData = NULL;
@@ -454,9 +465,9 @@ void AFExtContextInitializer(void* extData, const uint8_t* ctxType, FREContext c
     func[23].functionData = NULL;
     func[23].function = &waitForCustomerUserId;
     
-    func[24].name = (const uint8_t*)"setCustomerIdAndTrack";
+    func[24].name = (const uint8_t*)"startWithCUID";
     func[24].functionData = NULL;
-    func[24].function = &setCustomerIdAndTrack;
+    func[24].function = &startWithCUID;
     
     func[25].name = (const uint8_t*)"setResolveDeepLinkURLs";
     func[25].functionData = NULL;
@@ -469,22 +480,14 @@ void AFExtContextInitializer(void* extData, const uint8_t* ctxType, FREContext c
     func[27].name = (const uint8_t*)"setSharingFilter";
     func[27].functionData = NULL;
     func[27].function = &setSharingFilter;
-    
-    func[28].name = (const uint8_t*)"setSharingFilterForAllPartners";
-    func[28].functionData = NULL;
-    func[28].function = &setSharingFilterForAllPartners;
- 
-    func[29].name = (const uint8_t*)"trackEvent";
-    func[29].functionData = NULL;
-    func[29].function = &trackEvent;
-    
-    func[0].name = (const uint8_t*)"startTracking";
+
+    func[0].name = (const uint8_t*)"start";
     func[0].functionData = NULL;
-    func[0].function = &startTracking;
-    
-    func[1].name = (const uint8_t*)"trackAppLaunch";
+    func[0].function = &start;
+
+    func[1].name = (const uint8_t*)"logEvent";
     func[1].functionData = NULL;
-    func[1].function = &trackAppLaunch;
+    func[1].function = &logEvent;
     
     func[2].name = (const uint8_t*)"registerConversionListener";
     func[2].functionData = NULL;
@@ -498,9 +501,9 @@ void AFExtContextInitializer(void* extData, const uint8_t* ctxType, FREContext c
     func[4].functionData = NULL;
     func[4].function = &setCustomerUserId;
     
-    func[5].name = (const uint8_t*)"getConversionData";
+    func[5].name = (const uint8_t*)"setSharingFilterForAllPartners";
     func[5].functionData = NULL;
-    func[5].function = &getConversionData;
+    func[5].function = &setSharingFilterForAllPartners;
     
     func[6].name = (const uint8_t*)"getAppsFlyerUID";
     func[6].functionData = NULL;
@@ -534,9 +537,9 @@ void AFExtContextInitializer(void* extData, const uint8_t* ctxType, FREContext c
     func[13].functionData = NULL;
     func[13].function = &handlePushNotification;
     
-    func[14].name = (const uint8_t*)"sendDeepLinkData";
+    func[14].name = (const uint8_t*)"waitForAdvertisingIdentifier";
     func[14].functionData = NULL;
-    func[14].function = &sendDeepLinkData;
+    func[14].function = &waitForAdvertisingIdentifier;
     
     func[15].name = (const uint8_t*)"registerUninstall";
     func[15].functionData = NULL;
@@ -550,9 +553,9 @@ void AFExtContextInitializer(void* extData, const uint8_t* ctxType, FREContext c
     func[17].functionData = NULL;
     func[17].function = &setImeiData;
     
-    func[18].name = (const uint8_t*)"validateAndTrackInAppPurchase";
+    func[18].name = (const uint8_t*)"validateAndLogInAppPurchase";
     func[18].functionData = NULL;
-    func[18].function = &validateAndTrackInAppPurchase;
+    func[18].function = &validateAndLogInAppPurchase;
     
     *functionsToSet = func;
     

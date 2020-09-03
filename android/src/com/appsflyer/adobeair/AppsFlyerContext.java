@@ -23,25 +23,22 @@ public class AppsFlyerContext extends FREContext {
         Map<String, FREFunction> map = new HashMap<String, FREFunction>();
         map.put("init", new AppsFlyerInit());
         map.put("registerConversionListener", new RegisterConversionListener());
-        map.put("startTracking", new StartTracking());
-        map.put("stopTracking", new StopTracking());
-        map.put("isTrackingStopped", new IsTrackingStopped());
-        map.put("trackAppLaunch", new TrackAppLaunchFunction());
-        map.put("trackEvent", new TrackEventFunction());
-        map.put("registerUninstall", new RegisterUninstallFunction());
+        map.put("start", new Start());
+        map.put("stop", new Stop());
+        map.put("isStopped", new IsStopped());
+        map.put("logEvent", new LogEvent());
+        map.put("registerUninstall", new RegisterUninstall());
         map.put("setCurrency", new SetCurrency());
-        map.put("getConversionData", new GetConversionData());
         map.put("setAndroidIdData", new SetAndroidIdData());
         map.put("setImeiData", new SetImeiData());
         map.put("setCollectAndroidID", new SetCollectAndroidID());
         map.put("setCollectIMEI", new SetCollectIMEI());
         map.put("getAppsFlyerUID", new GetAppsFlyerUID());
         map.put("waitForCustomerUserID", new WaitForCustomerUserID());
-        map.put("setCustomerIdAndTrack", new SetCustomerIdAndTrack());
+        map.put("startWithCUID", new StartWithCUID());
         map.put("setDebug", new SetDebug());
-        map.put("sendDeepLinkData", new SendDeepLinkData());
         map.put("setResolveDeepLinkURLs", new SetResolveDeepLinkURLsFunction());
-        map.put("validateAndTrackInAppPurchase", new ValidateAndTrackInAppPurchaseFunction());
+        map.put("validateAndLogInAppPurchase", new ValidateAndLogInAppPurchaseFunction());
         map.put("registerValidatorListener", new RegisterValidatorListenerFunction());
         map.put("useReceiptValidationSandbox", new UseReceiptValidationSandboxFunction());
         map.put("setOneLinkCustomDomain", new SetOneLinkCustomDomain());
@@ -50,6 +47,7 @@ public class AppsFlyerContext extends FREContext {
         map.put("setSharingFilterForAllPartners", new SetSharingFilterForAllPartners());
         map.put("setCustomerUserId", new SetCustomerUserId());
         map.put("setUserEmails", new SetUserEmails());
+        map.put("waitForAdvertisingIdentifier", new WaitForAdvertisingIdentifier());
         return map;
     }
 

@@ -6,6 +6,8 @@ import com.appsflyer.AppsFlyerLib;
 
 public class AppsFlyerExtension implements FREExtension {
 
+    public final static String LOG_TAG = "AppsFyer";
+
     @Override
     public FREContext createContext(String arg0) {
         return new AppsFlyerContext();

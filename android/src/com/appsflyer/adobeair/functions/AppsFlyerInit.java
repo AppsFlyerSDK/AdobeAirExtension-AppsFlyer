@@ -60,7 +60,6 @@ public class AppsFlyerInit implements FREFunction {
             };
 
             AppsFlyerLib.getInstance().init(devKey, conversionDataListener, freContext.getActivity().getApplicationContext());
-//             AppsFlyerLib.getInstance().startTracking(freContext.getActivity().getApplication()); // We should only init the SDK in this function
             cnt.setDevKey(devKey);
 
         } catch (Exception e) {
