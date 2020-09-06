@@ -1,10 +1,21 @@
-#! /usr/bin/env bash
+#!/bin/bash
+
+# Apktool check
 a=`which apktool`;
-if (a="/usr/local/bin/apktool") then
-    echo Using apktool found at $a;
-else 
+
+if [ $a == "apktool not found" ]; then
     echo apktool is not installed or not in the PATH. Please install it from https://ibotpeaches.github.io/Apktool/ and add to PATH to proceed. Aborting;
     exit;
+else
+    echo Using apktool found at $a;
+fi
+
+z=`which zipalign`;
+if [ $z == "zipalign not found" ]; then
+    echo zipalign is not installed or not in the PATH. Please add it to PATH to proceed It should be located under .../Android/sdk/build-tools/{build_tool_version}/zipalign. Aborting;
+    exit;
+else
+    echo Using zipalign found at $z;
 fi
 
 read -p 'Enter apk filename without extension (e.g. Main (NOT Main.apk):' APP_NAME;
@@ -48,9 +59,13 @@ apktool b $APP_NAME;
 # Sing the new apk
 jarsigner -verbose -sigalg SHA1withRSA -digestalg SHA1 -keystore $KEYSTORE.keystore $APP_NAME/dist/$APP_NAME.apk $KEY;
 
+# Zipalign and verify apk
+zipalign -f -v 4 $APP_NAME/dist/$APP_NAME.apk $APP_NAME/dist/zipalign_$APP_NAME.apk
+zipalign -c -v 4 $APP_NAME/dist/zipalign_$APP_NAME.apk
+
 # Place result apk into current folder
-rm ./$APP_NAME_fixed.apk;
-mv $APP_NAME/dist/$APP_NAME.apk ./fixed_$APP_NAME.apk;
+rm ./fixed_$APP_NAME.apk;
+mv $APP_NAME/dist/zipalign_$APP_NAME.apk ./fixed_$APP_NAME.apk;
 
 # remove temp folders
 rm -rf $APP_NAME/;
