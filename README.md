@@ -49,7 +49,7 @@ Supported platforms:
 
 Based on:
 
-- iOS AppsFlyerSDK **v6.0.2**
+- iOS AppsFlyerSDK **v6.0.3**
 - Android AppsFlyerSDK **v5.4.1**
 
 Built with:
