@@ -7,12 +7,12 @@ import com.adobe.fre.FREObject;
 
 import static com.appsflyer.AppsFlyerLibCore.LOG_TAG;
 
-public class WaitForAdvertisingIdentifier implements FREFunction {
+public class waitForATTUserAuthorization implements FREFunction {
 
 
     @Override
     public FREObject call(FREContext freContext, FREObject[] freObjects) {
-        Log.d(LOG_TAG, "WaitForAdvertisingIdentifier method is not supported on Android");
+        Log.d(LOG_TAG, "waitForATTUserAuthorization method is not supported on Android");
         return null;
     }
 }

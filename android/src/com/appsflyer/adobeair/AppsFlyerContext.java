@@ -47,7 +47,7 @@ public class AppsFlyerContext extends FREContext {
         map.put("setSharingFilterForAllPartners", new SetSharingFilterForAllPartners());
         map.put("setCustomerUserId", new SetCustomerUserId());
         map.put("setUserEmails", new SetUserEmails());
-        map.put("waitForAdvertisingIdentifier", new WaitForAdvertisingIdentifier());
+        map.put("waitForATTUserAuthorization", new waitForATTUserAuthorization());
         return map;
     }
 
