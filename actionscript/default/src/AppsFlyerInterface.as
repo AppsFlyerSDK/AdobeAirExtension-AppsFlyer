@@ -98,7 +98,7 @@ public class AppsFlyerInterface extends EventDispatcher {
     public function registerValidatorListener():void {
     }
 
-    public function waitForAdvertisingIdentifier():void {
+    public function waitForATTUserAuthorization():void {
     }
 
 //    public function requestATTPermission():void{

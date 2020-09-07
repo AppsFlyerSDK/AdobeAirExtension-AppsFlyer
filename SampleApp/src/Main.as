@@ -22,7 +22,7 @@ public class Main extends Sprite {
         appsFlyer.addEventListener(AppsFlyerEvent.ATTRIBUTION_FAILURE, eventHandler); // OAOA error
         appsFlyer.addEventListener(AppsFlyerEvent.APP_OPEN_ATTRIBUTION, eventHandler);  // OAOA success
 
-        appsFlyer.waitForAdvertisingIdentifier(10);
+        appsFlyer.waitForATTUserAuthorization(10);
         //requestATTPermission for IDFA collection HERE
         appsFlyer.registerConversionListener();
         appsFlyer.setSharingFilter(["google_int", "facebook_int"]);

@@ -420,12 +420,12 @@ DEFINE_ANE_FUNCTION(startWithCUID)
     return NULL;
 }
 
-DEFINE_ANE_FUNCTION(waitForAdvertisingIdentifier)
+DEFINE_ANE_FUNCTION(waitForATTUserAuthorization)
 {
     if (@available(iOS 14, *)) {
         int interval = [AppsFlyerAIRExtension getInt: argv[0]];
         double timeoutInterval = (double)interval;
-        [[AppsFlyerLib shared] waitForAdvertisingIdentifierWithTimeoutInterval:timeoutInterval];
+        [[AppsFlyerLib shared] waitForATTUserAuthorizationWithTimeoutInterval:timeoutInterval];
     }
 
     return NULL;
@@ -537,9 +537,9 @@ void AFExtContextInitializer(void* extData, const uint8_t* ctxType, FREContext c
     func[13].functionData = NULL;
     func[13].function = &handlePushNotification;
     
-    func[14].name = (const uint8_t*)"waitForAdvertisingIdentifier";
+    func[14].name = (const uint8_t*)"waitForATTUserAuthorization";
     func[14].functionData = NULL;
-    func[14].function = &waitForAdvertisingIdentifier;
+    func[14].function = &waitForATTUserAuthorization;
     
     func[15].name = (const uint8_t*)"registerUninstall";
     func[15].functionData = NULL;
