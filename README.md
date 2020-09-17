@@ -122,10 +122,10 @@ com/appsflyer/internal/a-: '0'
 6. Sign the apk  
 `jarsigner -verbose -sigalg SHA1withRSA -digestalg SHA1 -keystore myKeystore.keystore  app_name/dist/app_name.apk myKey`   
 
-7. Zipalign the apk (to be able to upload to Google Play)
+7. Zipalign the apk (to be able to upload to Google Play)  
 `zipalign -f -v 4 app_name/dist/app_name.apk app_name/dist/zipalign_app_name.apk`
 
-8. Verify zipalignment
+8. Verify zipalignment  
 `zipalign -c -v 4 app_name/dist/zipalign_app_name.apk`
 
 9. Your apk `zipalign_app_name.apk` is ready to use!
