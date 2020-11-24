@@ -156,7 +156,7 @@ public class Main extends Sprite {
                 "af_revenue": revenue,
                 "af_currency": currency
             };
-            appsFlyer.trackEvent(param, JSON.stringify(value));
+            appsFlyer.logEvent(param, JSON.stringify(value));
         }
     }
 
@@ -166,7 +166,7 @@ public class Main extends Sprite {
             amount: 10,
             FTDLevel: "-"
         };
-        appsFlyer.trackEvent(param, JSON.stringify(value));
+        appsFlyer.logEvent(param, JSON.stringify(value));
         log("Call sendTrackingWithValues: '" + param + "' with value '" + JSON.stringify(value));
     }
 

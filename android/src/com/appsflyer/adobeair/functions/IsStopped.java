@@ -10,7 +10,7 @@ public class IsStopped implements FREFunction {
     public FREObject call(FREContext freContext, FREObject[] freObjects) {
         FREObject result = null;
         try {
-            result = FREObject.newObject(AppsFlyerLib.getInstance().isTrackingStopped());
+            result = FREObject.newObject(AppsFlyerLib.getInstance().isStopped());
         } catch (Exception e) {
             e.printStackTrace();
         }

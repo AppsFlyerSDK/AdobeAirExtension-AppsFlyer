@@ -20,7 +20,7 @@ public class StartWithCUID implements FREFunction {
             e.printStackTrace();
         }
 
-        AppsFlyerLib.getInstance().setCustomerIdAndTrack(id, freContext.getActivity().getApplicationContext());
+        AppsFlyerLib.getInstance().setCustomerIdAndLogSession(id, freContext.getActivity().getApplicationContext());
 
         return null;
     }
