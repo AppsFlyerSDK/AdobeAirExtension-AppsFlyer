@@ -5,12 +5,12 @@
     <property file="build.config"/>
 
     <target name="all"
-            depends="android,ios,swc-default,swf-mobile,package,package_without_gp,package_without_gp_and_support_lib,clear,ios-strict, swf-mobile-strict,package-strict,clear"
+            depends="android,ios,swc-default,swf-mobile,package,package_without_gp,package_without_gp_and_support_lib,ios-strict,swf-default-strict,swf-mobile-strict,package-strict,clear"
             description="Full build of extension"/>
     <!--    <target name="all" depends="swf-mobile-strict" description="DEBUG"/>-->
 
     <target name="all-android-debug"
-            depends="android-debug,ios,swf-mobile,swc-default,package,package_without_gp,package_without_gp_and_support_lib,clear,ios-strict,swf-mobile-strict,package-strict,clear"
+            depends="android-debug,ios,swf-mobile,swc-default,package,package_without_gp,package_without_gp_and_support_lib,ios-strict,swf-default-strict,swf-mobile-strict,package-strict,clear"
             description="Full build of extension w/debugging on Android"
     />
 
@@ -121,7 +121,7 @@
             <env key="AIR_SDK_HOME" value="${air.sdk}"/>
             <arg line='../actionscript/mobile/src/AppsFlyerInterface.as'/>
             <arg line='-source-path '/>
-            <arg line='-define+=TARGET::STRICT,false'/>
+            <arg line='-define+=TARGET::NONSTRICT,true'/>
             <arg line='-output ../temp/swf/library.swf'/>
             <arg line='-external-library-path+="${air.sdk}/frameworks/libs/air/airglobal.swc"'/>
         </exec>
@@ -148,6 +148,7 @@
             <arg line='-output ../temp/swc/${name}.swc'/>
             <arg line='-external-library-path+="${air.sdk}/frameworks/libs/air/airglobal.swc"'/>
             <arg line='-include-classes ${classlist}'/>
+            <arg line='-define+=TARGET::NONSTRICT,true'/>
         </exec>
         
         <unzip src="../temp/swc/${name}.swc" dest="../temp/swc/content" overwrite="true"/>
@@ -227,6 +228,7 @@
 
     <!-- iOS-Strict-->
     <target name="ios-strict" description="Build Strict iOS Library">
+        <delete dir="../temp/ios/build/"/>
         <mkdir dir="../temp/ios/build/"/>
 
         <exec executable="xcodebuild" failonerror="true" dir="../ios/">
@@ -247,14 +249,28 @@
         <delete dir="../temp/ios/build/"/>
     </target>
 
-    <target name="swf-mobile-strict" description="Build SWF library">
+    <target name="swf-default-strict" description="Build SWC Strict library">
+        <exec executable="${flex.sdk}/bin/mxmlc${bin.ext}" failonerror="true">
+            <env key="AIR_SDK_HOME" value="${air.sdk}"/>
+            <arg line='../actionscript/default/src/AppsFlyerInterface.as'/>
+            <arg line='-source-path '/>
+            <arg line='-define+=TARGET::NONSTRICT,false'/>
+            <arg line='-output ../temp/swf/library.swf'/>
+            <arg line='-external-library-path+="${air.sdk}/frameworks/libs/air/airglobal.swc"'/>
+        </exec>
+
+        <copy file="../temp/swf/library.swf" todir="../temp/default" overwrite="true"/>
+
+    </target>
+
+    <target name="swf-mobile-strict" description="Build SWF Strict library">
         <mkdir dir="../temp/swf/"/>
 
         <exec executable="${flex.sdk}/bin/mxmlc${bin.ext}" failonerror="true">
             <env key="AIR_SDK_HOME" value="${air.sdk}"/>
             <arg line='../actionscript/mobile/src/AppsFlyerInterface.as'/>
             <arg line='-source-path '/>
-            <arg line='-define+=TARGET::STRICT,true'/>
+            <arg line='-define+=TARGET::NONSTRICT,false'/>
             <arg line='-output ../temp/swf/library.swf'/>
             <arg line='-external-library-path+="${air.sdk}/frameworks/libs/air/airglobal.swc"'/>
         </exec>
