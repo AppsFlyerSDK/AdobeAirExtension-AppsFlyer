@@ -1,19 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project name="Air Native Extension Build Scripts" default="all">
-    
+
     <!-- Config -->
     <property file="build.config"/>
-    
-    <target name="all" depends="android,ios,swc-default,swc-mobile,package,package_without_gp,package_without_gp_and_support_lib,clear" description="Full build of extension"/>
-    
-    <target name="all-android-debug" depends="android-debug,ios,swc-mobile,swc-default,package,package_without_gp,package_without_gp_and_support_lib,clear"
-        description="Full build of extension w/debugging on Android"
+
+    <target name="all"
+            depends="android,ios,swc-default,swf-mobile,package,package_without_gp,package_without_gp_and_support_lib,clear,ios-strict, swf-mobile-strict,package-strict,clear"
+            description="Full build of extension"/>
+    <!--    <target name="all" depends="swf-mobile-strict" description="DEBUG"/>-->
+
+    <target name="all-android-debug"
+            depends="android-debug,ios,swf-mobile,swc-default,package,package_without_gp,package_without_gp_and_support_lib,clear,ios-strict,swf-mobile-strict,package-strict,clear"
+            description="Full build of extension w/debugging on Android"
     />
-    
+
     <!-- iOS -->
     <target name="ios" description="Build iOS Library">
         <mkdir dir="../temp/ios/build/"/>
-        
+
         <exec executable="xcodebuild" failonerror="true" dir="../ios/">
             <arg line="-project ${name}.xcodeproj"/>
             <arg line="-alltargets clean"/>
@@ -22,7 +26,7 @@
         <exec executable="xcodebuild" failonerror="true" dir="../ios/">
             <arg line="-project ${name}.xcodeproj"/>
             <arg line="-sdk ${ios.sdkversion}"/>
-            <arg line="-alltargets"/>
+            <arg line="-target ${name}"/>
             <arg line="-configuration Release"/>
             <arg line="SYMROOT=../temp/ios/build/"/>
         </exec>
@@ -31,7 +35,7 @@
         <copy file="../ios/libAppsFlyerLib.a" todir="../temp/ios" overwrite="true"/>
         <delete dir="../temp/ios/build/"/>
     </target>
-    
+
     <!-- Android -->
     <target name="android-build" description="Build Android Library">
         <property name="aapt" location="${android.build.tools.dir}/aapt${exe.ext}" />
@@ -107,32 +111,23 @@
         <property name="ANDROID_DEBUG" value="true"/>
         <antcall target="android-build"/>
     </target>
-    
-    
+
+
     <!-- Actionscript mobile -->
-    <target name="swc-mobile" description="Build SWC library">
-        <mkdir dir="../temp/swc/content/"/>
-        
-        <fileset dir="../actionscript/mobile/src" casesensitive="yes" id="classfiles">
-            <include name="**/*.as"/>
-        </fileset>
-        
-        <pathconvert property="classlist" refid="classfiles" pathsep=" " dirsep=".">
-            <regexpmapper from=".*src.(.*)\.as" to="\1"/>
-        </pathconvert>
-        
-        <exec executable="${flex.sdk}/bin/compc${bin.ext}" failonerror="true">
+    <target name="swf-mobile" description="Build SWF library">
+        <mkdir dir="../temp/swf/"/>
+
+        <exec executable="${flex.sdk}/bin/mxmlc${bin.ext}" failonerror="true">
             <env key="AIR_SDK_HOME" value="${air.sdk}"/>
-            <arg line='-source-path ../actionscript/mobile/src'/>
-            <arg line='-output ../temp/swc/${name}.swc'/>
+            <arg line='../actionscript/mobile/src/AppsFlyerInterface.as'/>
+            <arg line='-source-path '/>
+            <arg line='-define+=TARGET::STRICT,false'/>
+            <arg line='-output ../temp/swf/library.swf'/>
             <arg line='-external-library-path+="${air.sdk}/frameworks/libs/air/airglobal.swc"'/>
-            <arg line='-include-classes ${classlist}'/>
         </exec>
-        
-        <unzip src="../temp/swc/${name}.swc" dest="../temp/swc/content" overwrite="true"/>
-        
-        <copy file="../temp/swc/content/library.swf" todir="../temp/ios" overwrite="true"/>
-        <copy file="../temp/swc/content/library.swf" todir="../temp/android" overwrite="true"/>
+
+        <copy file="../temp/swf/library.swf" todir="../temp/ios" overwrite="true"/>
+        <copy file="../temp/swf/library.swf" todir="../temp/android" overwrite="true"/>
     </target>
     
     <!-- Actionscript default (for AIR simulator) -->
@@ -222,12 +217,73 @@
             <arg line="-platform Android-x86 -platformoptions ../build/platform-android-without-gp-support.xml -C android/ ."/>
             <arg line="-platform default -C default/ ."/>
         </exec>
-    
+
         <move file="../temp/${name}-witout-gp-support.ane" todir="../bin"/>
     </target>
-    
+
     <target name="clear">
         <delete dir="../temp"/>
     </target>
-    
+
+    <!-- iOS-Strict-->
+    <target name="ios-strict" description="Build Strict iOS Library">
+        <mkdir dir="../temp/ios/build/"/>
+
+        <exec executable="xcodebuild" failonerror="true" dir="../ios/">
+            <arg line="-project ${name}.xcodeproj"/>
+            <arg line="-alltargets clean"/>
+        </exec>
+
+        <exec executable="xcodebuild" failonerror="true" dir="../ios/">
+            <arg line="-project ${name}.xcodeproj"/>
+            <arg line="-sdk ${ios.sdkversion}"/>
+            <arg line="-target Strict"/>
+            <arg line="-configuration Release"/>
+            <arg line="SYMROOT=../temp/ios/build/"/>
+        </exec>
+
+        <copy file="../temp/ios/build/Release-iphoneos/lib${name}.a" todir="../temp/ios" overwrite="true"/>
+        <copy file="../ios/libAppsFlyerLib-strict.a" todir="../temp/ios" overwrite="true"/>
+        <delete dir="../temp/ios/build/"/>
+    </target>
+
+    <target name="swf-mobile-strict" description="Build SWF library">
+        <mkdir dir="../temp/swf/"/>
+
+        <exec executable="${flex.sdk}/bin/mxmlc${bin.ext}" failonerror="true">
+            <env key="AIR_SDK_HOME" value="${air.sdk}"/>
+            <arg line='../actionscript/mobile/src/AppsFlyerInterface.as'/>
+            <arg line='-source-path '/>
+            <arg line='-define+=TARGET::STRICT,true'/>
+            <arg line='-output ../temp/swf/library.swf'/>
+            <arg line='-external-library-path+="${air.sdk}/frameworks/libs/air/airglobal.swc"'/>
+        </exec>
+
+        <copy file="../temp/swf/library.swf" todir="../temp/ios" overwrite="true"/>
+        <copy file="../temp/swf/library.swf" todir="../temp/android" overwrite="true"/>
+    </target>
+
+    <target name="package-strict" description="Create the extension package without Google play services, support libs
+    and iOS AdSupport and iAd frameworks">
+        <delete file="../temp/ios/libAppsFlyerLib.a"/>
+        <delete file="../temp/ios/AppsFlyerAIRExtension.swf"/>
+
+        <exec executable="${air.sdk}/bin/adt${bin.ext}" failonerror="true" dir="../temp">
+            <arg value="-package"/>
+            <arg value="-target"/>
+            <arg value="ane"/>
+            <arg value="${name}-strict.ane"/>
+            <arg value="../build/extension.xml"/>
+            <arg line="-swc swc/${name}.swc"/>
+
+            <arg line="-platform iPhone-ARM -platformoptions ../build/platform-ios-strict.xml -C ios/ ."/>
+            <arg line="-platform Android-ARM -platformoptions ../build/platform-android-without-gp-support.xml -C android/ ."/>
+            <arg line="-platform Android-ARM64 -platformoptions ../build/platform-android-without-gp-support.xml -C android/ ."/>
+            <arg line="-platform Android-x86 -platformoptions ../build/platform-android-without-gp-support.xml -C android/ ."/>
+            <arg line="-platform default -C default/ ."/>
+        </exec>
+
+        <move file="../temp/${name}-strict.ane" todir="../bin"/>
+    </target>
+
 </project>

@@ -134,8 +134,12 @@ public class AppsFlyerInterface extends EventDispatcher {
 		context.call("handlePushNotification", userInfo);
 	}
 
+
 	public function waitForATTUserAuthorization(timeout:int):void {
-		context.call("waitForATTUserAuthorization", timeout);
+		if (TARGET::STRICT) {
+		} else {
+			context.call("waitForATTUserAuthorization", timeout);
+		}
 	}
 
 //	public function requestATTPermission():void{

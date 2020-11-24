@@ -1,0 +1,10 @@
+<platform xmlns="http://ns.adobe.com/air/extension/33.1">
+    <sdkVersion>8.1</sdkVersion>
+    <linkerOptions>
+        <option>-liconv</option>
+        <option>-lclang_rt.ios</option>
+    </linkerOptions>
+    <packagedDependencies>
+        <packagedDependency>libAppsFlyerLib-strict.a</packagedDependency>
+    </packagedDependencies>
+</platform>

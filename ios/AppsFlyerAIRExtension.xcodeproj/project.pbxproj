@@ -10,12 +10,27 @@
 		848D0E7C1986B443004E8542 /* AdSupport.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 848D0E7619814C06004E8542 /* AdSupport.framework */; };
 		848D0E7D1986B45C004E8542 /* iAd.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 848D0E7819814C0D004E8542 /* iAd.framework */; };
 		84D809111DA63B6A00A13114 /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 84D809101DA63B6A00A13114 /* StoreKit.framework */; };
+		9D79CF2B256C5B6B0018F0DB /* AppsFlyerAIRExtension.m in Sources */ = {isa = PBXBuildFile; fileRef = AACAB241185624FE00C55EB7 /* AppsFlyerAIRExtension.m */; };
+		9D79CF2C256C5B6B0018F0DB /* AppsFlyerDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = AAA4F9B918E1B2D800C121B5 /* AppsFlyerDelegate.m */; };
+		9D79CF2E256C5B6B0018F0DB /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 84D809101DA63B6A00A13114 /* StoreKit.framework */; };
+		9D79CF2F256C5B6B0018F0DB /* iAd.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 848D0E7819814C0D004E8542 /* iAd.framework */; };
+		9D79CF30256C5B6B0018F0DB /* AdSupport.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 848D0E7619814C06004E8542 /* AdSupport.framework */; };
+		9D79CF31256C5B6B0018F0DB /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AACAB23A185624FE00C55EB7 /* Foundation.framework */; settings = {ATTRIBUTES = (Required, ); }; };
 		AAA4F9BA18E1B2D800C121B5 /* AppsFlyerDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = AAA4F9B918E1B2D800C121B5 /* AppsFlyerDelegate.m */; };
 		AACAB23B185624FE00C55EB7 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AACAB23A185624FE00C55EB7 /* Foundation.framework */; settings = {ATTRIBUTES = (Required, ); }; };
 		AACAB242185624FE00C55EB7 /* AppsFlyerAIRExtension.m in Sources */ = {isa = PBXBuildFile; fileRef = AACAB241185624FE00C55EB7 /* AppsFlyerAIRExtension.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
+		9D79CF32256C5B6B0018F0DB /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "include/$(PRODUCT_NAME)";
+			dstSubfolderSpec = 16;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		AACAB235185624FE00C55EB7 /* CopyFiles */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
@@ -33,6 +48,7 @@
 		848D0E7819814C0D004E8542 /* iAd.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = iAd.framework; path = System/Library/Frameworks/iAd.framework; sourceTree = SDKROOT; };
 		848D0E7A19814CA2004E8542 /* libAppsFlyerLib.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libAppsFlyerLib.a; sourceTree = "<group>"; };
 		84D809101DA63B6A00A13114 /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = System/Library/Frameworks/StoreKit.framework; sourceTree = SDKROOT; };
+		9D79CF36256C5B6B0018F0DB /* libAppsFlyerAIRExtension.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libAppsFlyerAIRExtension.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		AAA4F9B818E1B2D800C121B5 /* AppsFlyerDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppsFlyerDelegate.h; sourceTree = "<group>"; };
 		AAA4F9B918E1B2D800C121B5 /* AppsFlyerDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AppsFlyerDelegate.m; sourceTree = "<group>"; };
 		AACAB237185624FE00C55EB7 /* libAppsFlyerAIRExtension.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libAppsFlyerAIRExtension.a; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -45,6 +61,17 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		9D79CF2D256C5B6B0018F0DB /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				9D79CF2E256C5B6B0018F0DB /* StoreKit.framework in Frameworks */,
+				9D79CF2F256C5B6B0018F0DB /* iAd.framework in Frameworks */,
+				9D79CF30256C5B6B0018F0DB /* AdSupport.framework in Frameworks */,
+				9D79CF31256C5B6B0018F0DB /* Foundation.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		AACAB234185624FE00C55EB7 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -72,6 +99,7 @@
 			isa = PBXGroup;
 			children = (
 				AACAB237185624FE00C55EB7 /* libAppsFlyerAIRExtension.a */,
+				9D79CF36256C5B6B0018F0DB /* libAppsFlyerAIRExtension.a */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -114,6 +142,23 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
+		9D79CF29256C5B6B0018F0DB /* Strict */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 9D79CF33256C5B6B0018F0DB /* Build configuration list for PBXNativeTarget "Strict" */;
+			buildPhases = (
+				9D79CF2A256C5B6B0018F0DB /* Sources */,
+				9D79CF2D256C5B6B0018F0DB /* Frameworks */,
+				9D79CF32256C5B6B0018F0DB /* CopyFiles */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = Strict;
+			productName = AdobeeAirExtensionIOS;
+			productReference = 9D79CF36256C5B6B0018F0DB /* libAppsFlyerAIRExtension.a */;
+			productType = "com.apple.product-type.library.static";
+		};
 		AACAB236185624FE00C55EB7 /* AppsFlyerAIRExtension */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = AACAB25A185624FE00C55EB7 /* Build configuration list for PBXNativeTarget "AppsFlyerAIRExtension" */;
@@ -157,11 +202,21 @@
 			projectRoot = "";
 			targets = (
 				AACAB236185624FE00C55EB7 /* AppsFlyerAIRExtension */,
+				9D79CF29256C5B6B0018F0DB /* Strict */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXSourcesBuildPhase section */
+		9D79CF2A256C5B6B0018F0DB /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				9D79CF2B256C5B6B0018F0DB /* AppsFlyerAIRExtension.m in Sources */,
+				9D79CF2C256C5B6B0018F0DB /* AppsFlyerDelegate.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		AACAB233185624FE00C55EB7 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -174,6 +229,50 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin XCBuildConfiguration section */
+		9D79CF34256C5B6B0018F0DB /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				DSTROOT = /tmp/AdobeeAirExtensionIOS.dst;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "AppsFlyerAIRExtension/AppsFlyerAIRExtension-Prefix.pch";
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"$STRICT=1",
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					/Users/orenb/AppsFlyer/Dev/workspace/AdobeeAirExtensionIOS,
+					"$(PROJECT_DIR)",
+				);
+				ONLY_ACTIVE_ARCH = NO;
+				OTHER_LDFLAGS = "-ObjC";
+				PRODUCT_NAME = AppsFlyerAIRExtension;
+				SKIP_INSTALL = YES;
+				VALID_ARCHS = "armv7 armv7s arm64";
+			};
+			name = Debug;
+		};
+		9D79CF35256C5B6B0018F0DB /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				DSTROOT = /tmp/AdobeeAirExtensionIOS.dst;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "AppsFlyerAIRExtension/AppsFlyerAIRExtension-Prefix.pch";
+				GCC_PREPROCESSOR_DEFINITIONS = "$STRICT=1";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					/Users/orenb/AppsFlyer/Dev/workspace/AdobeeAirExtensionIOS,
+					"$(PROJECT_DIR)",
+				);
+				ONLY_ACTIVE_ARCH = NO;
+				OTHER_LDFLAGS = "-ObjC";
+				PRODUCT_NAME = AppsFlyerAIRExtension;
+				SKIP_INSTALL = YES;
+				VALID_ARCHS = "armv7 armv7s arm64";
+			};
+			name = Release;
+		};
 		AACAB258185624FE00C55EB7 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -250,6 +349,11 @@
 				DSTROOT = /tmp/AdobeeAirExtensionIOS.dst;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "AppsFlyerAIRExtension/AppsFlyerAIRExtension-Prefix.pch";
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+					"$STRICT=0",
+				);
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					/Users/orenb/AppsFlyer/Dev/workspace/AdobeeAirExtensionIOS,
@@ -269,6 +373,7 @@
 				DSTROOT = /tmp/AdobeeAirExtensionIOS.dst;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "AppsFlyerAIRExtension/AppsFlyerAIRExtension-Prefix.pch";
+				GCC_PREPROCESSOR_DEFINITIONS = "$STRICT=0";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					/Users/orenb/AppsFlyer/Dev/workspace/AdobeeAirExtensionIOS,
@@ -285,6 +390,15 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		9D79CF33256C5B6B0018F0DB /* Build configuration list for PBXNativeTarget "Strict" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				9D79CF34256C5B6B0018F0DB /* Debug */,
+				9D79CF35256C5B6B0018F0DB /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		AACAB232185624FE00C55EB7 /* Build configuration list for PBXProject "AppsFlyerAIRExtension" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (

@@ -3,7 +3,6 @@
     <linkerOptions>
         <option>-framework iAd</option>
         <option>-framework AdSupport</option>
-        <!--        <option>-framework AppTrackingTransparency</option>-->
         <option>-liconv</option>
         <option>-lclang_rt.ios</option>
     </linkerOptions>
