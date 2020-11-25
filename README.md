@@ -70,7 +70,10 @@ If the following was not added automatically please add it to the APP_NAME-app.x
 	<extensionID>com.appsflyer.adobeair</extensionID> 
 </extensions>
 ```
-### <a id="android_notes"> **Notes for Android applications:**
+
+### <a id="android_notes"> **Special instructions for Android applications:**
+<details>
+	
 - On AppsFlyer's dashboard you will need to add "air." prefix to the package name as this is added automatically by Air.  For example -  an app with the package name "**com.test.android**"  ,  should set the app id on AppsFlyer's Dashboard as "**air.com.test.android**".
 
 - Add the following permissions to Android Manifest (in the app description `APP_NAME-app.xml`):  
@@ -129,6 +132,16 @@ com/appsflyer/internal/a-: '0'
 `zipalign -c -v 4 app_name/dist/zipalign_app_name.apk`
 
 9. Your apk `zipalign_app_name.apk` is ready to use!
+
+</details>
+
+### <a id="ios_notes"> **Special instructions for iOS applications:**
+<details>
+If you use Strict mode ANE, make sure not to call any IDFA related APIs listed below. They are still present in the ActionScript, but will cause an app to crash if invoked.
+
+- `waitForATTUserAuthorization(timeout:int):void;`
+</details>
+
 ---
 
 ## <a id="Usage"> Usage
