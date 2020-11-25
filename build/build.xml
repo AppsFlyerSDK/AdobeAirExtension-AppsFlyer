@@ -5,12 +5,11 @@
     <property file="build.config"/>
 
     <target name="all"
-            depends="android,ios,swc-default,swf-mobile,package,package_without_gp,package_without_gp_and_support_lib,ios-strict,swf-default-strict,swf-mobile-strict,package-strict,clear"
+            depends="android,ios,swc-default,swc-mobile,package,package_without_gp,package_without_gp_and_support_lib,ios-strict,package-strict,clear"
             description="Full build of extension"/>
-    <!--    <target name="all" depends="swf-mobile-strict" description="DEBUG"/>-->
 
     <target name="all-android-debug"
-            depends="android-debug,ios,swf-mobile,swc-default,package,package_without_gp,package_without_gp_and_support_lib,ios-strict,swf-default-strict,swf-mobile-strict,package-strict,clear"
+            depends="android-debug,ios,swc-mobile,swc-default,package,package_without_gp,package_without_gp_and_support_lib,ios-strict,package-strict,clear"
             description="Full build of extension w/debugging on Android"
     />
 
@@ -114,20 +113,29 @@
 
 
     <!-- Actionscript mobile -->
-    <target name="swf-mobile" description="Build SWF library">
-        <mkdir dir="../temp/swf/"/>
+    <target name="swc-mobile" description="Build SWC library">
+        <mkdir dir="../temp/swc/content/"/>
 
-        <exec executable="${flex.sdk}/bin/mxmlc${bin.ext}" failonerror="true">
+        <fileset dir="../actionscript/mobile/src" casesensitive="yes" id="classfiles">
+            <include name="**/*.as"/>
+        </fileset>
+
+        <pathconvert property="classlist" refid="classfiles" pathsep=" " dirsep=".">
+            <regexpmapper from=".*src.(.*)\.as" to="\1"/>
+        </pathconvert>
+
+        <exec executable="${flex.sdk}/bin/compc${bin.ext}" failonerror="true">
             <env key="AIR_SDK_HOME" value="${air.sdk}"/>
-            <arg line='../actionscript/mobile/src/AppsFlyerInterface.as'/>
-            <arg line='-source-path '/>
-            <arg line='-define+=TARGET::NONSTRICT,true'/>
-            <arg line='-output ../temp/swf/library.swf'/>
+            <arg line='-source-path ../actionscript/mobile/src'/>
+            <arg line='-output ../temp/swc/${name}.swc'/>
             <arg line='-external-library-path+="${air.sdk}/frameworks/libs/air/airglobal.swc"'/>
+            <arg line='-include-classes ${classlist}'/>
         </exec>
 
-        <copy file="../temp/swf/library.swf" todir="../temp/ios" overwrite="true"/>
-        <copy file="../temp/swf/library.swf" todir="../temp/android" overwrite="true"/>
+        <unzip src="../temp/swc/${name}.swc" dest="../temp/swc/content" overwrite="true"/>
+
+        <copy file="../temp/swc/content/library.swf" todir="../temp/ios" overwrite="true"/>
+        <copy file="../temp/swc/content/library.swf" todir="../temp/android" overwrite="true"/>
     </target>
     
     <!-- Actionscript default (for AIR simulator) -->
@@ -148,7 +156,6 @@
             <arg line='-output ../temp/swc/${name}.swc'/>
             <arg line='-external-library-path+="${air.sdk}/frameworks/libs/air/airglobal.swc"'/>
             <arg line='-include-classes ${classlist}'/>
-            <arg line='-define+=TARGET::NONSTRICT,true'/>
         </exec>
         
         <unzip src="../temp/swc/${name}.swc" dest="../temp/swc/content" overwrite="true"/>
@@ -211,7 +218,7 @@
             <arg value="${name}-witout-gp-support.ane"/>
             <arg value="../build/extension.xml"/>
             <arg line="-swc swc/${name}.swc"/>
-            
+
             <arg line="-platform iPhone-ARM -platformoptions ../build/platform-ios.xml -C ios/ ."/>
             <arg line="-platform Android-ARM -platformoptions ../build/platform-android-without-gp-support.xml -C android/ ."/>
             <arg line="-platform Android-ARM64 -platformoptions ../build/platform-android-without-gp-support.xml -C android/ ."/>
@@ -220,10 +227,6 @@
         </exec>
 
         <move file="../temp/${name}-witout-gp-support.ane" todir="../bin"/>
-    </target>
-
-    <target name="clear">
-        <delete dir="../temp"/>
     </target>
 
     <!-- iOS-Strict-->
@@ -249,40 +252,8 @@
         <delete dir="../temp/ios/build/"/>
     </target>
 
-    <target name="swf-default-strict" description="Build SWC Strict library">
-        <exec executable="${flex.sdk}/bin/mxmlc${bin.ext}" failonerror="true">
-            <env key="AIR_SDK_HOME" value="${air.sdk}"/>
-            <arg line='../actionscript/default/src/AppsFlyerInterface.as'/>
-            <arg line='-source-path '/>
-            <arg line='-define+=TARGET::NONSTRICT,false'/>
-            <arg line='-output ../temp/swf/library.swf'/>
-            <arg line='-external-library-path+="${air.sdk}/frameworks/libs/air/airglobal.swc"'/>
-        </exec>
-
-        <copy file="../temp/swf/library.swf" todir="../temp/default" overwrite="true"/>
-
-    </target>
-
-    <target name="swf-mobile-strict" description="Build SWF Strict library">
-        <mkdir dir="../temp/swf/"/>
-
-        <exec executable="${flex.sdk}/bin/mxmlc${bin.ext}" failonerror="true">
-            <env key="AIR_SDK_HOME" value="${air.sdk}"/>
-            <arg line='../actionscript/mobile/src/AppsFlyerInterface.as'/>
-            <arg line='-source-path '/>
-            <arg line='-define+=TARGET::NONSTRICT,false'/>
-            <arg line='-output ../temp/swf/library.swf'/>
-            <arg line='-external-library-path+="${air.sdk}/frameworks/libs/air/airglobal.swc"'/>
-        </exec>
-
-        <copy file="../temp/swf/library.swf" todir="../temp/ios" overwrite="true"/>
-        <copy file="../temp/swf/library.swf" todir="../temp/android" overwrite="true"/>
-    </target>
-
     <target name="package-strict" description="Create the extension package without Google play services, support libs
     and iOS AdSupport and iAd frameworks">
-        <delete file="../temp/ios/libAppsFlyerLib.a"/>
-        <delete file="../temp/ios/AppsFlyerAIRExtension.swf"/>
 
         <exec executable="${air.sdk}/bin/adt${bin.ext}" failonerror="true" dir="../temp">
             <arg value="-package"/>
@@ -300,6 +271,10 @@
         </exec>
 
         <move file="../temp/${name}-strict.ane" todir="../bin"/>
+    </target>
+
+    <target name="clear">
+        <delete dir="../temp"/>
     </target>
 
 </project>

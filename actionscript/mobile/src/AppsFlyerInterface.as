@@ -136,10 +136,7 @@ public class AppsFlyerInterface extends EventDispatcher {
 
 
 	public function waitForATTUserAuthorization(timeout:int):void {
-		if (TARGET::STRICT) {
-		} else {
-			context.call("waitForATTUserAuthorization", timeout);
-		}
+		context.call("waitForATTUserAuthorization", timeout);
 	}
 
 //	public function requestATTPermission():void{
