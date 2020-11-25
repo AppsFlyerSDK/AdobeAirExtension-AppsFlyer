@@ -12,13 +12,13 @@ public class Stop implements FREFunction {
     public FREObject call(FREContext freContext, FREObject[] freObjects) {
 
         final AppsFlyerContext cnt = (AppsFlyerContext) freContext;
-        boolean isTrackingStopped = false;
+        boolean shouldStop = false;
         try {
-            isTrackingStopped = freObjects[0].getAsBool();
+            shouldStop = freObjects[0].getAsBool();
         } catch (Exception e) {
             e.printStackTrace();
         }
-        AppsFlyerLib.getInstance().stopTracking(isTrackingStopped, cnt.getActivity().getApplicationContext());
+        AppsFlyerLib.getInstance().stop(shouldStop, cnt.getActivity().getApplicationContext());
 
         return null;
     }

@@ -15,7 +15,6 @@ public class Main extends Sprite {
         addChild(textField);
 
         trace("Main constructor")
-
         appsFlyer.setDebug(true);
         appsFlyer.addEventListener(AppsFlyerEvent.INSTALL_CONVERSATION_DATA_LOADED, eventHandler); // GCD success
         appsFlyer.addEventListener(AppsFlyerEvent.INSTALL_CONVERSATION_FAILED, eventHandler); // GCD error
