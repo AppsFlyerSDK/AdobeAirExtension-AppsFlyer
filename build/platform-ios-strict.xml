@@ -5,6 +5,6 @@
         <option>-lclang_rt.ios</option>
     </linkerOptions>
     <packagedDependencies>
-        <packagedDependency>libAppsFlyerLib-strict.a</packagedDependency>
+        <packagedDependency>libAppsFlyerLib.a</packagedDependency>
     </packagedDependencies>
 </platform>

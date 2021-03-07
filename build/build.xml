@@ -248,7 +248,7 @@
         </exec>
 
         <copy file="../temp/ios/build/Release-iphoneos/lib${name}.a" todir="../temp/ios" overwrite="true"/>
-        <copy file="../ios/libAppsFlyerLib-strict.a" todir="../temp/ios" overwrite="true"/>
+        <copy file="../ios/libAppsFlyerLib-strict.a" tofile="../temp/ios/libAppsFlyerLib.a" overwrite="true"/>
         <delete dir="../temp/ios/build/"/>
     </target>
 
