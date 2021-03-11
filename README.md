@@ -165,17 +165,20 @@ appsFlyer = new AppsFlyerInterface();
 appsFlyer.registerConversionListener();
 ```
 
-Set the Developer key and iOS app ID (optional) and Initialise the SDK:
+Set the Developer key and iOS app ID and Initialise the SDK:
 
 ```
 appsFlyer.appsFlyer.init("DevKey", "iOSAppID");
 ```
 
-Initialise session reporting (automatically report app launches and background-to-foreground transitions) with DevKey and iOS app ID (optional):
+Initialise session reporting (automatically report app launches and background-to-foreground transitions) with DevKey and iOS app ID:
 
 ```
 appsFlyer.start("DevKey", "iOSAppID");
 ```
+
+### Note:
+If you don't target iOS as a platform, specifying `iOSAppID` ID is not required
 
 ---
 
