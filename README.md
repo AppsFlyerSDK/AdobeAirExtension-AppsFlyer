@@ -12,6 +12,7 @@ In order for us to provide optimal support, we would kindly ask you to submit an
 - [Plugin info](#plugin-info)
 - [Installation](#installation)
   - [Notes for Android apps](#android_notes)
+  - [Notes for iOS apps](#ios_notes)
 - [Usage](#Usage)
 - [Deep Linking](#dl)
 - [IMEI And Android ID Collection  (Android Only)](#imei-id)
@@ -49,8 +50,8 @@ Supported platforms:
 
 Based on:
 
-- iOS AppsFlyerSDK **v6.0.3**
-- Android AppsFlyerSDK **v5.4.1**
+- iOS AppsFlyerSDK **v6.1.3**
+- Android AppsFlyerSDK **v6.1.0**
 
 Built with:
 
@@ -70,7 +71,10 @@ If the following was not added automatically please add it to the APP_NAME-app.x
 	<extensionID>com.appsflyer.adobeair</extensionID> 
 </extensions>
 ```
-### <a id="android_notes"> **Notes for Android applications:**
+
+### <a id="android_notes"> **Special instructions for Android applications:**
+<details>
+	
 - On AppsFlyer's dashboard you will need to add "air." prefix to the package name as this is added automatically by Air.  For example -  an app with the package name "**com.test.android**"  ,  should set the app id on AppsFlyer's Dashboard as "**air.com.test.android**".
 
 - Add the following permissions to Android Manifest (in the app description `APP_NAME-app.xml`):  
@@ -129,6 +133,16 @@ com/appsflyer/internal/a-: '0'
 `zipalign -c -v 4 app_name/dist/zipalign_app_name.apk`
 
 9. Your apk `zipalign_app_name.apk` is ready to use!
+
+</details>
+
+### <a id="ios_notes"> **Special instructions for iOS applications:**
+<details>
+If you use Strict mode ANE, make sure not to call any IDFA related APIs listed below. They are still present in the ActionScript, but will cause an app to crash if invoked.
+
+- `waitForATTUserAuthorization(timeout:int):void;`
+</details>
+
 ---
 
 ## <a id="Usage"> Usage
@@ -151,17 +165,20 @@ appsFlyer = new AppsFlyerInterface();
 appsFlyer.registerConversionListener();
 ```
 
-Set the Developer key and iOS app ID (optional) and Initialise the SDK:
+Set the Developer key and iOS app ID and Initialise the SDK:
 
 ```
 appsFlyer.appsFlyer.init("DevKey", "iOSAppID");
 ```
 
-Initialise session reporting (automatically report app launches and background-to-foreground transitions) with DevKey and iOS app ID (optional):
+Initialise session reporting (automatically report app launches and background-to-foreground transitions) with DevKey and iOS app ID:
 
 ```
 appsFlyer.start("DevKey", "iOSAppID");
 ```
+
+### Note:
+If you don't target iOS as a platform, specifying `iOSAppID` ID is not required
 
 ---
 

@@ -20,7 +20,7 @@ public class LogEvent implements FREFunction {
         Map<String, Object> eventValues = new HashMap<String, Object>();
 
         if (freObjects[0] == null) {
-            AppsFlyerLib.getInstance().trackEvent(context, eventName, eventValues);
+            AppsFlyerLib.getInstance().logEvent(context, eventName, eventValues);
             return null;
         }
 
@@ -45,15 +45,15 @@ public class LogEvent implements FREFunction {
 
         if (eventValues.isEmpty()) {
             if (eventName == null || eventName.isEmpty()) {
-                AppsFlyerLib.getInstance().trackEvent(context, null, null);
+                AppsFlyerLib.getInstance().logEvent(context, null, null);
             } else {
-                AppsFlyerLib.getInstance().trackEvent(context, eventName, null);
+                AppsFlyerLib.getInstance().logEvent(context, eventName, null);
             }
         } else {
             if (eventName == null || eventName.isEmpty()) {
-                AppsFlyerLib.getInstance().trackEvent(context, null, null);
+                AppsFlyerLib.getInstance().logEvent(context, null, null);
             } else {
-                AppsFlyerLib.getInstance().trackEvent(context, eventName, eventValues);
+                AppsFlyerLib.getInstance().logEvent(context, eventName, eventValues);
             }
         }
         return null;

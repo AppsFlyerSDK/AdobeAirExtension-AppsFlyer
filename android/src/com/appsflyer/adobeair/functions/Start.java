@@ -20,9 +20,9 @@ public class Start implements FREFunction {
         }
 
         if(devKey == null) {
-            AppsFlyerLib.getInstance().startTracking(cnt.getActivity());
+            AppsFlyerLib.getInstance().start(cnt.getActivity());
         } else {
-            AppsFlyerLib.getInstance().startTracking(cnt.getActivity(), devKey);
+            AppsFlyerLib.getInstance().start(cnt.getActivity(), devKey);
         }
 
         cnt.setDevKey(devKey);

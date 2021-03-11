@@ -38,7 +38,7 @@ public class ValidateAndLogInAppPurchaseFunction implements FREFunction {
                     }
                 }
             }
-            AppsFlyerLib.getInstance().validateAndTrackInAppPurchase(context, publicKey, signature, purchaseData, price, currency, params);
+            AppsFlyerLib.getInstance().validateAndLogInAppPurchase(context, publicKey, signature, purchaseData, price, currency, params);
         } catch (IllegalStateException e) {
             e.printStackTrace();
         } catch (FRETypeMismatchException e) {
