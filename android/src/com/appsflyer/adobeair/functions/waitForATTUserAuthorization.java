@@ -5,14 +5,14 @@ import com.adobe.fre.FREContext;
 import com.adobe.fre.FREFunction;
 import com.adobe.fre.FREObject;
 
-import static com.appsflyer.AppsFlyerLibCore.LOG_TAG;
-
 public class waitForATTUserAuthorization implements FREFunction {
 
 
+    private final static String LOG = "AppsFlyer";
+
     @Override
     public FREObject call(FREContext freContext, FREObject[] freObjects) {
-        Log.d(LOG_TAG, "waitForATTUserAuthorization method is not supported on Android");
+        Log.d(LOG, "waitForATTUserAuthorization method is not supported on Android");
         return null;
     }
 }
