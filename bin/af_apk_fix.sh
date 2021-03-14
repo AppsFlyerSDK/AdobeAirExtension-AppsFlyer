@@ -25,7 +25,7 @@ read -p 'Enter the name of they key from the keystore above that should be used 
 mkdir tmp; 
 
 # Download relecant SDK version for further exctraction of needed files
-curl -o ./tmp/android_sdk.zip 'https://repo.maven.apache.org/maven2/com/appsflyer/af-android-sdk/6.1.0/af-android-sdk-6.1.0.aar';
+curl -o ./tmp/android_sdk.zip 'https://repo.maven.apache.org/maven2/com/appsflyer/af-android-sdk/6.2.3/af-android-sdk-6.2.3.aar';
 
 # Extract jar from the aar
 unzip ./tmp/android_sdk.zip -d tmp/android_sdk;
