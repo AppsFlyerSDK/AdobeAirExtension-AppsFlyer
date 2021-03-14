@@ -107,9 +107,12 @@ To add those files (with the help of **automated** script):
 Here is what the script is doing. In case of any issues you can perform those steps **manually**: 
 
 1. Decode the apk using [apktool](https://ibotpeaches.github.io/Apktool/). This will create app_name folder.  
-`apktool d app_name.apk`
-2. Download the [AppsFlyer SDK jar/aar](https://repo.maven.apache.org/maven2/com/appsflyer/af-android-sdk/5.4.1/af-android-sdk-5.4.1.aar) of the same version that was used in the apk
-3. Extract files `a-` and `b-` from the jar (by renaming jar into a zip) and place them into the folder with the decompiled apk to `app_name/unknown/com/appsflyer/internal`
+   `apktool d app_name.apk`
+2. Download
+   the [AppsFlyer SDK jar/aar](https://repo.maven.apache.org/maven2/com/appsflyer/af-android-sdk/6.2.3/af-android-sdk-6.2.3.aar)
+   of the same version that was used in the apk
+3. Extract files `a-` and `b-` from the jar (by renaming jar into a zip) and place them into the folder with the
+   decompiled apk to `app_name/unknown/com/appsflyer/internal`
 
 4. Edit `apktool.yml` by adding these lines under `unknownFiles:` like in the screenshot below:
 ```
