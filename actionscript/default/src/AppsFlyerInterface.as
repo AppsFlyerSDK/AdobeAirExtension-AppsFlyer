@@ -101,6 +101,9 @@ public class AppsFlyerInterface extends EventDispatcher {
     public function waitForATTUserAuthorization():void {
     }
 
+    public function disableSKAdNetwork(shouldDisable:Boolean):void {
+    }
+
 //    public function requestATTPermission():void{
 //    }
 

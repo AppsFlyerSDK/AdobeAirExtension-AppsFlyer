@@ -14,6 +14,8 @@
 
 #define DEFINE_ANE_FUNCTION(fn) FREObject (fn)(FREContext context, void* functionData, uint32_t argc, FREObject argv[])
 
+typedef void (*bypassDidFinishLaunchingWithOption)(id, SEL, NSInteger);
+
 @implementation AppsFlyerAIRExtension
 
 static IMP __original_applicationDidBecomeActive_Imp;
@@ -51,6 +53,18 @@ BOOL didReceiveRemoteNotificationHandler(id self, SEL _cmd, UIApplication* appli
     return ((BOOL(*)(id, SEL, UIApplication*, NSDictionary*))__original_didReceiveRemoteNotification_Imp)(self, _cmd, application, userInfo);
 }
 
+static IMP __original_didFinishLaunchingWithOptions_Imp;
+BOOL didFinishLaunchingWithOptions(id self, SEL _cmd, UIApplication* application, NSDictionary<UIApplicationLaunchOptionsKey,id> * launchOptions) {
+    NSLog(@"[AppsFlyerAIRExtension] didFinishLaunchingWithOptions: %@", self);
+    SEL SKSel = NSSelectorFromString(@"__willResolveSKRules:");
+    id AppsFlyer = [AppsFlyerLib shared];
+    if ([AppsFlyer respondsToSelector:SKSel]) {
+        bypassDidFinishLaunchingWithOption msgSend = (bypassDidFinishLaunchingWithOption)objc_msgSend;
+        msgSend(AppsFlyer, SKSel, 2);
+    }
+    return ((BOOL(*)(id, SEL, UIApplication*, NSDictionary<UIApplicationLaunchOptionsKey,id> *))__original_didFinishLaunchingWithOptions_Imp)(self, _cmd, application, launchOptions);
+}
+
 + (void) load {
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
@@ -64,18 +78,21 @@ BOOL didReceiveRemoteNotificationHandler(id self, SEL _cmd, UIApplication* appli
             SEL originalOpenURLDeprecatedSelector = @selector(application:openURL:sourceApplication:annotation:);
             SEL originalOpenURLSelector = @selector(application:openURL:options:);
             SEL originalDidReceiveRemoteNotificationSelector = @selector(application:didReceiveRemoteNotification:);
+            SEL originalDidFinishLaunchingWithOptionsSelector = @selector(application:didFinishLaunchingWithOptions:);
 
             Method originalApplicationDidBecomeActiveMethod = class_getInstanceMethod(objectClass, originalApplicationDidBecomeActiveSelector);
             Method originalContinueUserActivityMethod = class_getInstanceMethod(objectClass, originalContinueUserActivitySelector);
             Method originalOpenURLDeprecatedMethod = class_getInstanceMethod(objectClass, originalOpenURLDeprecatedSelector);
             Method originalOpenURLMethod = class_getInstanceMethod(objectClass, originalOpenURLSelector);
             Method originalDidReceiveRemoteNotificationMethod = class_getInstanceMethod(objectClass, originalDidReceiveRemoteNotificationSelector);
+            Method originalDidFinishLaunchingWithOptionsMethod = class_getInstanceMethod(objectClass, originalDidFinishLaunchingWithOptionsSelector);
 
             __original_applicationDidBecomeActive_Imp = method_setImplementation(originalApplicationDidBecomeActiveMethod, (IMP)applicationDidBecomeActive);
             __original_continueUserActivity_Imp = method_setImplementation(originalContinueUserActivityMethod, (IMP)continueUserActivity);
             __original_openURLDeprecated_Imp = method_setImplementation(originalOpenURLDeprecatedMethod, (IMP)openURLDeprecated);
             __original_openURL_Imp = method_setImplementation(originalOpenURLMethod, (IMP)openURL);
             __original_didReceiveRemoteNotification_Imp = method_setImplementation(originalDidReceiveRemoteNotificationMethod, (IMP)didReceiveRemoteNotificationHandler);
+            __original_didFinishLaunchingWithOptions_Imp = method_setImplementation(originalDidFinishLaunchingWithOptionsMethod, (IMP)didFinishLaunchingWithOptions);
         }
     });
 }
@@ -427,7 +444,14 @@ DEFINE_ANE_FUNCTION(waitForATTUserAuthorization)
         double timeoutInterval = (double)interval;
         [[AppsFlyerLib shared] waitForATTUserAuthorizationWithTimeoutInterval:timeoutInterval];
     }
+    return NULL;
+}
 
+DEFINE_ANE_FUNCTION(disableSKAdNetwork)
+{
+    uint32_t value;
+    FREGetObjectAsBool(argv[0], &value);
+    [AppsFlyerLib shared].disableSKAdNetwork = value;
     return NULL;
 }
 
@@ -442,7 +466,7 @@ DEFINE_ANE_FUNCTION(waitForATTUserAuthorization)
 
 void AFExtContextInitializer(void* extData, const uint8_t* ctxType, FREContext ctx, uint32_t* numFunctionsToTest, const FRENamedFunction** functionsToSet)
 {
-    *numFunctionsToTest = 28;
+    *numFunctionsToTest = 29;
     FRENamedFunction* func = (FRENamedFunction*)malloc(sizeof(FRENamedFunction) * *numFunctionsToTest);
     
     func[19].name = (const uint8_t*)"init";
@@ -480,6 +504,10 @@ void AFExtContextInitializer(void* extData, const uint8_t* ctxType, FREContext c
     func[27].name = (const uint8_t*)"setSharingFilter";
     func[27].functionData = NULL;
     func[27].function = &setSharingFilter;
+
+    func[28].name = (const uint8_t*)"disableSKAdNetwork";
+    func[28].functionData = NULL;
+    func[28].function = &disableSKAdNetwork;
 
     func[0].name = (const uint8_t*)"start";
     func[0].functionData = NULL;

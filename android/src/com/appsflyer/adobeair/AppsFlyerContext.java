@@ -48,6 +48,7 @@ public class AppsFlyerContext extends FREContext {
         map.put("setCustomerUserId", new SetCustomerUserId());
         map.put("setUserEmails", new SetUserEmails());
         map.put("waitForATTUserAuthorization", new waitForATTUserAuthorization());
+        map.put("disableSKAdNetwork", new disableSKAdNetwork());
         return map;
     }
 
