@@ -138,6 +138,10 @@ public class AppsFlyerInterface extends EventDispatcher {
 		context.call("waitForATTUserAuthorization", timeout);
 	}
 
+	public function disableSKAdNetwork(shouldDisable:Boolean):void {
+		context.call("disableSKAdNetwork", shouldDisable);
+	}
+
 //	public function requestATTPermission():void{
 //		context.call("requestATTPermission");
 //	}
