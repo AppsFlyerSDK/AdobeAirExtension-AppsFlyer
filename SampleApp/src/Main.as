@@ -1,12 +1,12 @@
 package {
 
 import flash.display.Sprite;
+import flash.events.MouseEvent;
 import flash.text.TextField;
 
 public class Main extends Sprite {
     private static var appsFlyer:AppsFlyerInterface;
     appsFlyer = new AppsFlyerInterface();
-
 
     public function Main() {
         var textField:TextField = new TextField();
@@ -14,8 +14,13 @@ public class Main extends Sprite {
         textField.text = "Hello, World";
         addChild(textField);
 
+        ButtonInteractivity()
+
         trace("Main constructor")
         appsFlyer.setDebug(true);
+        appsFlyer.setCurrency("GBP")
+//        appsFlyer.disableSKAdNetwork(true)
+
         appsFlyer.addEventListener(AppsFlyerEvent.INSTALL_CONVERSATION_DATA_LOADED, eventHandler); // GCD success
         appsFlyer.addEventListener(AppsFlyerEvent.INSTALL_CONVERSATION_FAILED, eventHandler); // GCD error
         appsFlyer.addEventListener(AppsFlyerEvent.ATTRIBUTION_FAILURE, eventHandler); // OAOA error
@@ -51,6 +56,41 @@ public class Main extends Sprite {
             key2: "val2"
         };
         appsFlyer.validateAndLogInAppPurchase(publicKey, signature, purchaseData, price, currency, JSON.stringify(additionalParameters));
+    }
+
+    private var button:Sprite = new Sprite();
+
+    public function ButtonInteractivity() {
+        drawButton()
+        button.addEventListener(MouseEvent.MOUSE_DOWN, mouseDownHandler);
+        addChild(button);
+    }
+
+    private function drawButton():void {
+        var textLabel:TextField = new TextField()
+        button.graphics.clear();
+        button.graphics.beginFill(0xD4D4D4); // grey color
+        button.graphics.drawRoundRect(100, 100, 80, 25, 10, 10); // x, y, width, height, ellipseW, ellipseH
+        button.graphics.endFill();
+
+        textLabel.text = "Log event";
+        textLabel.x = 100
+        textLabel.y = 100
+        textLabel.width = 70;
+        textLabel.height = 20;
+        textLabel.selectable = false;
+        button.addChild(textLabel)
+    }
+
+    private function mouseDownHandler(event:MouseEvent):void {
+        var param:String = "af_purchase";
+        var value:Object = {
+            "af_content_id": "123",
+            "af_revenue": "20",
+            "af_currency": "GBP"
+        };
+        appsFlyer.logEvent("af_add_to_cart", JSON.stringify(value))
+        appsFlyer.logEvent(param, JSON.stringify(value))
     }
 
 
