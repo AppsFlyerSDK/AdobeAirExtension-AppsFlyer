@@ -179,7 +179,8 @@ DEFINE_ANE_FUNCTION(start)
     UIApplication* app = UIApplication.sharedApplication;
     UIApplicationState state = app.applicationState;
     if (state == UIApplicationStateActive) {
-        [conversionDelegate sendLaunch:app];
+        NSLog(@"[AppsFlyerAIRExtension] application already active. Sending launch");
+        [[AppsFlyerLib shared] start];
     }
     return NULL;
 }

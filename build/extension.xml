@@ -1,6 +1,6 @@
 <extension xmlns="http://ns.adobe.com/air/extension/33.1">
     <id>com.appsflyer.adobeair</id>
-    <versionNumber>6.2.41</versionNumber>
+    <versionNumber>6.2.42</versionNumber>
     <platforms>
         <platform name="Android-ARM">
             <applicationDeployment>
