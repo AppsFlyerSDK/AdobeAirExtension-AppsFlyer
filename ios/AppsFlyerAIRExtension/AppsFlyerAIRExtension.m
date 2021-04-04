@@ -176,6 +176,15 @@ DEFINE_ANE_FUNCTION(start)
     selector:@selector(sendLaunch:)
     name:UIApplicationDidBecomeActiveNotification
     object:nil];
+    UIApplication* app = UIApplication.sharedApplication;
+    UIApplicationState state = app.applicationState;
+    switch (state) {
+        case UIApplicationStateActive:
+            [conversionDelegate sendLaunch:app];
+            break;
+        default:
+            break;
+    }
     return NULL;
 }
 
