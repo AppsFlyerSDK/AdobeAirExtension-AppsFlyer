@@ -178,12 +178,8 @@ DEFINE_ANE_FUNCTION(start)
     object:nil];
     UIApplication* app = UIApplication.sharedApplication;
     UIApplicationState state = app.applicationState;
-    switch (state) {
-        case UIApplicationStateActive:
-            [conversionDelegate sendLaunch:app];
-            break;
-        default:
-            break;
+    if (state == UIApplicationStateActive) {
+        [conversionDelegate sendLaunch:app];
     }
     return NULL;
 }
