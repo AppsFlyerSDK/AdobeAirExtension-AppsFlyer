@@ -32,8 +32,8 @@ public class Main extends Sprite {
         appsFlyer.setSharingFilter(["google_int", "facebook_int"]);
         appsFlyer.setOneLinkCustomDomain(["click.af-sup.com"]);
         appsFlyer.setResolveDeepLinkURLs(["5a5b39e8a8df.ngrok.io"]);
-        appsFlyer.init("4UGrDF4vFvPLbHq5bXtCza", "753258300");
-        appsFlyer.start("4UGrDF4vFvPLbHq5bXtCza", "753258300");
+//        appsFlyer.init("4UGrDF4vFvPLbHq5bXtCza", "753258300");
+//        appsFlyer.start("4UGrDF4vFvPLbHq5bXtCza", "753258300");
 
         function eventHandler(event:AppsFlyerEvent):void {
             log("AppsFlyer event: " + event.type + "; \nData: " + event.data);
@@ -58,31 +58,43 @@ public class Main extends Sprite {
         appsFlyer.validateAndLogInAppPurchase(publicKey, signature, purchaseData, price, currency, JSON.stringify(additionalParameters));
     }
 
-    private var button:Sprite = new Sprite();
 
     public function ButtonInteractivity() {
-        drawButton()
-        button.addEventListener(MouseEvent.MOUSE_DOWN, mouseDownHandler);
-        addChild(button);
+        var eventButton = drawButton(1, "log event")
+        eventButton.addEventListener(MouseEvent.MOUSE_DOWN, logEventButtonHandler);
+        addChild(eventButton);
+
+        var startButton = drawButton(2, "start AppsFlyer")
+        startButton.addEventListener(MouseEvent.MOUSE_DOWN, startButtonHandler);
+        addChild(startButton);
     }
 
-    private function drawButton():void {
+    private function drawButton(counter:int, text:String):Sprite {
+        var button:Sprite = new Sprite();
         var textLabel:TextField = new TextField()
         button.graphics.clear();
         button.graphics.beginFill(0xD4D4D4); // grey color
-        button.graphics.drawRoundRect(100, 100, 80, 25, 10, 10); // x, y, width, height, ellipseW, ellipseH
+        button.graphics.drawRoundRect(0, 100 * counter, 150, 25, 10, 10); // x, y, width, height, ellipseW, ellipseH
         button.graphics.endFill();
 
-        textLabel.text = "Log event";
-        textLabel.x = 100
-        textLabel.y = 100
-        textLabel.width = 70;
+        textLabel.text = text;
+        textLabel.x = 0
+        textLabel.y = 100 * counter
+        textLabel.width = 150;
         textLabel.height = 20;
         textLabel.selectable = false;
         button.addChild(textLabel)
+        return button;
     }
 
-    private function mouseDownHandler(event:MouseEvent):void {
+    private function startButtonHandler(event:MouseEvent):void {
+        trace("START BUTTON HANDLER")
+        appsFlyer.init("4UGrDF4vFvPLbHq5bXtCza", "753258300");
+        appsFlyer.start("4UGrDF4vFvPLbHq5bXtCza", "753258300");
+    }
+
+    private function logEventButtonHandler(event:MouseEvent):void {
+        trace("EVENT BUTTON HANDLER")
         var param:String = "af_purchase";
         var value:Object = {
             "af_content_id": "123",
