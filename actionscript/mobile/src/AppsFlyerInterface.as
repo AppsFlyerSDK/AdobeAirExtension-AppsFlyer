@@ -142,9 +142,9 @@ public class AppsFlyerInterface extends EventDispatcher {
 		context.call("disableSKAdNetwork", shouldDisable);
 	}
 
-//	public function requestATTPermission():void{
-//		context.call("requestATTPermission");
-//	}
+	public function setDisableAdvertisingIdentifiers(disable:Boolean):void {
+		context.call("setDisableAdvertisingIdentifiers", disable);
+	}
 
 	protected function _handleStatusEvents(e:StatusEvent):void {
 		var event:AppsFlyerEvent = new AppsFlyerEvent(e.code, e.level);
