@@ -438,10 +438,18 @@ DEFINE_ANE_FUNCTION(disableSKAdNetwork)
     return NULL;
 }
 
+DEFINE_ANE_FUNCTION(disableAdvertisingIdentifier)
+{
+    uint32_t value;
+    FREGetObjectAsBool(argv[0], &value);
+    [AppsFlyerLib shared].disableAdvertisingIdentifier = value;
+    return NULL;
+}
+
 
 void AFExtContextInitializer(void* extData, const uint8_t* ctxType, FREContext ctx, uint32_t* numFunctionsToTest, const FRENamedFunction** functionsToSet)
 {
-    *numFunctionsToTest = 29;
+    *numFunctionsToTest = 30;
     FRENamedFunction* func = (FRENamedFunction*)malloc(sizeof(FRENamedFunction) * *numFunctionsToTest);
     
     func[19].name = (const uint8_t*)"init";
@@ -483,6 +491,10 @@ void AFExtContextInitializer(void* extData, const uint8_t* ctxType, FREContext c
     func[28].name = (const uint8_t*)"disableSKAdNetwork";
     func[28].functionData = NULL;
     func[28].function = &disableSKAdNetwork;
+
+    func[29].name = (const uint8_t*)"setDisableAdvertisingIdentifiers";
+    func[29].functionData = NULL;
+    func[29].function = &disableAdvertisingIdentifier;
 
     func[0].name = (const uint8_t*)"start";
     func[0].functionData = NULL;

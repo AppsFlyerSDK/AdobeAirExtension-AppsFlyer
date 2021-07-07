@@ -20,12 +20,11 @@ public class Main extends Sprite {
         appsFlyer.setDebug(true);
         appsFlyer.setCurrency("GBP")
 //        appsFlyer.disableSKAdNetwork(true)
-
         appsFlyer.addEventListener(AppsFlyerEvent.INSTALL_CONVERSATION_DATA_LOADED, eventHandler); // GCD success
         appsFlyer.addEventListener(AppsFlyerEvent.INSTALL_CONVERSATION_FAILED, eventHandler); // GCD error
         appsFlyer.addEventListener(AppsFlyerEvent.ATTRIBUTION_FAILURE, eventHandler); // OAOA error
         appsFlyer.addEventListener(AppsFlyerEvent.APP_OPEN_ATTRIBUTION, eventHandler);  // OAOA success
-
+        //appsFlyer.setDisableAdvertisingIdentifiers(true)
         appsFlyer.waitForATTUserAuthorization(10);
         //requestATTPermission for IDFA collection HERE
         appsFlyer.registerConversionListener();
