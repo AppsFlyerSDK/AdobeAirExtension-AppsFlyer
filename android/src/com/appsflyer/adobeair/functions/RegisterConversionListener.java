@@ -1,7 +1,10 @@
 package com.appsflyer.adobeair.functions;
 
+import static com.appsflyer.adobeair.AppsFlyerContext.LOG;
+
 import android.content.Context;
 import android.util.Log;
+
 import com.adobe.fre.FREContext;
 import com.adobe.fre.FREFunction;
 import com.adobe.fre.FREObject;
@@ -13,8 +16,6 @@ import com.appsflyer.adobeair.Utils;
 import java.util.Map;
 
 public class RegisterConversionListener implements FREFunction {
-
-    private final static String LOG = "AppsFlyer";
 
     @Override
     public FREObject call(final FREContext freContext, FREObject[] freObjects) {

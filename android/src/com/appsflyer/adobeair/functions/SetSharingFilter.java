@@ -12,11 +12,10 @@ public class SetSharingFilter implements FREFunction {
     public FREObject call(FREContext freContext, FREObject[] freObjects) {
 
         try {
-            FREArray array = (FREArray)freObjects[0];
+            FREArray array = (FREArray) freObjects[0];
 
-            String[] filters = new String[(int)array.getLength()];
-            for (int i = 0; i < array.getLength(); i++)
-            {
+            String[] filters = new String[(int) array.getLength()];
+            for (int i = 0; i < array.getLength(); i++) {
                 filters[i] = array.getObjectAt(i).getAsString();
             }
 

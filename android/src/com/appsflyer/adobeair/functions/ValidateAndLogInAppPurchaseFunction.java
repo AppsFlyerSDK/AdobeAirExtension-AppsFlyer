@@ -1,17 +1,23 @@
 package com.appsflyer.adobeair.functions;
 
 import android.content.Context;
-import com.adobe.fre.*;
+
+import com.adobe.fre.FREContext;
+import com.adobe.fre.FREFunction;
+import com.adobe.fre.FREInvalidObjectException;
+import com.adobe.fre.FREObject;
+import com.adobe.fre.FRETypeMismatchException;
+import com.adobe.fre.FREWrongThreadException;
 import com.appsflyer.AppsFlyerLib;
 import com.appsflyer.adobeair.Utils;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.Map;
 
 public class ValidateAndLogInAppPurchaseFunction implements FREFunction {
-
-    private final static String LOG = "AppsFlyer";
 
     @Override
     public FREObject call(FREContext freContext, FREObject[] freObjects) {
@@ -24,10 +30,10 @@ public class ValidateAndLogInAppPurchaseFunction implements FREFunction {
             String purchaseData = freObjects[2].getAsString();
             String price = freObjects[3].getAsString();
             String currency = freObjects[4].getAsString();
-            HashMap<String,String> params = new HashMap<String,String>();
-            if(freObjects.length > 5) {
+            HashMap<String, String> params = new HashMap<String, String>();
+            if (freObjects.length > 5) {
                 String additionalParameters = freObjects[5] != null ? freObjects[5].getAsString() : null;
-                if(additionalParameters != null && !additionalParameters.isEmpty()) {
+                if (additionalParameters != null && !additionalParameters.isEmpty()) {
                     try {
                         JSONObject json = new JSONObject(additionalParameters);
                         for (Map.Entry<String, Object> entry : Utils.jsonToMap(json).entrySet()) {
@@ -55,7 +61,6 @@ public class ValidateAndLogInAppPurchaseFunction implements FREFunction {
 
         return null;
     }
-
 
 
 }

@@ -1,6 +1,5 @@
 package com.appsflyer.adobeair.functions;
 
-import android.net.Uri;
 import com.adobe.fre.FREContext;
 import com.adobe.fre.FREFunction;
 import com.adobe.fre.FREObject;

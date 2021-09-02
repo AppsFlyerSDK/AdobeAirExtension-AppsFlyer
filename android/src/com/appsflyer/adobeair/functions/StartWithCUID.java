@@ -8,8 +8,6 @@ import com.appsflyer.AppsFlyerLib;
 
 public class StartWithCUID implements FREFunction {
 
-    private final static String LOG = "AppsFlyer";
-
     @Override
     public FREObject call(FREContext freContext, FREObject[] freObjects) {
 

@@ -146,6 +146,10 @@ public class AppsFlyerInterface extends EventDispatcher {
 		context.call("setDisableAdvertisingIdentifiers", disable);
 	}
 
+	public function setCurrentDeviceLanguage(language:String):void {
+		context.call("setCurrentDeviceLanguage", language);
+	}
+
 	protected function _handleStatusEvents(e:StatusEvent):void {
 		var event:AppsFlyerEvent = new AppsFlyerEvent(e.code, e.level);
 		if (event != null) {

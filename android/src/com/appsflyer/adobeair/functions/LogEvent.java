@@ -1,12 +1,20 @@
 package com.appsflyer.adobeair.functions;
 
 import android.content.Context;
-import com.adobe.fre.*;
+
+import com.adobe.fre.FREContext;
+import com.adobe.fre.FREFunction;
+import com.adobe.fre.FREInvalidObjectException;
+import com.adobe.fre.FREObject;
+import com.adobe.fre.FRETypeMismatchException;
+import com.adobe.fre.FREWrongThreadException;
 import com.appsflyer.AppsFlyerLib;
 import com.appsflyer.adobeair.Utils;
+
 import org.json.JSONObject;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.Map;
 
 public class LogEvent implements FREFunction {
 

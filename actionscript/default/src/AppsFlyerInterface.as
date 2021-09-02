@@ -104,5 +104,8 @@ public class AppsFlyerInterface extends EventDispatcher {
 
     public function setDisableAdvertisingIdentifiers(disable:Boolean):void {
     }
+
+    public function setCurrentDeviceLanguage(language:String):void {
+    }
 }
 }

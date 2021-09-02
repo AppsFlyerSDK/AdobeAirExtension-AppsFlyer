@@ -12,11 +12,10 @@ public class SetOneLinkCustomDomain implements FREFunction {
     public FREObject call(FREContext freContext, FREObject[] freObjects) {
 
         try {
-            FREArray array = (FREArray)freObjects[0];
+            FREArray array = (FREArray) freObjects[0];
 
-            String[] domains = new String[(int)array.getLength()];
-            for (int i = 0; i < array.getLength(); i++)
-            {
+            String[] domains = new String[(int) array.getLength()];
+            for (int i = 0; i < array.getLength(); i++) {
                 domains[i] = array.getObjectAt(i).getAsString();
             }
 

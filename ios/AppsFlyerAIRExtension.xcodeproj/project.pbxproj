@@ -55,8 +55,6 @@
 		AACAB23A185624FE00C55EB7 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		AACAB23E185624FE00C55EB7 /* AppsFlyerAIRExtension-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "AppsFlyerAIRExtension-Prefix.pch"; sourceTree = "<group>"; };
 		AACAB241185624FE00C55EB7 /* AppsFlyerAIRExtension.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppsFlyerAIRExtension.m; sourceTree = "<group>"; };
-		AACAB248185624FE00C55EB7 /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
-		AACAB24B185624FE00C55EB7 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = Library/Frameworks/UIKit.framework; sourceTree = DEVELOPER_DIR; };
 		AACAB2601856251500C55EB7 /* FlashRuntimeExtensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FlashRuntimeExtensions.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -112,8 +110,6 @@
 				848D0E7819814C0D004E8542 /* iAd.framework */,
 				848D0E7619814C06004E8542 /* AdSupport.framework */,
 				AACAB23A185624FE00C55EB7 /* Foundation.framework */,
-				AACAB248185624FE00C55EB7 /* XCTest.framework */,
-				AACAB24B185624FE00C55EB7 /* UIKit.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
