@@ -10,9 +10,11 @@ import java.util.Map;
 public class AppsFlyerContext extends FREContext {
 
     public static final String EXTENSION_TYPE = "AIR";
+    public final static String LOG_TAG = "AppsFyer";
 
     private String lastConversionData;
     private String devKey;
+//    private DeepLinkResult lastDeepLinkResult;
 
     @Override
     public void dispose() {
@@ -50,6 +52,7 @@ public class AppsFlyerContext extends FREContext {
         map.put("waitForATTUserAuthorization", new waitForATTUserAuthorization());
         map.put("disableSKAdNetwork", new DisableSKAdNetwork());
         map.put("setDisableAdvertisingIdentifiers", new SetDisableAdvertisingIdentifiers());
+//        map.put("subscribeForDeepLink", new SubscribeForDeepLink());
         return map;
     }
 
@@ -61,6 +64,10 @@ public class AppsFlyerContext extends FREContext {
         this.lastConversionData = lastConversionData;
     }
 
+//    public void setLastDeepLinkResult(DeepLinkResult deepLinkResult) {
+//        this.lastDeepLinkResult = deepLinkResult;
+//    }
+
     public String getDevKey() {
         return devKey;
     }
@@ -68,4 +75,8 @@ public class AppsFlyerContext extends FREContext {
     public void setDevKey(String devKey) {
         this.devKey = devKey;
     }
+
+//    public String getLastDeepLinkResult() {
+//        return lastDeepLinkResult.toString();
+//    }
 }

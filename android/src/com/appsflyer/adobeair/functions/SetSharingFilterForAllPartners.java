@@ -5,6 +5,7 @@ import com.adobe.fre.FREFunction;
 import com.adobe.fre.FREObject;
 import com.appsflyer.AppsFlyerLib;
 
+@Deprecated
 public class SetSharingFilterForAllPartners implements FREFunction {
 
     @Override

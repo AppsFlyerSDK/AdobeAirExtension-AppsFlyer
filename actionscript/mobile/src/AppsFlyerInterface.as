@@ -43,15 +43,18 @@ public class AppsFlyerInterface extends EventDispatcher {
 		context.call("performOnAppAttribution", uri);
 	}
 
-    public function setSharingFilter(filters:Array):void {
-        context.call("setSharingFilter", filters);
-    }
+	[Deprecated(replacement="setSharingFilterForPartners")]
+	public function setSharingFilter(filters:Array):void {
+		context.call("setSharingFilter", filters);
+	}
 
-    public function setSharingFilterForAllPartners():void {
-    }
+	[Deprecated(replacement="setSharingFilterForPartners")]
+	public function setSharingFilterForAllPartners():void {
+		context.call("setSharingFilterForAllPartners");
+	}
 
 	public function setResolveDeepLinkURLs(urls:Array):void {
-	    context.call("setResolveDeepLinkURLs", urls);
+		context.call("setResolveDeepLinkURLs", urls);
 	}
 
 	public function setOneLinkCustomDomain(domains:Array):void {
@@ -145,6 +148,24 @@ public class AppsFlyerInterface extends EventDispatcher {
 	public function setDisableAdvertisingIdentifiers(disable:Boolean):void {
 		context.call("setDisableAdvertisingIdentifiers", disable);
 	}
+
+	public function setCurrentDeviceLanguage(language:String):void {
+		context.call("setCurrentDeviceLanguage", language);
+	}
+
+	public function setSharingFilterForPartners(partners:Array):void {
+		context.call("setSharingFilterForPartners", partners);
+	}
+
+//	public function subscribeForDeepLink():void {
+//		context.addEventListener(StatusEvent.STATUS, _handleStatusEvents);
+//		context.call("subscribeForDeepLink");
+//	}
+//
+//	public function subscribeForDeepLinkWith(timeout:Number):void {
+//		context.addEventListener(StatusEvent.STATUS, _handleStatusEvents);
+//		context.call("subscribeForDeepLink", timeout);
+//	}
 
 	protected function _handleStatusEvents(e:StatusEvent):void {
 		var event:AppsFlyerEvent = new AppsFlyerEvent(e.code, e.level);

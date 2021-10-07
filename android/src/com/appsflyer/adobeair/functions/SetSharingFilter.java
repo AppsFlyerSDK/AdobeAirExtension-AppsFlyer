@@ -6,6 +6,7 @@ import com.adobe.fre.FREFunction;
 import com.adobe.fre.FREObject;
 import com.appsflyer.AppsFlyerLib;
 
+@Deprecated
 public class SetSharingFilter implements FREFunction {
 
     @Override
@@ -15,8 +16,7 @@ public class SetSharingFilter implements FREFunction {
             FREArray array = (FREArray)freObjects[0];
 
             String[] filters = new String[(int)array.getLength()];
-            for (int i = 0; i < array.getLength(); i++)
-            {
+            for (int i = 0; i < array.getLength(); i++) {
                 filters[i] = array.getObjectAt(i).getAsString();
             }
 

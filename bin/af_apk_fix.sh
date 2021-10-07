@@ -20,12 +20,11 @@ fi
 
 read -p 'Enter apk filename without extension (e.g. Main (NOT Main.apk):' APP_NAME;
 read -p 'Enter keystore filename (e.g. my-release-key (NOT my-release-key.keystore):' KEYSTORE;
-read -p 'Enter the name of they key from the keystore above that should be used to sign the apk:' KEY;
 
 mkdir tmp; 
 
 # Download relevant SDK version for further extraction of needed files
-curl -o ./tmp/android_sdk.zip 'https://repo.maven.apache.org/maven2/com/appsflyer/af-android-sdk/6.3.2/af-android-sdk-6.3.2.aar';
+curl -o ./tmp/android_sdk.zip 'https://repo.maven.apache.org/maven2/com/appsflyer/af-android-sdk/6.4.0/af-android-sdk-6.4.0.aar';
 
 # Extract jar from the aar
 unzip ./tmp/android_sdk.zip -d tmp/android_sdk;
@@ -56,16 +55,21 @@ sed $'s/unknownFiles: {/unknownFiles: {\
 # Build the new apk
 apktool b $APP_NAME;
 
-# Sing the new apk
-jarsigner -verbose -sigalg SHA1withRSA -digestalg SHA1 -keystore $KEYSTORE.keystore $APP_NAME/dist/$APP_NAME.apk $KEY;
+# Zipalign
+zipalign -p -f -v 4 $APP_NAME/dist/$APP_NAME.apk $APP_NAME/dist/$APP_NAME-aligned.apk
 
-# Zipalign and verify apk
-zipalign -f -v 4 $APP_NAME/dist/$APP_NAME.apk $APP_NAME/dist/zipalign_$APP_NAME.apk
-zipalign -c -v 4 $APP_NAME/dist/zipalign_$APP_NAME.apk
+# Sing
+apksigner sign -v --ks $KEYSTORE.jks --out $APP_NAME/dist/$APP_NAME-aligned-signed.apk $APP_NAME/dist/$APP_NAME-aligned.apk
+
+# Verify signature
+apksigner verify $APP_NAME/dist/$APP_NAME-aligned-signed.apk
+
+# Verify alignment
+zipalign -c -v 4 $APP_NAME/dist/$APP_NAME-aligned-signed.apk
 
 # Place result apk into current folder
 rm ./fixed_$APP_NAME.apk;
-mv $APP_NAME/dist/zipalign_$APP_NAME.apk ./fixed_$APP_NAME.apk;
+mv $APP_NAME/dist/$APP_NAME-aligned-signed.apk ./fixed_$APP_NAME.apk;
 
 # remove temp folders
 rm -rf $APP_NAME/;

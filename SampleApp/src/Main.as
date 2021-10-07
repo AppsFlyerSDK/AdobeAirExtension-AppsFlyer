@@ -20,15 +20,22 @@ public class Main extends Sprite {
         appsFlyer.setDebug(true);
         appsFlyer.setCurrency("GBP")
 //        appsFlyer.disableSKAdNetwork(true)
+        // Registering Conversion Listener
         appsFlyer.addEventListener(AppsFlyerEvent.INSTALL_CONVERSATION_DATA_LOADED, eventHandler); // GCD success
         appsFlyer.addEventListener(AppsFlyerEvent.INSTALL_CONVERSATION_FAILED, eventHandler); // GCD error
         appsFlyer.addEventListener(AppsFlyerEvent.ATTRIBUTION_FAILURE, eventHandler); // OAOA error
         appsFlyer.addEventListener(AppsFlyerEvent.APP_OPEN_ATTRIBUTION, eventHandler);  // OAOA success
-        //appsFlyer.setDisableAdvertisingIdentifiers(true)
-        appsFlyer.waitForATTUserAuthorization(10);
-        //requestATTPermission for IDFA collection HERE
         appsFlyer.registerConversionListener();
-        appsFlyer.setSharingFilter(["google_int", "facebook_int"]);
+//        appsFlyer.setDisableAdvertisingIdentifiers(true)
+
+        appsFlyer.waitForATTUserAuthorization(10);
+        // requestATTPermission for IDFA collection HERE
+
+        // onDeepLinking
+//        appsFlyer.addEventListener(AppsFlyerEvent.ON_DEEP_LINKING, eventHandler);
+//        appsFlyer.subscribeForDeepLink();
+
+        appsFlyer.setSharingFilterForPartners(["google_int", "facebook_int"]);
         appsFlyer.setOneLinkCustomDomain(["click.af-sup.com"]);
         appsFlyer.setResolveDeepLinkURLs(["5a5b39e8a8df.ngrok.io"]);
         appsFlyer.init("4UGrDF4vFvPLbHq5bXtCza", "753258300");
