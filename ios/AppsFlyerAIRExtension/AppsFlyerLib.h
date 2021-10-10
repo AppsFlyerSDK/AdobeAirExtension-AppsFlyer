@@ -2,7 +2,7 @@
 //  AppsFlyerLib.h
 //  AppsFlyerLib
 //
-//  AppsFlyer iOS SDK 6.3.2 (17)
+//  AppsFlyer iOS SDK 6.4.0 (29)
 //  Copyright (c) 2012-2020 AppsFlyer Ltd. All rights reserved.
 //
 
@@ -352,6 +352,22 @@ NS_SWIFT_NAME(waitForATTUserAuthorization(timeoutInterval:));
 @property(nonatomic) BOOL disableIDFVCollection;
 
 /**
+ Set the language of the device. The data will be displayed in Raw Data Reports
+ Objective-C:
+ 
+ <pre>
+ [[AppsFlyerLib shared] setCurrentDeviceLanguage:@"EN"]
+ </pre>
+ 
+ Swift:
+ 
+ <pre>
+ AppsFlyerLib.shared().currentDeviceLanguage("EN")
+ </pre>
+ */
+@property(nonatomic, nullable) NSString *currentDeviceLanguage;
+
+/**
  Enable the collection of Facebook Deferred AppLinks
  Requires Facebook SDK and Facebook app on target/client device.
  This API must be invoked prior to initializing the AppsFlyer SDK in order to function properly.
@@ -594,7 +610,7 @@ NS_SWIFT_NAME(logEvent(name:values:completionHandler:));
  Block an events from being shared with ad networks and other 3rd party integrations
  Must only include letters/digits or underscore, maximum length: 45
  */
-@property(nonatomic, nullable) NSArray<NSString *> *sharingFilter;
+@property(nonatomic, nullable) NSArray<NSString *> *sharingFilter DEPRECATED_MSG_ATTRIBUTE("starting SDK version 6.4.0, please use `setSharingFilterForPartners:`");
 
 @property(nonatomic) NSUInteger deepLinkTimeout;
 
@@ -602,7 +618,18 @@ NS_SWIFT_NAME(logEvent(name:values:completionHandler:));
  Block an events from being shared with any partner
  This method overwrite -[AppsFlyerLib setSharingFilter:]
  */
--(void)setSharingFilterForAllPartners;
+- (void)setSharingFilterForAllPartners DEPRECATED_MSG_ATTRIBUTE("starting SDK version 6.4.0, please use `setSharingFilterForPartners:`");
+
+/**
+ Block an events from being shared with ad networks and other 3rd party integrations
+ Must only include letters/digits or underscore, maximum length: 45
+ 
+ The sharing filter is cleared in case if `nil` or empty array passed as a parameter.
+ "all" keyword sets sharing filter for ALL partners, it is case insencitive and has highest priority
+ if passed along with another values. For example, if ["all", "examplePartner1_int", "examplePartner2_int" ] passed,
+ the sharing filter will be set for ALL partners.
+ */
+- (void)setSharingFilterForPartners:(NSArray<NSString *> * _Nullable)sharingFilter;
 
 /**
  Validate if URL contains certain string and append quiery

@@ -25,9 +25,11 @@ public class AppsFlyerInterface extends EventDispatcher {
     public function setResolveDeepLinkURLs(urls:Array):void {
     }
 
-    public function setSharingFilter(filters:Array):void {
+    [Deprecated(replacement="setSharingFilterForPartners")]
+    public function setSharingFilter(partners:Array):void {
     }
 
+    [Deprecated(replacement="setSharingFilterForPartners")]
     public function setSharingFilterForAllPartners():void {
     }
 
@@ -104,5 +106,18 @@ public class AppsFlyerInterface extends EventDispatcher {
 
     public function setDisableAdvertisingIdentifiers(disable:Boolean):void {
     }
+
+    public function setCurrentDeviceLanguage(language:String):void {
+    }
+
+    public function setSharingFilterForPartners(partners:Array):void {
+    }
+
+//
+//    public function subscribeForDeepLink():void {
+//    }
+//
+//    public function subscribeForDeepLinkWith(timeout:Number):void {
+//    }
 }
 }

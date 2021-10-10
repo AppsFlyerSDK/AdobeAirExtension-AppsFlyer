@@ -275,6 +275,7 @@
 
     <target name="clear">
         <delete dir="../temp"/>
+        <copy file="../bin/${name}.ane" todir="../SampleApp/libs"/>
     </target>
 
 </project>

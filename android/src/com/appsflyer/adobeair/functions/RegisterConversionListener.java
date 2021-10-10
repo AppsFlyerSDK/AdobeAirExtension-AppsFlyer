@@ -19,7 +19,6 @@ public class RegisterConversionListener implements FREFunction {
     @Override
     public FREObject call(final FREContext freContext, FREObject[] freObjects) {
 
-
         try {
 
             final AppsFlyerContext cnt = (AppsFlyerContext) freContext;

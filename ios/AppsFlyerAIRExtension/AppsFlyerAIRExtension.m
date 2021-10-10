@@ -206,9 +206,7 @@ DEFINE_ANE_FUNCTION(setSharingFilter)
         FREGetArrayElementAt(arr, i, &element);
         [filters addObject: [AppsFlyerAIRExtension getString: element]];
     }
-    
     [AppsFlyerLib shared].sharingFilter = filters;
-
     return NULL;
 }
 
@@ -446,56 +444,34 @@ DEFINE_ANE_FUNCTION(disableAdvertisingIdentifier)
     return NULL;
 }
 
+DEFINE_ANE_FUNCTION(setCurrentDeviceLanguage)
+{
+    NSString *language = [AppsFlyerAIRExtension getString: argv[0]];
+    [AppsFlyerLib shared].currentDeviceLanguage = language;
+    return NULL;
+}
+
+DEFINE_ANE_FUNCTION(setSharingFilterForPartners)
+{
+    FREObject arr = argv[0];
+    uint32_t arr_len;
+    FREGetArrayLength(arr, &arr_len);
+    NSMutableArray *partners = [[NSMutableArray alloc] init];
+    for(int32_t i=arr_len-1; i>=0;i--){
+        FREObject element;
+        FREGetArrayElementAt(arr, i, &element);
+        [partners addObject: [AppsFlyerAIRExtension getString: element]];
+    }
+    [[AppsFlyerLib shared] setSharingFilterForPartners:partners];
+    return NULL;
+}
+
 
 void AFExtContextInitializer(void* extData, const uint8_t* ctxType, FREContext ctx, uint32_t* numFunctionsToTest, const FRENamedFunction** functionsToSet)
 {
-    *numFunctionsToTest = 30;
+    *numFunctionsToTest = 32;
     FRENamedFunction* func = (FRENamedFunction*)malloc(sizeof(FRENamedFunction) * *numFunctionsToTest);
     
-    func[19].name = (const uint8_t*)"init";
-    func[19].functionData = NULL;
-    func[19].function = &init;
-    
-    func[20].name = (const uint8_t*)"stop";
-    func[20].functionData = NULL;
-    func[20].function = &stop;
-    
-    func[21].name = (const uint8_t*)"isStopped";
-    func[21].functionData = NULL;
-    func[21].function = &isStopped;
-    
-    func[22].name = (const uint8_t*)"setUserEmails";
-    func[22].functionData = NULL;
-    func[22].function = &setUserEmails;
-    
-    func[23].name = (const uint8_t*)"waitForCustomerUserId";
-    func[23].functionData = NULL;
-    func[23].function = &waitForCustomerUserId;
-    
-    func[24].name = (const uint8_t*)"startWithCUID";
-    func[24].functionData = NULL;
-    func[24].function = &startWithCUID;
-    
-    func[25].name = (const uint8_t*)"setResolveDeepLinkURLs";
-    func[25].functionData = NULL;
-    func[25].function = &setResolveDeepLinkURLs;
-    
-    func[26].name = (const uint8_t*)"performOnAppAttribution";
-    func[26].functionData = NULL;
-    func[26].function = &performOnAppAttribution;
-    
-    func[27].name = (const uint8_t*)"setSharingFilter";
-    func[27].functionData = NULL;
-    func[27].function = &setSharingFilter;
-
-    func[28].name = (const uint8_t*)"disableSKAdNetwork";
-    func[28].functionData = NULL;
-    func[28].function = &disableSKAdNetwork;
-
-    func[29].name = (const uint8_t*)"setDisableAdvertisingIdentifiers";
-    func[29].functionData = NULL;
-    func[29].function = &disableAdvertisingIdentifier;
-
     func[0].name = (const uint8_t*)"start";
     func[0].functionData = NULL;
     func[0].function = &start;
@@ -571,6 +547,58 @@ void AFExtContextInitializer(void* extData, const uint8_t* ctxType, FREContext c
     func[18].name = (const uint8_t*)"validateAndLogInAppPurchase";
     func[18].functionData = NULL;
     func[18].function = &validateAndLogInAppPurchase;
+    
+    func[19].name = (const uint8_t*)"init";
+    func[19].functionData = NULL;
+    func[19].function = &init;
+    
+    func[20].name = (const uint8_t*)"stop";
+    func[20].functionData = NULL;
+    func[20].function = &stop;
+    
+    func[21].name = (const uint8_t*)"isStopped";
+    func[21].functionData = NULL;
+    func[21].function = &isStopped;
+    
+    func[22].name = (const uint8_t*)"setUserEmails";
+    func[22].functionData = NULL;
+    func[22].function = &setUserEmails;
+    
+    func[23].name = (const uint8_t*)"waitForCustomerUserId";
+    func[23].functionData = NULL;
+    func[23].function = &waitForCustomerUserId;
+    
+    func[24].name = (const uint8_t*)"startWithCUID";
+    func[24].functionData = NULL;
+    func[24].function = &startWithCUID;
+    
+    func[25].name = (const uint8_t*)"setResolveDeepLinkURLs";
+    func[25].functionData = NULL;
+    func[25].function = &setResolveDeepLinkURLs;
+    
+    func[26].name = (const uint8_t*)"performOnAppAttribution";
+    func[26].functionData = NULL;
+    func[26].function = &performOnAppAttribution;
+    
+    func[27].name = (const uint8_t*)"setSharingFilter";
+    func[27].functionData = NULL;
+    func[27].function = &setSharingFilter;
+
+    func[28].name = (const uint8_t*)"disableSKAdNetwork";
+    func[28].functionData = NULL;
+    func[28].function = &disableSKAdNetwork;
+
+    func[29].name = (const uint8_t*)"setDisableAdvertisingIdentifiers";
+    func[29].functionData = NULL;
+    func[29].function = &disableAdvertisingIdentifier;
+    
+    func[30].name = (const uint8_t*)"setCurrentDeviceLanguage";
+    func[30].functionData = NULL;
+    func[30].function = &setCurrentDeviceLanguage;
+
+    func[31].name = (const uint8_t*)"setSharingFilterForPartners";
+    func[31].functionData = NULL;
+    func[31].function = &setSharingFilterForPartners;
     
     *functionsToSet = func;
     
