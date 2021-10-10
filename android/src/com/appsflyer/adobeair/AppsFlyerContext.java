@@ -10,7 +10,7 @@ import java.util.Map;
 public class AppsFlyerContext extends FREContext {
 
     public static final String EXTENSION_TYPE = "AIR";
-    public final static String LOG_TAG = "AppsFyer";
+    public final static String LOG_TAG = "AppsFlyer";
 
     private String lastConversionData;
     private String devKey;
@@ -53,6 +53,7 @@ public class AppsFlyerContext extends FREContext {
         map.put("disableSKAdNetwork", new DisableSKAdNetwork());
         map.put("setDisableAdvertisingIdentifiers", new SetDisableAdvertisingIdentifiers());
         map.put("setSharingFilterForPartners", new SetSharingFilterForPartners());
+        map.put("setCurrentDeviceLanguage", new SetCurrentDeviceLanguage());
 //        map.put("subscribeForDeepLink", new SubscribeForDeepLink());
         return map;
     }
