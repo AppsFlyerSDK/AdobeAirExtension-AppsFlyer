@@ -52,6 +52,7 @@ public class AppsFlyerContext extends FREContext {
         map.put("waitForATTUserAuthorization", new waitForATTUserAuthorization());
         map.put("disableSKAdNetwork", new DisableSKAdNetwork());
         map.put("setDisableAdvertisingIdentifiers", new SetDisableAdvertisingIdentifiers());
+        map.put("setSharingFilterForPartners", new SetSharingFilterForPartners());
 //        map.put("subscribeForDeepLink", new SubscribeForDeepLink());
         return map;
     }
