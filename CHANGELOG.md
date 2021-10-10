@@ -18,7 +18,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 
 - AppsFlyer iOS SDK updated to [6.4.0](https://support.appsflyer.com/hc/en-us/articles/115001224823)
 - AppsFlyer Android SDK updated to [6.4.0](https://support.appsflyer.com/hc/en-us/articles/115001256006)
-- af_apk_fix.sh uses apksigner instead of jarsigner
+- af_apk_fix.sh uses apksigner instead of jarsigner, requires .jks instead of .keystore
 
 ### Deprecated
 
