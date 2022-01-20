@@ -67,7 +67,7 @@ apktool b $APP_NAME
 # Zipalign
 zipalign -p -f -v 4 $APP_NAME/dist/$APP_NAME.apk $APP_NAME/dist/$APP_NAME-aligned.apk
 
-# Sing
+# Sign
 apksigner sign -v --ks $KEYSTORE.jks --out $APP_NAME/dist/$APP_NAME-aligned-signed.apk $APP_NAME/dist/$APP_NAME-aligned.apk
 
 # Verify signature
