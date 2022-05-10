@@ -28,7 +28,7 @@ public class Main extends Sprite {
         appsFlyer.registerConversionListener();
 //        appsFlyer.setDisableAdvertisingIdentifiers(true)
 
-        appsFlyer.waitForATTUserAuthorization(10);
+        //appsFlyer.waitForATTUserAuthorization(10);
         // requestATTPermission for IDFA collection HERE
 
         // onDeepLinking

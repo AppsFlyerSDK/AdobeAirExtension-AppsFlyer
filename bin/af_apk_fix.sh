@@ -33,7 +33,7 @@ fi
 mkdir tmp
 
 # Download relevant SDK version for further extraction of needed files
-curl -o ./tmp/android_sdk.zip 'https://repo.maven.apache.org/maven2/com/appsflyer/af-android-sdk/6.4.0/af-android-sdk-6.4.0.aar'
+curl -o ./tmp/android_sdk.zip 'https://repo.maven.apache.org/maven2/com/appsflyer/af-android-sdk/6.5.4/af-android-sdk-6.5.4.aar'
 
 # Extract jar from the aar
 unzip ./tmp/android_sdk.zip -d tmp/android_sdk

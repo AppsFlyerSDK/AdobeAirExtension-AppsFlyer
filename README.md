@@ -48,13 +48,13 @@ Supported platforms:
 
 Based on:
 
-- iOS AppsFlyerSDK **v6.3.2**
-- Android AppsFlyerSDK **v6.3.2**
+- iOS AppsFlyerSDK **v6.5.4**
+- Android AppsFlyerSDK **v6.5.4**
 
 Built with:
 
 - SWF-version = 44
-- AIR SDK version = 33.1.1.533
+- AIR SDK version = 33.1.1.821
 
 ---
 
@@ -107,7 +107,7 @@ Here is what the script is doing. In case of any issues you can perform those st
 1. Decode the apk using [apktool](https://ibotpeaches.github.io/Apktool/). This will create app_name folder.  
    `apktool d app_name.apk`
 2. Download
-   the [AppsFlyer SDK jar/aar](https://repo.maven.apache.org/maven2/com/appsflyer/af-android-sdk/6.3.2/af-android-sdk-6.3.2.aar)
+   the [AppsFlyer SDK jar/aar](https://repo.maven.apache.org/maven2/com/appsflyer/af-android-sdk/6.5.4/af-android-sdk-6.5.4.aar)
    of the same version that was used in the apk
 3. Extract files `a-` and `b-` from the jar (by renaming jar into a zip) and place them into the folder with the
    decompiled apk to `app_name/unknown/com/appsflyer/internal`

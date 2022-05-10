@@ -11,7 +11,7 @@
 
     <!-- A universally unique application identifier. Must be unique across all AIR applications.
          Using a reverse DNS-style name as the id is recommended. (Eg. com.example.ExampleApplication.) Required. -->
-    <id>com.sokoloff06.sdktest1</id>
+    <id>com.appsflyer.dmitryiOSTest</id>
 
     <!-- Used as the filename for the application. Required. -->
     <filename>sdktest</filename>
