@@ -90,8 +90,10 @@ As a result, you should see your Manifest like this:
 ![image](https://user-images.githubusercontent.com/50541317/88154121-047b8100-cc0f-11ea-9647-5dae37e9817f.png)
 
 
-**IMPORTANT**  
-Due to some limitations in the [ADT](https://help.adobe.com/en_US/air/build/WS5b3ccc516d4fbf351e63e3d118666ade46-7fd9.html), after APK is built it is missing some important files.
+**IMPORTANT If you use AIR SDK < v33.1.1.856**  
+
+Due to some limitations in the [ADT](https://help.adobe.com/en_US/air/build/WS5b3ccc516d4fbf351e63e3d118666ade46-7fd9.html)
+bundled with AIR SDK < 33.1.1.856, after APK is built it is missing some important files.
 
 To add those files (with the help of **automated** script):
  

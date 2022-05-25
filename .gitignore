@@ -15,7 +15,6 @@ actionscript/bin
 # Android
 bin/AirPushNotification_multiMsg.ane
 android/bin
-android/gen
 android/lint.xml
 .classpath
 proguard-project.txt
@@ -37,7 +36,6 @@ classes
 out
 
 
-google-play-services_lib
 sample-project/ext
 cer
 /sample-project/extentions
