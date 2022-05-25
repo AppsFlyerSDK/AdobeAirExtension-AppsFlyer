@@ -36,7 +36,6 @@ Thumbs.db
 classes
 out
 
-
 google-play-services_lib
 sample-project/ext
 cer
@@ -44,3 +43,8 @@ cer
 package-target
 /android/src/com/appsflyer/adobeair/lib
 /sample-project/build/build.custom.properties
+
+# Ignore Gradle project-specific cache directory
+.gradle
+
+*.mobileprovision

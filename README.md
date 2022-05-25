@@ -48,13 +48,13 @@ Supported platforms:
 
 Based on:
 
-- iOS AppsFlyerSDK **v6.3.2**
-- Android AppsFlyerSDK **v6.3.2**
+- iOS AppsFlyerSDK **v6.5.4**
+- Android AppsFlyerSDK **v6.5.4**
 
 Built with:
 
 - SWF-version = 44
-- AIR SDK version = 33.1.1.533
+- AIR SDK version = 33.1.1.821
 
 ---
 
@@ -90,8 +90,10 @@ As a result, you should see your Manifest like this:
 ![image](https://user-images.githubusercontent.com/50541317/88154121-047b8100-cc0f-11ea-9647-5dae37e9817f.png)
 
 
-**IMPORTANT**  
-Due to some limitations in the [ADT](https://help.adobe.com/en_US/air/build/WS5b3ccc516d4fbf351e63e3d118666ade46-7fd9.html), after APK is built it is missing some important files.
+**IMPORTANT If you use AIR SDK < v33.1.1.856**  
+
+Due to some limitations in the [ADT](https://help.adobe.com/en_US/air/build/WS5b3ccc516d4fbf351e63e3d118666ade46-7fd9.html)
+bundled with AIR SDK < 33.1.1.856, after APK is built it is missing some important files.
 
 To add those files (with the help of **automated** script):
  
@@ -107,7 +109,7 @@ Here is what the script is doing. In case of any issues you can perform those st
 1. Decode the apk using [apktool](https://ibotpeaches.github.io/Apktool/). This will create app_name folder.  
    `apktool d app_name.apk`
 2. Download
-   the [AppsFlyer SDK jar/aar](https://repo.maven.apache.org/maven2/com/appsflyer/af-android-sdk/6.3.2/af-android-sdk-6.3.2.aar)
+   the [AppsFlyer SDK jar/aar](https://repo.maven.apache.org/maven2/com/appsflyer/af-android-sdk/6.5.4/af-android-sdk-6.5.4.aar)
    of the same version that was used in the apk
 3. Extract files `a-` and `b-` from the jar (by renaming jar into a zip) and place them into the folder with the
    decompiled apk to `app_name/unknown/com/appsflyer/internal`

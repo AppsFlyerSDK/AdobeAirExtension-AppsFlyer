@@ -4,6 +4,14 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 
+## [6.5.40] - 2022-05-25
+
+### Changed
+
+- AppsFlyer iOS SDK updated to [6.5.40](https://support.appsflyer.com/hc/en-us/articles/115001224823)
+- AppsFlyer Android SDK updated to [6.5.40](https://support.appsflyer.com/hc/en-us/articles/115001256006)
+- README.md in regards to the ADT limitation that was fixed in AIR SDK 33.1.1.856
+
 ## [6.4.0] - 2021-10-10
 
 ### Added

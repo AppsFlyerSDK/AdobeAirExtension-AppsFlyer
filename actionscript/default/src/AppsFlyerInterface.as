@@ -98,7 +98,7 @@ public class AppsFlyerInterface extends EventDispatcher {
     public function registerValidatorListener():void {
     }
 
-    public function waitForATTUserAuthorization():void {
+    public function waitForATTUserAuthorization(timeout:int):void {
     }
 
     public function disableSKAdNetwork(shouldDisable:Boolean):void {
