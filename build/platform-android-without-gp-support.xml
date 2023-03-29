@@ -2,6 +2,5 @@
     <packagedDependencies>
         <packagedDependency>AF-Android-SDK.jar</packagedDependency>
         <packagedDependency>json-simple-1.1.1.jar</packagedDependency>
-        <packagedDependency>installreferrer-1.0.jar</packagedDependency>
     </packagedDependencies>
 </platform>

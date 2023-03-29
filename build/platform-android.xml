@@ -14,9 +14,9 @@
             <packageName>com.google.android.gms</packageName> 
             <folderName>google-play-services-res</folderName> 
         </packagedResource--> 
-		<packagedResource> 
+		<!-- <packagedResource> 
             <packageName>com.appsflyer.adobeair</packageName> 
             <folderName>res</folderName> 
-        </packagedResource>
+        </packagedResource> -->
     </packagedResources>
 </platform>

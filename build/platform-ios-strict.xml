@@ -1,5 +1,5 @@
 <platform xmlns="http://ns.adobe.com/air/extension/33.1">
-    <sdkVersion>8.1</sdkVersion>
+    <sdkVersion>11.0</sdkVersion>
     <linkerOptions>
         <option>-liconv</option>
         <option>-lclang_rt.ios</option>

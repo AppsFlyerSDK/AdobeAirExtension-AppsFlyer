@@ -1,0 +1,27 @@
+{
+  "id": "@EXTENSIONID@",
+  "name": "AppsFlyer",
+  "url": "https://github.com/AppsFlyerSDK/AdobeAirExtension-AppsFlyer",
+  "docUrl": "https://support.appsflyer.com/hc/en-us/articles/207032226-Adobe-AIR-plugin",
+  "description": "Integrate AppsFlyer SDK into iOS/Android apps developed with Adobe AIR development platform to measure installs, in-app events, media sources, and more.",
+  "type": "ane",
+  "version": "@VERSION@",
+  "sourceUrl": "https://github.com/@GITHUB_REPO@/releases/download/v@VERSIONRELEASE@/@EXTENSIONID@_@VERSION@.airpackage",
+  "publishedAt": "@DATETIME@",
+  "dependencies": [
+    "androidx.core:1.9.x",
+    "com.distriqt.playservices.Base:18.1.x",
+    "com.android.installreferrer:2.2.x"
+  ],
+  "parameters": [],
+  "tags": [
+    "analytics",
+    "tracking"
+  ],
+  "license": {
+    "type": "Custom",
+    "url": "https://www.appsflyer.com/legal/terms-of-use/",
+    "public": true
+  },
+  "purchaseUrl": ""
+}

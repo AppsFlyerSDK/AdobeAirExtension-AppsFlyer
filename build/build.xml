@@ -83,11 +83,11 @@
             </classpath>
         </javac>
         
-         <copy todir="../temp/android/res/values/">
+         <!-- <copy todir="../temp/android/res/values/">
              <fileset dir="../android/google-play-services_lib/res/values">
                 <exclude name="wallet_styles.xml" />
             </fileset>
-         </copy>
+         </copy> -->
         
         <mkdir dir="../temp/android/"/>
         <delete>
@@ -127,6 +127,7 @@
         <exec executable="${flex.sdk}/bin/compc${bin.ext}" failonerror="true">
             <env key="AIR_SDK_HOME" value="${air.sdk}"/>
             <arg line='-source-path ../actionscript/mobile/src'/>
+            <arg line='-swf-version 44' />
             <arg line='-output ../temp/swc/${name}.swc'/>
             <arg line='-external-library-path+="${air.sdk}/frameworks/libs/air/airglobal.swc"'/>
             <arg line='-include-classes ${classlist}'/>
@@ -153,6 +154,7 @@
         <exec executable="${flex.sdk}/bin/compc${bin.ext}" failonerror="true">
             <env key="AIR_SDK_HOME" value="${air.sdk}"/>
             <arg line='-source-path ../actionscript/default/src'/>
+            <arg line='-swf-version 44' />
             <arg line='-output ../temp/swc/${name}.swc'/>
             <arg line='-external-library-path+="${air.sdk}/frameworks/libs/air/airglobal.swc"'/>
             <arg line='-include-classes ${classlist}'/>
@@ -211,6 +213,7 @@
 
     <target name="package_without_gp_and_support_lib" description="Create the extension package without Google play services and Support lib">
         <delete file="../temp/android/android-support-v4.jar"/>
+        <delete file="../temp/android/installreferrer-1.0.jar"/>
         <exec executable="${air.sdk}/bin/adt${bin.ext}" failonerror="true" dir="../temp">
             <arg value="-package"/>
             <arg value="-target"/>
