@@ -52,5 +52,5 @@ package-target
 # Local
 /*.old
 sample/native_extensions/*
-*.mobileprovision
+bin/*
 *.p12
