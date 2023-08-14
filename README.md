@@ -44,17 +44,17 @@ If you have used 1 of the removed APIs, please check the integration guide for t
 Supported platforms:
 
 - Android
-- iOS 6+
+- iOS 11+
 
 Based on:
 
-- iOS AppsFlyerSDK **v6.5.4**
-- Android AppsFlyerSDK **v6.5.4**
+- iOS AppsFlyerSDK **v6.12.1**
+- Android AppsFlyerSDK **v6.12.2**
 
 Built with:
 
 - SWF-version = 44
-- AIR SDK version = 33.1.1.821
+- AIR SDK version = 50.2.3
 
 ---
 
