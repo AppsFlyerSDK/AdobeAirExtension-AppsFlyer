@@ -161,7 +161,7 @@ import AppsFlyerInterface;
 Construct the AppsFlyer interface:
 
 ```
-private static var appsFlyer:AppsFlyerInterface; 
+private static var appsFlyer: AppsFlyerInterface; 
 appsFlyer = new AppsFlyerInterface();
 ```
 
@@ -174,7 +174,7 @@ appsFlyer.registerConversionListener();
 Set the Developer key and iOS app ID and Initialise the SDK:
 
 ```
-appsFlyer.appsFlyer.init("DevKey", "iOSAppID");
+appsFlyer.init("DevKey", "iOSAppID");
 ```
 
 Initialise session reporting (automatically report app launches and background-to-foreground transitions) with DevKey and iOS app ID:
