@@ -1,13 +1,9 @@
-
-#ifndef AdobeeAirExtensionIOS_AdobeeAirExtensionIOS_h
-#define AdobeeAirExtensionIOS_AdobeeAirExtensionIOS_h
-
-FOUNDATION_EXPORT NSString *const EXTENSION_TYPE;
-
-#endif
+#import "FlashRuntimeExtensions.h"
 
 #import <UIKit/UIKit.h>
-#import <UserNotifications/UserNotifications.h>
+#import <AppsFlyerLib/AppsFlyerLib.h>
+
+FOUNDATION_EXPORT NSString *const EXTENSION_TYPE;
 
 @interface  AppsFlyerAIRExtension : NSObject <UIApplicationDelegate>
 + (NSDictionary*) convertFromJSonString:(NSString*)jsonString;

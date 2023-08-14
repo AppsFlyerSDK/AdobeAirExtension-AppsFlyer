@@ -1,0 +1,57 @@
+{
+	"config": "airmobile",
+	"compilerOptions": {
+		"source-path": [
+			"src"
+		],
+		"output": "bin/Main.swf",
+        "library-path": [
+			"native_extensions/AppsFlyerAIRExtension.ane"
+		]
+	},
+	"mainClass": "Main",
+	"application": "src/Main-app.xml",
+    "airOptions": {
+        "extdir": [
+			"./native_extensions"
+		],
+        "android": {
+            "arch": "armv8",
+            "listen": true,
+            "output": "bin/Main.apk",
+            "signingOptions": {
+                "storetype": "pkcs12",
+                "keystore": "android_certificate.p12"
+            }
+        },
+        "ios": {
+            "target": "ipa-debug-interpreter",
+            "output": "bin/Main.ipa",
+            "signingOptions": {
+				"storetype": "pkcs12",
+				"keystore": "ios_certificate.p12",
+				"provisioning-profile": "example.mobileprovision"
+			}
+        },
+        "ios_simulator": {
+            "target": "ipa-debug-interpreter-simulator",
+            "platformsdk": "/Applications/Xcode14.2.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator16.2.sdk",
+            "output": "bin/Main.ipa",
+            "signingOptions": {
+				"storetype": "pkcs12",
+				"keystore": "ios_certificate.p12",
+				"provisioning-profile": "example.mobileprovision"
+			}
+        },
+        "files": [
+            {
+                "file": "icons/icon48.png",
+                "path": "icon48.png"
+            },
+            {
+                "file": "icons/icon128.png",
+                "path": "icon128.png"
+            }
+        ]
+    }
+}

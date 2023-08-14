@@ -1,12 +1,12 @@
-<platform xmlns="http://ns.adobe.com/air/extension/33.1">
-    <sdkVersion>8.1</sdkVersion>
+<platform xmlns="http://ns.adobe.com/air/extension/50.2">
+    <sdkVersion>11.0</sdkVersion>
     <linkerOptions>
-        <option>-framework iAd</option>
-        <option>-framework AdSupport</option>
-        <option>-liconv</option>
         <option>-lclang_rt.ios</option>
-    </linkerOptions>
+        <option>-ObjC</option>
+        <option>-ios_version_min 11.0</option>
+    </linkerOptions> 
     <packagedDependencies>
-        <packagedDependency>libAppsFlyerLib.a</packagedDependency>
+        <packagedDependency>AppsFlyerLib.framework</packagedDependency>
+        <!-- <packagedDependency>xxx/xxx.a</packagedDependency> -->
     </packagedDependencies>
 </platform>

@@ -1,0 +1,40 @@
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "type": "swf",
+            "request": "launch",
+            "name": "Launch AIR mobile",
+            "profile": "mobileDevice",
+            "screensize": "iPhoneRetina",
+            "screenDPI": 326,
+            "versionPlatform": "IOS",
+            "preLaunchTask": "ActionScript: compile debug - asconfig.json"
+        },
+        {
+            "type": "swf",
+            "request": "attach",
+            "name": "Install & Attach Adobe AIR (Android)",
+            "connect": true,
+            "platform": "android",
+            "preLaunchTask": "Adobe AIR: package Android debug - asconfig.json"
+        },
+        {
+            "type": "swf",
+            "request": "attach",
+            "name": "Install & Attach Adobe AIR (iOS)",
+            "platform": "ios",
+            "preLaunchTask": "Adobe AIR: package iOS debug - asconfig.json"
+        },
+        {
+            "type": "swf",
+            "request": "attach",
+            "name": "Launch on iOS Simulator",
+            "platform": "ios_simulator",
+            "preLaunchTask": "Adobe AIR: package iOS simulator debug - asconfig.json"
+        }
+    ]
+}

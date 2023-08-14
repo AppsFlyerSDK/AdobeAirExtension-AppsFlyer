@@ -3,35 +3,31 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 46;
+	objectVersion = 55;
 	objects = {
 
 /* Begin PBXBuildFile section */
-		848D0E7C1986B443004E8542 /* AdSupport.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 848D0E7619814C06004E8542 /* AdSupport.framework */; };
-		848D0E7D1986B45C004E8542 /* iAd.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 848D0E7819814C0D004E8542 /* iAd.framework */; };
-		84D809111DA63B6A00A13114 /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 84D809101DA63B6A00A13114 /* StoreKit.framework */; };
-		9D79CF2B256C5B6B0018F0DB /* AppsFlyerAIRExtension.m in Sources */ = {isa = PBXBuildFile; fileRef = AACAB241185624FE00C55EB7 /* AppsFlyerAIRExtension.m */; };
-		9D79CF2C256C5B6B0018F0DB /* AppsFlyerDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = AAA4F9B918E1B2D800C121B5 /* AppsFlyerDelegate.m */; };
-		9D79CF2E256C5B6B0018F0DB /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 84D809101DA63B6A00A13114 /* StoreKit.framework */; };
-		9D79CF2F256C5B6B0018F0DB /* iAd.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 848D0E7819814C0D004E8542 /* iAd.framework */; };
-		9D79CF30256C5B6B0018F0DB /* AdSupport.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 848D0E7619814C06004E8542 /* AdSupport.framework */; };
-		9D79CF31256C5B6B0018F0DB /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AACAB23A185624FE00C55EB7 /* Foundation.framework */; settings = {ATTRIBUTES = (Required, ); }; };
-		AAA4F9BA18E1B2D800C121B5 /* AppsFlyerDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = AAA4F9B918E1B2D800C121B5 /* AppsFlyerDelegate.m */; };
-		AACAB23B185624FE00C55EB7 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AACAB23A185624FE00C55EB7 /* Foundation.framework */; settings = {ATTRIBUTES = (Required, ); }; };
-		AACAB242185624FE00C55EB7 /* AppsFlyerAIRExtension.m in Sources */ = {isa = PBXBuildFile; fileRef = AACAB241185624FE00C55EB7 /* AppsFlyerAIRExtension.m */; };
+		10A464833914BC1C58110896 /* libPods-AppsFlyerAIRExtension.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B1BD065998DD20FE0B3946BE /* libPods-AppsFlyerAIRExtension.a */; };
+		BD337F472A796DD300DD4501 /* AppsFlyerAIRExtension.m in Sources */ = {isa = PBXBuildFile; fileRef = BD337F462A796DD300DD4501 /* AppsFlyerAIRExtension.m */; };
+		BD337F482A796DD300DD4501 /* AppsFlyerAIRExtension.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = BD337F452A796DD300DD4501 /* AppsFlyerAIRExtension.h */; };
+		BD337F5E2A79792200DD4501 /* AppsFlyerDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = BD337F5D2A79792200DD4501 /* AppsFlyerDelegate.m */; };
+		BD337F5F2A79792200DD4501 /* AppsFlyerDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = BD337F5D2A79792200DD4501 /* AppsFlyerDelegate.m */; };
+		BD337F602A79792D00DD4501 /* AppsFlyerAIRExtension.m in Sources */ = {isa = PBXBuildFile; fileRef = BD337F462A796DD300DD4501 /* AppsFlyerAIRExtension.m */; };
+		CD708D2CAED59890507DDD7A /* libPods-AppsFlyerAIRExtension-Strict.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4B017CF9E3E1CB829D2B6DCD /* libPods-AppsFlyerAIRExtension-Strict.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
-		9D79CF32256C5B6B0018F0DB /* CopyFiles */ = {
+		BD337F402A796DD300DD4501 /* CopyFiles */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
 			dstPath = "include/$(PRODUCT_NAME)";
 			dstSubfolderSpec = 16;
 			files = (
+				BD337F482A796DD300DD4501 /* AppsFlyerAIRExtension.h in CopyFiles */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		AACAB235185624FE00C55EB7 /* CopyFiles */ = {
+		BD337F502A796EE300DD4501 /* CopyFiles */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
 			dstPath = "include/$(PRODUCT_NAME)";
@@ -43,381 +39,429 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		848D0E75198140AA004E8542 /* AppsFlyerAIRExtension.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppsFlyerAIRExtension.h; sourceTree = "<group>"; };
-		848D0E7619814C06004E8542 /* AdSupport.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AdSupport.framework; path = System/Library/Frameworks/AdSupport.framework; sourceTree = SDKROOT; };
-		848D0E7819814C0D004E8542 /* iAd.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = iAd.framework; path = System/Library/Frameworks/iAd.framework; sourceTree = SDKROOT; };
-		848D0E7A19814CA2004E8542 /* libAppsFlyerLib.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libAppsFlyerLib.a; sourceTree = "<group>"; };
-		84D809101DA63B6A00A13114 /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = System/Library/Frameworks/StoreKit.framework; sourceTree = SDKROOT; };
-		9D79CF36256C5B6B0018F0DB /* libAppsFlyerAIRExtension.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libAppsFlyerAIRExtension.a; sourceTree = BUILT_PRODUCTS_DIR; };
-		AAA4F9B818E1B2D800C121B5 /* AppsFlyerDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppsFlyerDelegate.h; sourceTree = "<group>"; };
-		AAA4F9B918E1B2D800C121B5 /* AppsFlyerDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AppsFlyerDelegate.m; sourceTree = "<group>"; };
-		AACAB237185624FE00C55EB7 /* libAppsFlyerAIRExtension.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libAppsFlyerAIRExtension.a; sourceTree = BUILT_PRODUCTS_DIR; };
-		AACAB23A185624FE00C55EB7 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
-		AACAB23E185624FE00C55EB7 /* AppsFlyerAIRExtension-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "AppsFlyerAIRExtension-Prefix.pch"; sourceTree = "<group>"; };
-		AACAB241185624FE00C55EB7 /* AppsFlyerAIRExtension.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppsFlyerAIRExtension.m; sourceTree = "<group>"; };
-		AACAB248185624FE00C55EB7 /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
-		AACAB24B185624FE00C55EB7 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = Library/Frameworks/UIKit.framework; sourceTree = DEVELOPER_DIR; };
-		AACAB2601856251500C55EB7 /* FlashRuntimeExtensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FlashRuntimeExtensions.h; sourceTree = "<group>"; };
+		37EAC4330278F72BB3255DC8 /* Pods-AppsFlyerAIRExtension-Strict.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AppsFlyerAIRExtension-Strict.release.xcconfig"; path = "Target Support Files/Pods-AppsFlyerAIRExtension-Strict/Pods-AppsFlyerAIRExtension-Strict.release.xcconfig"; sourceTree = "<group>"; };
+		4B017CF9E3E1CB829D2B6DCD /* libPods-AppsFlyerAIRExtension-Strict.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-AppsFlyerAIRExtension-Strict.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		61971A2697F70BF3B45EB23C /* Pods-AppsFlyerAIRExtension.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AppsFlyerAIRExtension.release.xcconfig"; path = "Target Support Files/Pods-AppsFlyerAIRExtension/Pods-AppsFlyerAIRExtension.release.xcconfig"; sourceTree = "<group>"; };
+		9E74292A4DE217955C292C84 /* Pods-AppsFlyerAIRExtension-Strict.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AppsFlyerAIRExtension-Strict.debug.xcconfig"; path = "Target Support Files/Pods-AppsFlyerAIRExtension-Strict/Pods-AppsFlyerAIRExtension-Strict.debug.xcconfig"; sourceTree = "<group>"; };
+		B1BD065998DD20FE0B3946BE /* libPods-AppsFlyerAIRExtension.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-AppsFlyerAIRExtension.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		BD337F422A796DD300DD4501 /* libAppsFlyerAIRExtension.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libAppsFlyerAIRExtension.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		BD337F452A796DD300DD4501 /* AppsFlyerAIRExtension.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppsFlyerAIRExtension.h; sourceTree = "<group>"; };
+		BD337F462A796DD300DD4501 /* AppsFlyerAIRExtension.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppsFlyerAIRExtension.m; sourceTree = "<group>"; };
+		BD337F522A796EE300DD4501 /* libAppsFlyerAIRExtension-Strict.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libAppsFlyerAIRExtension-Strict.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		BD337F5B2A7978DC00DD4501 /* FlashRuntimeExtensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FlashRuntimeExtensions.h; sourceTree = "<group>"; };
+		BD337F5C2A79792200DD4501 /* AppsFlyerDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppsFlyerDelegate.h; sourceTree = "<group>"; };
+		BD337F5D2A79792200DD4501 /* AppsFlyerDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AppsFlyerDelegate.m; sourceTree = "<group>"; };
+		E6FB30F8251A5BD982106DD1 /* Pods-AppsFlyerAIRExtension.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AppsFlyerAIRExtension.debug.xcconfig"; path = "Target Support Files/Pods-AppsFlyerAIRExtension/Pods-AppsFlyerAIRExtension.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
-		9D79CF2D256C5B6B0018F0DB /* Frameworks */ = {
+		BD337F3F2A796DD300DD4501 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				9D79CF2E256C5B6B0018F0DB /* StoreKit.framework in Frameworks */,
-				9D79CF2F256C5B6B0018F0DB /* iAd.framework in Frameworks */,
-				9D79CF30256C5B6B0018F0DB /* AdSupport.framework in Frameworks */,
-				9D79CF31256C5B6B0018F0DB /* Foundation.framework in Frameworks */,
+				10A464833914BC1C58110896 /* libPods-AppsFlyerAIRExtension.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		AACAB234185624FE00C55EB7 /* Frameworks */ = {
+		BD337F4F2A796EE300DD4501 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				84D809111DA63B6A00A13114 /* StoreKit.framework in Frameworks */,
-				848D0E7D1986B45C004E8542 /* iAd.framework in Frameworks */,
-				848D0E7C1986B443004E8542 /* AdSupport.framework in Frameworks */,
-				AACAB23B185624FE00C55EB7 /* Foundation.framework in Frameworks */,
+				CD708D2CAED59890507DDD7A /* libPods-AppsFlyerAIRExtension-Strict.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		AACAB22E185624FE00C55EB7 = {
+		AA366050CC2D08827465F118 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				AACAB23C185624FE00C55EB7 /* AppsFlyerAIRExtension */,
-				AACAB239185624FE00C55EB7 /* Frameworks */,
-				AACAB238185624FE00C55EB7 /* Products */,
-			);
-			sourceTree = "<group>";
-		};
-		AACAB238185624FE00C55EB7 /* Products */ = {
-			isa = PBXGroup;
-			children = (
-				AACAB237185624FE00C55EB7 /* libAppsFlyerAIRExtension.a */,
-				9D79CF36256C5B6B0018F0DB /* libAppsFlyerAIRExtension.a */,
-			);
-			name = Products;
-			sourceTree = "<group>";
-		};
-		AACAB239185624FE00C55EB7 /* Frameworks */ = {
-			isa = PBXGroup;
-			children = (
-				84D809101DA63B6A00A13114 /* StoreKit.framework */,
-				848D0E7A19814CA2004E8542 /* libAppsFlyerLib.a */,
-				848D0E7819814C0D004E8542 /* iAd.framework */,
-				848D0E7619814C06004E8542 /* AdSupport.framework */,
-				AACAB23A185624FE00C55EB7 /* Foundation.framework */,
-				AACAB248185624FE00C55EB7 /* XCTest.framework */,
-				AACAB24B185624FE00C55EB7 /* UIKit.framework */,
+				B1BD065998DD20FE0B3946BE /* libPods-AppsFlyerAIRExtension.a */,
+				4B017CF9E3E1CB829D2B6DCD /* libPods-AppsFlyerAIRExtension-Strict.a */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
-		AACAB23C185624FE00C55EB7 /* AppsFlyerAIRExtension */ = {
+		BD337F392A796DD300DD4501 = {
 			isa = PBXGroup;
 			children = (
-				AACAB2601856251500C55EB7 /* FlashRuntimeExtensions.h */,
-				848D0E75198140AA004E8542 /* AppsFlyerAIRExtension.h */,
-				AACAB241185624FE00C55EB7 /* AppsFlyerAIRExtension.m */,
-				AAA4F9B818E1B2D800C121B5 /* AppsFlyerDelegate.h */,
-				AAA4F9B918E1B2D800C121B5 /* AppsFlyerDelegate.m */,
-				AACAB23D185624FE00C55EB7 /* Supporting Files */,
+				BD337F5B2A7978DC00DD4501 /* FlashRuntimeExtensions.h */,
+				BD337F442A796DD300DD4501 /* AppsFlyerAIRExtension */,
+				BD337F432A796DD300DD4501 /* Products */,
+				DFFDC6EA006066D6881CB061 /* Pods */,
+				AA366050CC2D08827465F118 /* Frameworks */,
+			);
+			sourceTree = "<group>";
+		};
+		BD337F432A796DD300DD4501 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				BD337F422A796DD300DD4501 /* libAppsFlyerAIRExtension.a */,
+				BD337F522A796EE300DD4501 /* libAppsFlyerAIRExtension-Strict.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		BD337F442A796DD300DD4501 /* AppsFlyerAIRExtension */ = {
+			isa = PBXGroup;
+			children = (
+				BD337F5C2A79792200DD4501 /* AppsFlyerDelegate.h */,
+				BD337F5D2A79792200DD4501 /* AppsFlyerDelegate.m */,
+				BD337F452A796DD300DD4501 /* AppsFlyerAIRExtension.h */,
+				BD337F462A796DD300DD4501 /* AppsFlyerAIRExtension.m */,
 			);
 			path = AppsFlyerAIRExtension;
 			sourceTree = "<group>";
 		};
-		AACAB23D185624FE00C55EB7 /* Supporting Files */ = {
+		DFFDC6EA006066D6881CB061 /* Pods */ = {
 			isa = PBXGroup;
 			children = (
-				AACAB23E185624FE00C55EB7 /* AppsFlyerAIRExtension-Prefix.pch */,
+				E6FB30F8251A5BD982106DD1 /* Pods-AppsFlyerAIRExtension.debug.xcconfig */,
+				61971A2697F70BF3B45EB23C /* Pods-AppsFlyerAIRExtension.release.xcconfig */,
+				9E74292A4DE217955C292C84 /* Pods-AppsFlyerAIRExtension-Strict.debug.xcconfig */,
+				37EAC4330278F72BB3255DC8 /* Pods-AppsFlyerAIRExtension-Strict.release.xcconfig */,
 			);
-			name = "Supporting Files";
+			path = Pods;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		9D79CF29256C5B6B0018F0DB /* Strict */ = {
+		BD337F412A796DD300DD4501 /* AppsFlyerAIRExtension */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 9D79CF33256C5B6B0018F0DB /* Build configuration list for PBXNativeTarget "Strict" */;
+			buildConfigurationList = BD337F4B2A796DD300DD4501 /* Build configuration list for PBXNativeTarget "AppsFlyerAIRExtension" */;
 			buildPhases = (
-				9D79CF2A256C5B6B0018F0DB /* Sources */,
-				9D79CF2D256C5B6B0018F0DB /* Frameworks */,
-				9D79CF32256C5B6B0018F0DB /* CopyFiles */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-			);
-			name = Strict;
-			productName = AdobeeAirExtensionIOS;
-			productReference = 9D79CF36256C5B6B0018F0DB /* libAppsFlyerAIRExtension.a */;
-			productType = "com.apple.product-type.library.static";
-		};
-		AACAB236185624FE00C55EB7 /* AppsFlyerAIRExtension */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = AACAB25A185624FE00C55EB7 /* Build configuration list for PBXNativeTarget "AppsFlyerAIRExtension" */;
-			buildPhases = (
-				AACAB233185624FE00C55EB7 /* Sources */,
-				AACAB234185624FE00C55EB7 /* Frameworks */,
-				AACAB235185624FE00C55EB7 /* CopyFiles */,
+				185E9E22F3755244210DFBA6 /* [CP] Check Pods Manifest.lock */,
+				BD337F3E2A796DD300DD4501 /* Sources */,
+				BD337F3F2A796DD300DD4501 /* Frameworks */,
+				BD337F402A796DD300DD4501 /* CopyFiles */,
 			);
 			buildRules = (
 			);
 			dependencies = (
 			);
 			name = AppsFlyerAIRExtension;
-			productName = AdobeeAirExtensionIOS;
-			productReference = AACAB237185624FE00C55EB7 /* libAppsFlyerAIRExtension.a */;
+			productName = AppsFlyerAIRExtension;
+			productReference = BD337F422A796DD300DD4501 /* libAppsFlyerAIRExtension.a */;
+			productType = "com.apple.product-type.library.static";
+		};
+		BD337F512A796EE300DD4501 /* AppsFlyerAIRExtension-Strict */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = BD337F5A2A796EE300DD4501 /* Build configuration list for PBXNativeTarget "AppsFlyerAIRExtension-Strict" */;
+			buildPhases = (
+				2FF200A8C765985E3A8025C7 /* [CP] Check Pods Manifest.lock */,
+				BD337F4E2A796EE300DD4501 /* Sources */,
+				BD337F4F2A796EE300DD4501 /* Frameworks */,
+				BD337F502A796EE300DD4501 /* CopyFiles */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "AppsFlyerAIRExtension-Strict";
+			productName = "AppsFlyerAIRExtension-Strict";
+			productReference = BD337F522A796EE300DD4501 /* libAppsFlyerAIRExtension-Strict.a */;
 			productType = "com.apple.product-type.library.static";
 		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
-		AACAB22F185624FE00C55EB7 /* Project object */ = {
+		BD337F3A2A796DD300DD4501 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				KnownAssetTags = (
-					New,
-				);
-				LastUpgradeCheck = 0700;
-				ORGANIZATIONNAME = "Oren Baranes";
+				BuildIndependentTargetsInParallel = 1;
+				LastUpgradeCheck = 1420;
+				TargetAttributes = {
+					BD337F412A796DD300DD4501 = {
+						CreatedOnToolsVersion = 14.2;
+					};
+					BD337F512A796EE300DD4501 = {
+						CreatedOnToolsVersion = 14.2;
+					};
+				};
 			};
-			buildConfigurationList = AACAB232185624FE00C55EB7 /* Build configuration list for PBXProject "AppsFlyerAIRExtension" */;
-			compatibilityVersion = "Xcode 3.2";
-			developmentRegion = English;
+			buildConfigurationList = BD337F3D2A796DD300DD4501 /* Build configuration list for PBXProject "AppsFlyerAIRExtension" */;
+			compatibilityVersion = "Xcode 13.0";
+			developmentRegion = en;
 			hasScannedForEncodings = 0;
 			knownRegions = (
-				English,
 				en,
+				Base,
 			);
-			mainGroup = AACAB22E185624FE00C55EB7;
-			productRefGroup = AACAB238185624FE00C55EB7 /* Products */;
+			mainGroup = BD337F392A796DD300DD4501;
+			productRefGroup = BD337F432A796DD300DD4501 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				AACAB236185624FE00C55EB7 /* AppsFlyerAIRExtension */,
-				9D79CF29256C5B6B0018F0DB /* Strict */,
+				BD337F412A796DD300DD4501 /* AppsFlyerAIRExtension */,
+				BD337F512A796EE300DD4501 /* AppsFlyerAIRExtension-Strict */,
 			);
 		};
 /* End PBXProject section */
 
+/* Begin PBXShellScriptBuildPhase section */
+		185E9E22F3755244210DFBA6 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-AppsFlyerAIRExtension-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		2FF200A8C765985E3A8025C7 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-AppsFlyerAIRExtension-Strict-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
+
 /* Begin PBXSourcesBuildPhase section */
-		9D79CF2A256C5B6B0018F0DB /* Sources */ = {
+		BD337F3E2A796DD300DD4501 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				9D79CF2B256C5B6B0018F0DB /* AppsFlyerAIRExtension.m in Sources */,
-				9D79CF2C256C5B6B0018F0DB /* AppsFlyerDelegate.m in Sources */,
+				BD337F472A796DD300DD4501 /* AppsFlyerAIRExtension.m in Sources */,
+				BD337F5E2A79792200DD4501 /* AppsFlyerDelegate.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		AACAB233185624FE00C55EB7 /* Sources */ = {
+		BD337F4E2A796EE300DD4501 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				AACAB242185624FE00C55EB7 /* AppsFlyerAIRExtension.m in Sources */,
-				AAA4F9BA18E1B2D800C121B5 /* AppsFlyerDelegate.m in Sources */,
+				BD337F5F2A79792200DD4501 /* AppsFlyerDelegate.m in Sources */,
+				BD337F602A79792D00DD4501 /* AppsFlyerAIRExtension.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin XCBuildConfiguration section */
-		9D79CF34256C5B6B0018F0DB /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				DSTROOT = /tmp/AdobeeAirExtensionIOS.dst;
-				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "AppsFlyerAIRExtension/AppsFlyerAIRExtension-Prefix.pch";
-				GCC_PREPROCESSOR_DEFINITIONS = (
-					"$STRICT=1",
-					"DEBUG=1",
-					"$(inherited)",
-				);
-				LIBRARY_SEARCH_PATHS = (
-					"$(inherited)",
-					/Users/orenb/AppsFlyer/Dev/workspace/AdobeeAirExtensionIOS,
-					"$(PROJECT_DIR)",
-				);
-				ONLY_ACTIVE_ARCH = NO;
-				OTHER_LDFLAGS = "-ObjC";
-				PRODUCT_NAME = AppsFlyerAIRExtension;
-				SKIP_INSTALL = YES;
-				VALID_ARCHS = "armv7 armv7s arm64";
-			};
-			name = Debug;
-		};
-		9D79CF35256C5B6B0018F0DB /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				DSTROOT = /tmp/AdobeeAirExtensionIOS.dst;
-				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "AppsFlyerAIRExtension/AppsFlyerAIRExtension-Prefix.pch";
-				GCC_PREPROCESSOR_DEFINITIONS = "$STRICT=1";
-				LIBRARY_SEARCH_PATHS = (
-					"$(inherited)",
-					/Users/orenb/AppsFlyer/Dev/workspace/AdobeeAirExtensionIOS,
-					"$(PROJECT_DIR)",
-				);
-				ONLY_ACTIVE_ARCH = NO;
-				OTHER_LDFLAGS = "-ObjC";
-				PRODUCT_NAME = AppsFlyerAIRExtension;
-				SKIP_INSTALL = YES;
-				VALID_ARCHS = "armv7 armv7s arm64";
-			};
-			name = Release;
-		};
-		AACAB258185624FE00C55EB7 /* Debug */ = {
+		BD337F492A796DD300DD4501 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
-				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
 				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
-				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
 				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"DEBUG=1",
 					"$(inherited)",
 				);
-				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
 				GCC_WARN_UNDECLARED_SELECTOR = YES;
-				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
-				ONLY_ACTIVE_ARCH = NO;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
 			};
 			name = Debug;
 		};
-		AACAB259185624FE00C55EB7 /* Release */ = {
+		BD337F4A2A796DD300DD4501 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
-				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
 				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				COPY_PHASE_STRIP = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_NS_ASSERTIONS = NO;
-				GCC_C_LANGUAGE_STANDARD = gnu99;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
 				GCC_WARN_UNDECLARED_SELECTOR = YES;
-				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
-				ONLY_ACTIVE_ARCH = NO;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
 				SDKROOT = iphoneos;
 				VALIDATE_PRODUCT = YES;
 			};
 			name = Release;
 		};
-		AACAB25B185624FE00C55EB7 /* Debug */ = {
+		BD337F4C2A796DD300DD4501 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = E6FB30F8251A5BD982106DD1 /* Pods-AppsFlyerAIRExtension.debug.xcconfig */;
 			buildSettings = {
-				DSTROOT = /tmp/AdobeeAirExtensionIOS.dst;
-				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "AppsFlyerAIRExtension/AppsFlyerAIRExtension-Prefix.pch";
-				GCC_PREPROCESSOR_DEFINITIONS = (
-					"DEBUG=1",
-					"$(inherited)",
-					"$STRICT=0",
-				);
-				LIBRARY_SEARCH_PATHS = (
-					"$(inherited)",
-					/Users/orenb/AppsFlyer/Dev/workspace/AdobeeAirExtensionIOS,
-					"$(PROJECT_DIR)",
-				);
-				ONLY_ACTIVE_ARCH = NO;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 6UQAD4B3U2;
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
-				VALID_ARCHS = "armv7 armv7s arm64";
+				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
 		};
-		AACAB25C185624FE00C55EB7 /* Release */ = {
+		BD337F4D2A796DD300DD4501 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 61971A2697F70BF3B45EB23C /* Pods-AppsFlyerAIRExtension.release.xcconfig */;
 			buildSettings = {
-				DSTROOT = /tmp/AdobeeAirExtensionIOS.dst;
-				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "AppsFlyerAIRExtension/AppsFlyerAIRExtension-Prefix.pch";
-				GCC_PREPROCESSOR_DEFINITIONS = "$STRICT=0";
-				LIBRARY_SEARCH_PATHS = (
-					"$(inherited)",
-					/Users/orenb/AppsFlyer/Dev/workspace/AdobeeAirExtensionIOS,
-					"$(PROJECT_DIR)",
-				);
-				ONLY_ACTIVE_ARCH = NO;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 6UQAD4B3U2;
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
-				VALID_ARCHS = "armv7 armv7s arm64";
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		BD337F582A796EE300DD4501 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 9E74292A4DE217955C292C84 /* Pods-AppsFlyerAIRExtension-Strict.debug.xcconfig */;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 6UQAD4B3U2;
+				OTHER_LDFLAGS = "-ObjC";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		BD337F592A796EE300DD4501 /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 37EAC4330278F72BB3255DC8 /* Pods-AppsFlyerAIRExtension-Strict.release.xcconfig */;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 6UQAD4B3U2;
+				OTHER_LDFLAGS = "-ObjC";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Release;
 		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		9D79CF33256C5B6B0018F0DB /* Build configuration list for PBXNativeTarget "Strict" */ = {
+		BD337F3D2A796DD300DD4501 /* Build configuration list for PBXProject "AppsFlyerAIRExtension" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				9D79CF34256C5B6B0018F0DB /* Debug */,
-				9D79CF35256C5B6B0018F0DB /* Release */,
+				BD337F492A796DD300DD4501 /* Debug */,
+				BD337F4A2A796DD300DD4501 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		AACAB232185624FE00C55EB7 /* Build configuration list for PBXProject "AppsFlyerAIRExtension" */ = {
+		BD337F4B2A796DD300DD4501 /* Build configuration list for PBXNativeTarget "AppsFlyerAIRExtension" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				AACAB258185624FE00C55EB7 /* Debug */,
-				AACAB259185624FE00C55EB7 /* Release */,
+				BD337F4C2A796DD300DD4501 /* Debug */,
+				BD337F4D2A796DD300DD4501 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		AACAB25A185624FE00C55EB7 /* Build configuration list for PBXNativeTarget "AppsFlyerAIRExtension" */ = {
+		BD337F5A2A796EE300DD4501 /* Build configuration list for PBXNativeTarget "AppsFlyerAIRExtension-Strict" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				AACAB25B185624FE00C55EB7 /* Debug */,
-				AACAB25C185624FE00C55EB7 /* Release */,
+				BD337F582A796EE300DD4501 /* Debug */,
+				BD337F592A796EE300DD4501 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
-	rootObject = AACAB22F185624FE00C55EB7 /* Project object */;
+	rootObject = BD337F3A2A796DD300DD4501 /* Project object */;
 }
