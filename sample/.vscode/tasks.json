@@ -1,0 +1,36 @@
+{
+	"version": "2.0.0",
+	"tasks": [
+		{
+			"type": "actionscript",
+			"debug": true,
+			"air": "ios",
+			"group": "build",
+			"problemMatcher": [],
+			"label": "Adobe AIR: package iOS debug - asconfig.json"
+		},
+		{
+			"type": "actionscript",
+			"debug": true,
+			"air": "ios_simulator",
+			"group": "build",
+			"problemMatcher": [],
+			"label": "Adobe AIR: package iOS simulator debug - asconfig.json"
+		},
+		{
+			"type": "actionscript",
+			"debug": true,
+			"air": "android",
+			"group": "build",
+			"problemMatcher": [],
+			"label": "Adobe AIR: package Android debug - asconfig.json"
+		},
+		{
+			"type": "actionscript",
+			"debug": true,
+			"group": "build",
+			"problemMatcher": [],
+			"label": "ActionScript: compile debug - asconfig.json"
+		}
+	]
+}

@@ -1,0 +1,12 @@
+# Uncomment the next line to define a global platform for your project
+# platform :ios, '9.0'
+
+target 'AppsFlyerAIRExtension' do
+  
+  pod 'AppsFlyerFramework', '6.12.1'
+end
+
+target 'AppsFlyerAIRExtension-Strict' do
+  
+  pod 'AppsFlyerFramework/Strict', '6.12.1'
+end

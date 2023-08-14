@@ -1,10 +1,6 @@
-
-#import "FlashRuntimeExtensions.h"
-#import "AppsFlyerLib.h"
 #import "AppsFlyerDelegate.h"
 #import "AppsFlyerAIRExtension.h"
 
-#import <UIKit/UIApplication.h>
 #import <UserNotifications/UserNotifications.h>
 #import <AppTrackingTransparency/AppTrackingTransparency.h>
 
@@ -147,18 +143,25 @@ DEFINE_ANE_FUNCTION(init)
 {
     NSString *developerKey = [AppsFlyerAIRExtension getString: argv[0]];
     NSString *appId = [AppsFlyerAIRExtension getString: argv[1]];
-   
+    [[AppsFlyerLib shared] setPluginInfoWith:AFSDKPluginAdobeAir
+                               pluginVersion:@"6.12.1"
+                            additionalParams:nil];
     [AppsFlyerLib shared].appsFlyerDevKey = developerKey;
     [AppsFlyerLib shared].appleAppID = appId;
+
     return NULL;
 }
 
 DEFINE_ANE_FUNCTION(start)
 {
-    [[NSNotificationCenter defaultCenter] addObserver:conversionDelegate
-    selector:@selector(sendLaunch:)
-    name:UIApplicationDidBecomeActiveNotification
-    object:nil];
+    static dispatch_once_t once;
+    dispatch_once(&once, ^ {
+        [[NSNotificationCenter defaultCenter] addObserver:conversionDelegate
+                                                 selector:@selector(sendLaunch:)
+                                                     name:UIApplicationDidBecomeActiveNotification
+                                                   object:nil];
+    });
+    [[AppsFlyerLib shared] start];
     return NULL;
 }
 
@@ -268,7 +271,7 @@ DEFINE_ANE_FUNCTION(setUserEmails)
         [emails addObject: [AppsFlyerAIRExtension getString: element]];
     }
     
-    [[AppsFlyerLib shared] setUserEmails:emails withCryptType:EmailCryptTypeSHA1];
+    [[AppsFlyerLib shared] setUserEmails:emails withCryptType:EmailCryptTypeSHA256];
     return NULL;
 }
 

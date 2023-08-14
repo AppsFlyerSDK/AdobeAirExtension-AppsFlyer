@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<application xmlns="http://ns.adobe.com/air/application/50.2">
+	<id>com.appsflyer.Device-Id</id>
+	<versionNumber>1.0.0</versionNumber>
+	<filename>Main</filename>
+	<name>Main</name>
+	<initialWindow>
+		<content>[Path to content will be replaced by Visual Studio Code]</content>
+		<visible>true</visible>
+	</initialWindow>
+
+	<!-- Identifies the ActionScript extensions used by an application. -->
+    <extensions>
+        <extensionID>com.appsflyer.adobeair</extensionID>
+    </extensions>
+
+    <!-- iOS specific capabilities -->
+    <iPhone>
+        <!-- A list of plist key/value pairs to be added to the application Info.plist -->
+        <InfoAdditions>
+            <![CDATA[
+            <key>UIDeviceFamily</key>
+            <array>
+                <!-- iPhone and iPod touch devices -->
+                <string>1</string>
+                <!-- iPad devices -->
+                <string>2</string>
+            </array>
+            <key>MinimumOSVersion</key>
+            <string>11.0</string>
+            <!--URI-scheme setup-->
+            <key>CFBundleURLTypes</key>
+            <array>
+                <dict>
+                    <key>CFBundleURLName</key>
+                    <string>sdktest_scheme</string>
+                    <key>CFBundleURLSchemes</key>
+                    <array>
+                        <string>sdktest</string>
+                    </array>
+                </dict>
+            </array>
+            <key>NSUserTrackingUsageDescription</key>
+            <string>Please allow us to read your IDFA</string>
+            <!--<key>UIStatusBarStyle</key>-->
+            <!--<string>UIStatusBarStyleBlackOpaque</string>-->
+            <!--<key>UIRequiresPersistentWiFi</key>-->
+            <!--<string>YES</string>-->
+            ]]>
+        </InfoAdditions>
+
+        <Entitlements>
+            <![CDATA[
+            <key>com.apple.developer.associated-domains</key>
+            <array>
+              <string>applinks:sdk-test.onelink.me</string>
+              <string>applinks:5a5b39e8a8df.ngrok.io</string>
+              <string>applinks:click.af-sup.com</string>
+            </array>
+        ]]>
+        </Entitlements>
+
+        <!-- A list of plist key/value pairs to be added to the application Entitlements.plist -->
+        <!--<Entitlements>
+            <![CDATA[
+            <key>keychain-access-groups</key>
+            <array>
+                <string></string>
+                <string></string>
+            </array>
+            ]]>
+        </Entitlements>-->
+
+        <!-- Display Resolution for the app (either "standard" or "high"). Optional. Default "standard" -->
+        <requestedDisplayResolution>high</requestedDisplayResolution>
+        <!-- Forcing Render Mode CPU for the devices mentioned. Optional  -->
+        <!--<forceCPURenderModeForDevices></forceCPURenderModeForDevices> -->
+        <!-- File containing line separated list of external swf paths. These swfs won't be packaged inside the application
+        and corresponding stripped swfs will be output in externalStrippedSwfs folder. -->
+        <!--<externalSwfs></externalSwfs> -->
+    </iPhone>
+    <!-- Specify Android specific tags that get passed to AndroidManifest.xml file. -->
+    <android>
+        <manifestAdditions>
+            <![CDATA[
+            <manifest android:installLocation="auto">
+                <uses-permission android:name="android.permission.INTERNET"/>
+                <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+                <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
+                <uses-permission android:name="com.google.android.finsky.permission.BIND_GET_INSTALL_REFERRER_SERVICE" />
+                <uses-permission android:name="com.google.android.gms.permission.AD_ID" />
+                <application
+                    android:enabled="true">
+                    <activity android:excludeFromRecents="false">
+                        <intent-filter>
+                            <action android:name="android.intent.action.MAIN"/>
+                            <category android:name="android.intent.category.LAUNCHER"/>
+                        </intent-filter>
+                        <intent-filter>
+                             <action android:name="android.intent.action.VIEW"/>
+                             <category android:name="android.intent.category.DEFAULT" />
+                             <category android:name="android.intent.category.BROWSABLE" />
+                             <data android:scheme="sdktest" />
+                        </intent-filter>
+                        <intent-filter
+                            android:autoVerify="true">
+                            <action android:name="android.intent.action.VIEW" />
+
+                            <category android:name="android.intent.category.DEFAULT" />
+                            <category android:name="android.intent.category.BROWSABLE" />
+
+                            <data android:scheme="https" />
+                            <data android:scheme="http" />
+                            <data
+                                android:host="sdk-test.onelink.me" />
+                            <data
+                                android:host="click.af-sup.com"
+                                android:pathPrefix="/NjSv" />
+                            <data
+                                android:host="5a5b39e8a8df.ngrok.io"
+                                android:pathPrefix="/test"/>
+                        </intent-filter>
+                    </activity>
+                </application>
+            </manifest>
+            ]]>
+        </manifestAdditions>
+
+        <!-- Color depth for the app (either "32bit" or "16bit"). Optional. Default 16bit before namespace 3.0, 32bit after -->
+        <!--<colorDepth></colorDepth>-->
+        <!-- Indicates if the app contains video or not. Necessary for ordering of video planes with graphics plane, especially in Jellybean - if you app does video this must be set to true - valid values are true or false -->
+        <!-- <containsVideo></containsVideo> -->
+        <!-- This app is also for Android TV (either "true" or "false"). Optional. Default is 'false' -->
+        <!-- <supportsAndroidTV></supportsAndroidTV> -->
+        <!-- Path to the image used for banner when the app is shown on TV. Optional. The banner should be a .png image of size 320*180.-->
+        <!-- <banner></banner> -->
+        <!-- Indicates if webContents (HTML/CSS/JavaScript) can be inspected in browser. Optional . Default value is 'false' -->
+        <!-- <webContentsDebuggingEnabled></webContentsDebuggingEnabled> -->
+
+        <!-- Indicates if disableMediaCodec is enabled or not. Optional . Default value is 'false' -->
+        <!-- <disableMediaCodec></disableMediaCodec> -->
+
+    </android>
+</application>

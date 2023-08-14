@@ -1,6 +1,6 @@
-<extension xmlns="http://ns.adobe.com/air/extension/33.1">
+<extension xmlns="http://ns.adobe.com/air/extension/50.2">
     <id>com.appsflyer.adobeair</id>
-    <versionNumber>6.5.40</versionNumber>
+    <versionNumber>6.12.1</versionNumber>
     <platforms>
         <platform name="Android-ARM">
             <applicationDeployment>
@@ -24,6 +24,12 @@
             </applicationDeployment>
         </platform>
         <platform name="iPhone-ARM">
+            <applicationDeployment>
+                <nativeLibrary>libAppsFlyerAIRExtension.a</nativeLibrary>
+                <initializer>AFExtensionInitializer</initializer>
+            </applicationDeployment>
+        </platform>
+        <platform name="iPhone-x86">
             <applicationDeployment>
                 <nativeLibrary>libAppsFlyerAIRExtension.a</nativeLibrary>
                 <initializer>AFExtensionInitializer</initializer>

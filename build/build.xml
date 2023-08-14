@@ -4,119 +4,186 @@
     <!-- Config -->
     <property file="build.config"/>
 
-    <target name="all"
-            depends="android,ios,swc-default,swc-mobile,package,package_without_gp,package_without_gp_and_support_lib,ios-strict,package-strict,clear"
-            description="Full build of extension"/>
+    <!-- Load ant-contrib -->
+    <taskdef resource="net/sf/antcontrib/antcontrib.properties">
+        <classpath>
+            <pathelement location="ant-contrib-0.6.jar"/>
+        </classpath>
+    </taskdef>
 
-    <target name="all-android-debug"
-            depends="android-debug,ios,swc-mobile,swc-default,package,package_without_gp,package_without_gp_and_support_lib,ios-strict,package-strict,clear"
-            description="Full build of extension w/debugging on Android"
-    />
+    <!-- All -->
+    <target name="all" depends="ios,ios-simulator,android,swc,swc-default,package" description="Full build of extension"/>
 
     <!-- iOS -->
     <target name="ios" description="Build iOS Library">
-        <mkdir dir="../temp/ios/build/"/>
 
-        <exec executable="xcodebuild" failonerror="true" dir="../ios/">
-            <arg line="-project ${name}.xcodeproj"/>
-            <arg line="-alltargets clean"/>
+        <!-- make the build directory for the objc code -->
+        <mkdir dir="temp/ios"/>
+
+        <!-- clean the build -->
+        <exec executable="xcodebuild" failonerror="true" dir="../ios">
+            <arg line="-workspace ${name}.xcworkspace"/>
+            <arg line="-scheme ${name}"/>
+            <arg line="clean"/>
         </exec>
-        
-        <exec executable="xcodebuild" failonerror="true" dir="../ios/">
-            <arg line="-project ${name}.xcodeproj"/>
-            <arg line="-sdk ${ios.sdkversion}"/>
-            <arg line="-target ${name}"/>
+
+        <!-- compile the ios lib -->
+        <exec executable="xcodebuild" failonerror="true" dir="../ios">
+            <arg line="-workspace ${name}.xcworkspace"/>
+            <arg line="-scheme ${name}"/>
+            <arg line="-sdk iphoneos"/>
             <arg line="-configuration Release"/>
-            <arg line="SYMROOT=../temp/ios/build/"/>
+            <arg line="SYMROOT=$(PWD)/../ios/build"/>
         </exec>
-        
-        <copy file="../temp/ios/build/Release-iphoneos/lib${name}.a" todir="../temp/ios" overwrite="true"/>
-        <copy file="../ios/libAppsFlyerLib.a" todir="../temp/ios" overwrite="true"/>
-        <delete dir="../temp/ios/build/"/>
+
+        <!-- copy the libs and resources to the base temp ios directory -->
+        <copy todir="temp/ios" overwrite="true" includeEmptyDirs="false" flatten="false">
+            <fileset dir="../ios/build/Release-iphoneos/">
+                <exclude name="**/*Pods-${name}*"/>
+                <!-- <exclude name="**/xxx.a"/> -->
+                <exclude name="**/XCFrameworkIntermediates/**"/>
+            </fileset>
+        </copy>
+
+        <!-- copy over necessary frameworks, bundles, etc -->
+        <for param="path">
+            <path>
+                <dirset dir="../ios/">
+                    <include name="**/*.framework"/>
+                    <!-- <exclude name="**/xxx.framework"/> -->
+                </dirset>
+            </path>
+            <sequential>
+                <propertyregex property="folder.name" override="true" input="@{path}" regexp=".+\/(.+)" select="\1"/>
+                <copy todir="temp/ios/${folder.name}" overwrite="true" includeEmptyDirs="false" flatten="true">
+                    <fileset dir="@{path}"/>
+                </copy>
+            </sequential>
+        </for>
+
+        <!-- remove the build directory -->
+        <delete dir="../ios/build/"/>
+    </target>
+
+    <!-- iOS-Simulator -->
+    <target name="ios-simulator" description="Build iOS Simulator Library">
+
+        <!-- compile the ios-simulator lib -->
+        <exec executable="xcodebuild" failonerror="true" dir="../ios">
+            <arg line="-workspace ${name}.xcworkspace"/>
+            <arg line="-scheme ${name}"/>
+            <arg line="-sdk iphonesimulator"/>
+            <arg line="-configuration Release"/>
+            <arg line="SYMROOT=$(PWD)/../ios-simulator/build"/>
+        </exec> 
+
+        <!-- copy the libs and resources to the base temp ios directory -->
+        <copy todir="temp/ios-simulator" overwrite="true" includeEmptyDirs="false" flatten="false">
+            <fileset dir="../ios-simulator/build/Release-iphonesimulator/">
+                <exclude name="**/*Pods-${name}*"/>
+                <!-- <exclude name="**/xxx.a"/> -->
+                <exclude name="**/XCFrameworkIntermediates/**"/>
+            </fileset>
+        </copy>
+
+        <!-- copy over necessary frameworks, bundles, etc -->
+        <for param="path">
+            <path>
+                <dirset dir="../ios-simulator/">
+                    <include name="**/*.framework"/>
+                    <!-- <exclude name="**/xxx.framework"/> -->
+                </dirset>
+            </path>
+            <sequential>
+                <propertyregex property="folder.name" override="true" input="@{path}" regexp=".+\/(.+)" select="\1"/>
+                <copy todir="temp/ios-simulator/${folder.name}" overwrite="true" includeEmptyDirs="false" flatten="true">
+                    <fileset dir="@{path}"/>
+                </copy>
+            </sequential>
+        </for>
+
+        <!-- remove the build directory -->
+        <delete dir="../ios-simulator/"/>
     </target>
 
     <!-- Android -->
-    <target name="android-build" description="Build Android Library">
-        <property name="aapt" location="${android.build.tools.dir}/aapt${exe.ext}" />
-        <property name="source.dir" value="../android/src" />
-        <property name="gen.absolute.dir" location="../android/gen" />
-        <property name="resource.absolute.dir" location="../android/res" />
-        
-        <delete dir="../android/temp"/>
-        <mkdir dir="../android/temp/classes"/>
-        
-        <echo message="Using Java version ${ant.java.version}."/>
-        
-        <echo>Generating R.java / Manifest.java from the resources...</echo>
-        <exec executable="${aapt}" failonerror="true">
-            <arg value="package" />
-            <arg line="" />
-            <arg value="-m" />
-            <arg value="-J" />
-            <arg path="${gen.absolute.dir}" />
-            <arg value="-M" />
-            <arg path="../android/AndroidManifest.xml" />
-            <arg value="-S" />
-            <arg path="${resource.absolute.dir}" />
-            <arg value="-I" />
-            <arg path="${android.sdk}/android.jar" />
+    <target name="android" description="Build Android Library">
+
+        <!-- paths -->
+        <property name="build.intermediates" value="../android/lib/build/intermediates"/>
+        <property name="build.release" value="${build.intermediates}/aar_main_jar/release"/>
+
+        <!-- make the build directory -->
+        <mkdir dir="temp/android"/>
+
+        <exec executable="/usr/libexec/java_home" outputproperty="java.home">
+            <!-- <arg line="-v 1.8" /> -->
         </exec>
-        
-        <javac source="1.7" target="1.7" destdir="../android/temp/classes" includeantruntime="false" debug="${ANDROID_DEBUG}">
-            <src path="${source.dir}"/>
-            <src path="${gen.absolute.dir}"/>
-            <classpath>
-                <pathelement location="${android.sdk}/android.jar"/>
-                <pathelement location="${air.sdk}/lib/android/FlashRuntimeExtensions.jar"/>
-                <pathelement location="../android/google-play-services_lib/libs/google-play-services.jar"/>
 
-                <pathelement location="../res/${appsflyer.sdk.lib}.jar"/>
-                <pathelement location="../res/json-simple-1.1.1.jar"/>
+        <!-- clean the build -->
+        <exec executable="./gradlew" dir="../android">
+            <env key="JAVA_HOME" path="${java.home}"/>
+            <env key="ANDROID_HOME" path="${android.sdk.home}"/>
+            <arg line="clean"/>
+        </exec>
 
-                <pathelement location="../res/android-support-v4.jar"/>
-                <!--pathelement location="../res/support-annotations-27.0.2.jar"/-->
-                <pathelement location="../res/firebase-common.jar"/>
-                <pathelement location="../res/firebase-messaging.jar"/>
-                <pathelement location="../res/firebase-iid.jar"/>
-                <pathelement location="../res/installreferrer-1.0.jar"/>
-                
-            </classpath>
-        </javac>
-        
-         <copy todir="../temp/android/res/values/">
-             <fileset dir="../android/google-play-services_lib/res/values">
-                <exclude name="wallet_styles.xml" />
+        <!-- compile the java code -->
+        <exec executable="./gradlew" dir="../android">
+            <env key="JAVA_HOME" path="${java.home}"/>
+            <env key="ANDROID_HOME" path="${android.sdk.home}"/>
+            <arg line=":lib:assembleRelease"/>
+        </exec>
+
+        <!-- get the jar -->
+        <copy file="${build.release}/classes.jar" tofile="temp/android/lib${name}.jar"/>
+
+        <!-- Copy dependencies into temp folder -->
+        <exec executable="./gradlew" dir="../android">
+            <env key="JAVA_HOME" path="${java.home}"/>
+            <env key="ANDROID_HOME" path="${android.sdk.home}"/>
+            <arg line="copyDependencies"/>
+        </exec>
+
+        <!-- Extract aar files -->
+        <foreach target="unzipAAR" param="aarFile">
+            <fileset dir="../android/lib/dependencies">
+                <include name="*.aar"/>
             </fileset>
-         </copy>
-        
-        <mkdir dir="../temp/android/"/>
-        <delete>
-            <fileset dir="../android/temp/classes" includes="**/R$*.class"/>
-            <fileset dir="../android/temp/classes" includes="**/R.class"/>
-        </delete>
-        <delete dir="../android/temp/classes/com/appsflyer/adobeair/lib"/>
-        <jar basedir="../android/temp/classes" destfile="../temp/android/lib${name}.jar"/>
-        <copy todir="../temp/android">
-            <fileset dir="../res"/>
+        </foreach>
+
+        <!-- Copy to build folder -->
+        <copy todir="temp/android">
+            <fileset dir="../android/lib/dependencies" excludes="FlashRuntimeExtensions.jar, runtimeClasses.jar">
+                <include name="*.jar"/>
+            </fileset>
         </copy>
-        <delete dir="../android/temp"/>
-    </target>
-    
-    <target name="android" description="Build Android Library with debugging disabled">
-        <property name="ANDROID_DEBUG" value="false"/>
-        <antcall target="android-build"/>
-    </target>
-    <target name="android-debug" description="Build Android Library with debugging enabled">
-        <property name="ANDROID_DEBUG" value="true"/>
-        <antcall target="android-build"/>
+
+        <!-- Copy over required resources -->
+        <copy todir="temp/android/res" failonerror="true">
+            <fileset dir="${build.intermediates}/packaged_res/release"/>
+        </copy>
+
+        <delete dir="../android/lib/dependencies"/>
+
     </target>
 
+    <target name="unzipAAR">
+        <basename property="aarFileName" file="${aarFile}"
+                  suffix=".aar"/>
+        <unzip src="${aarFile}" dest="../android/lib/dependencies/${aarFileName}" overwrite="true"/>
+        <if>
+            <available file="../android/lib/dependencies/${aarFileName}/classes.jar"/>
+            <then>
+                <move file="../android/lib/dependencies/${aarFileName}/classes.jar" tofile="../android/lib/dependencies/${aarFileName}.jar"/>
+            </then>
+        </if>
+    </target>
 
-    <!-- Actionscript mobile -->
-    <target name="swc-mobile" description="Build SWC library">
-        <mkdir dir="../temp/swc/content/"/>
+    <!-- Actionscript -->
+    <target name="swc" description="Build SWC library">
+        <mkdir dir="temp/swc/content/"/>
 
-        <fileset dir="../actionscript/mobile/src" casesensitive="yes" id="classfiles">
+        <fileset dir="../actionscript/src" casesensitive="yes" id="classfiles">
             <include name="**/*.as"/>
         </fileset>
 
@@ -124,23 +191,26 @@
             <regexpmapper from=".*src.(.*)\.as" to="\1"/>
         </pathconvert>
 
-        <exec executable="${flex.sdk}/bin/compc${bin.ext}" failonerror="true">
-            <env key="AIR_SDK_HOME" value="${air.sdk}"/>
-            <arg line='-source-path ../actionscript/mobile/src'/>
-            <arg line='-output ../temp/swc/${name}.swc'/>
-            <arg line='-external-library-path+="${air.sdk}/frameworks/libs/air/airglobal.swc"'/>
+        <exec executable="${air.sdk.home}/bin/compc" failonerror="true">
+            <env key="AIR_SDK_HOME" value="${air.sdk.home}"/>
+            <arg line='-source-path ../actionscript/src'/>
+            <arg line='-output temp/swc/${name}.swc'/>
+            <arg line='-swf-version=44'/>
+            <arg line='-external-library-path+="${air.sdk.home}/frameworks/libs/air/airglobal.swc"'/>
             <arg line='-include-classes ${classlist}'/>
         </exec>
 
-        <unzip src="../temp/swc/${name}.swc" dest="../temp/swc/content" overwrite="true"/>
+        <unzip src="temp/swc/${name}.swc" dest="temp/swc/content" overwrite="true"/>
 
-        <copy file="../temp/swc/content/library.swf" todir="../temp/ios" overwrite="true"/>
-        <copy file="../temp/swc/content/library.swf" todir="../temp/android" overwrite="true"/>
+        <copy file="temp/swc/content/library.swf" todir="temp/ios" overwrite="true"/>
+        <copy file="temp/swc/content/library.swf" todir="temp/ios-simulator" overwrite="true"/>
+        <copy file="temp/swc/content/library.swf" todir="temp/android" overwrite="true"/>
+        <!-- <copy file="temp/swc/content/library.swf" todir="temp/default" overwrite="true"/> -->
     </target>
-    
-    <!-- Actionscript default (for AIR simulator) -->
+
+    <!-- Actionscript default(for AIR simulator) -->
     <target name="swc-default" description="Build SWC library">
-        <mkdir dir="../temp/swc/content/"/>
+        <mkdir dir="temp/swc/content/"/>
         
         <fileset dir="../actionscript/default/src" casesensitive="yes" id="classfiles">
             <include name="**/*.as"/>
@@ -150,132 +220,46 @@
             <regexpmapper from=".*src.(.*)\.as" to="\1"/>
         </pathconvert>
         
-        <exec executable="${flex.sdk}/bin/compc${bin.ext}" failonerror="true">
+        <exec executable="${air.sdk}/bin/compc${bin.ext}" failonerror="true">
             <env key="AIR_SDK_HOME" value="${air.sdk}"/>
             <arg line='-source-path ../actionscript/default/src'/>
-            <arg line='-output ../temp/swc/${name}.swc'/>
+            <arg line='-output temp/swc/${name}-default.swc'/>
+            <arg line='-swf-version=44'/>
             <arg line='-external-library-path+="${air.sdk}/frameworks/libs/air/airglobal.swc"'/>
             <arg line='-include-classes ${classlist}'/>
         </exec>
-        
-        <unzip src="../temp/swc/${name}.swc" dest="../temp/swc/content" overwrite="true"/>
-        <copy file="../temp/swc/content/library.swf" todir="../temp/default" overwrite="true"/>
-        <delete dir="../temp/swc/content/"/>
 
-        <copy file="../temp/swc/${name}.swc" todir="../bin" overwrite="true" />
+        <unzip src="temp/swc/${name}-default.swc" dest="temp/swc/content" overwrite="true"/>
+        <copy file="temp/swc/content/library.swf" todir="temp/default" overwrite="true"/>
+        <delete dir="temp/swc/content/"/>
     </target>
-    
+
     <!-- Package -->
     <target name="package" description="Create the extension package">
-        <exec executable="${air.sdk}/bin/adt${bin.ext}" failonerror="true" dir="../temp">
+        <exec executable="${air.sdk.home}/bin/adt" failonerror="true" dir="temp/">
             <arg value="-package"/>
             <arg value="-target"/>
             <arg value="ane"/>
             <arg value="${name}.ane"/>
-            <arg value="../build/extension.xml"/> 
+            <arg value="../extension.xml"/>
             <arg line="-swc swc/${name}.swc"/>
-                        
-            <arg line="-platform iPhone-ARM -platformoptions ../build/platform-ios.xml -C ios/ ."/>
-            <arg line="-platform Android-ARM -platformoptions ../build/platform-android.xml -C android/ ."/>
-            <arg line="-platform Android-ARM64 -platformoptions ../build/platform-android.xml -C android/ ."/>
-            <arg line="-platform Android-x86 -platformoptions ../build/platform-android.xml -C android/ ."/>
-            <arg line="-platform default -C default/ ."/>
-        </exec>
-        
-        <move file="../temp/${name}.ane" todir="../bin"/>
-    </target>
-    
-    <target name="package_without_gp" description="Create the extension package without Google play services">
-        <delete file="../temp/android/google-play-services.jar"/>
-        <delete file="../temp/android/firebase-common.jar"/>
-        <delete file="../temp/android/firebase-iid.jar"/>
-        <delete file="../temp/android/firebase-messaging.jar"/>
-        <delete dir="../temp/android/res"/>
-        <exec executable="${air.sdk}/bin/adt${bin.ext}" failonerror="true" dir="../temp">
-            <arg value="-package"/>
-            <arg value="-target"/>
-            <arg value="ane"/>
-            <arg value="${name}-witout-gp.ane"/>
-            <arg value="../build/extension.xml"/>
-            <arg line="-swc swc/${name}.swc"/>
-            
-            <arg line="-platform iPhone-ARM -platformoptions ../build/platform-ios.xml -C ios/ ."/>
-            <arg line="-platform Android-ARM -platformoptions ../build/platform-android-without-gp.xml -C android/ ."/>
-            <arg line="-platform Android-ARM64 -platformoptions ../build/platform-android-without-gp.xml -C android/ ."/>
-            <arg line="-platform Android-x86 -platformoptions ../build/platform-android-without-gp.xml -C android/ ."/>
-            <arg line="-platform default -C default/ ."/>
-        </exec>
-    
-        <move file="../temp/${name}-witout-gp.ane" todir="../bin"/>
-    </target>
-
-    <target name="package_without_gp_and_support_lib" description="Create the extension package without Google play services and Support lib">
-        <delete file="../temp/android/android-support-v4.jar"/>
-        <exec executable="${air.sdk}/bin/adt${bin.ext}" failonerror="true" dir="../temp">
-            <arg value="-package"/>
-            <arg value="-target"/>
-            <arg value="ane"/>
-            <arg value="${name}-witout-gp-support.ane"/>
-            <arg value="../build/extension.xml"/>
-            <arg line="-swc swc/${name}.swc"/>
-
-            <arg line="-platform iPhone-ARM -platformoptions ../build/platform-ios.xml -C ios/ ."/>
-            <arg line="-platform Android-ARM -platformoptions ../build/platform-android-without-gp-support.xml -C android/ ."/>
-            <arg line="-platform Android-ARM64 -platformoptions ../build/platform-android-without-gp-support.xml -C android/ ."/>
-            <arg line="-platform Android-x86 -platformoptions ../build/platform-android-without-gp-support.xml -C android/ ."/>
+            <arg line="-platform iPhone-ARM -platformoptions ../platform-ios.xml -C ios/ . "/>
+            <arg line="-platform iPhone-x86 -platformoptions ../platform-ios.xml -C ios-simulator/ ."/>
+            <arg line="-platform Android-ARM -platformoptions ../platform-android.xml -C android/ ."/>
+            <arg line="-platform Android-ARM64 -platformoptions ../platform-android.xml -C android/ ."/>
+            <arg line="-platform Android-x86 -platformoptions ../platform-android.xml -C android/ ."/>
             <arg line="-platform default -C default/ ."/>
         </exec>
 
-        <move file="../temp/${name}-witout-gp-support.ane" todir="../bin"/>
-    </target>
+        <move file="temp/${name}.ane" todir="../bin"/>
+        <delete dir="temp"/>
 
-    <!-- iOS-Strict-->
-    <target name="ios-strict" description="Build Strict iOS Library">
-        <delete dir="../temp/ios/build/"/>
-        <mkdir dir="../temp/ios/build/"/>
-
-        <exec executable="xcodebuild" failonerror="true" dir="../ios/">
-            <arg line="-project ${name}.xcodeproj"/>
-            <arg line="-alltargets clean"/>
-        </exec>
-
-        <exec executable="xcodebuild" failonerror="true" dir="../ios/">
-            <arg line="-project ${name}.xcodeproj"/>
-            <arg line="-sdk ${ios.sdkversion}"/>
-            <arg line="-target Strict"/>
-            <arg line="-configuration Release"/>
-            <arg line="SYMROOT=../temp/ios/build/"/>
-        </exec>
-
-        <copy file="../temp/ios/build/Release-iphoneos/lib${name}.a" todir="../temp/ios" overwrite="true"/>
-        <copy file="../ios/libAppsFlyerLib-strict.a" tofile="../temp/ios/libAppsFlyerLib.a" overwrite="true"/>
-        <delete dir="../temp/ios/build/"/>
-    </target>
-
-    <target name="package-strict" description="Create the extension package without Google play services, support libs
-    and iOS AdSupport and iAd frameworks">
-
-        <exec executable="${air.sdk}/bin/adt${bin.ext}" failonerror="true" dir="../temp">
-            <arg value="-package"/>
-            <arg value="-target"/>
-            <arg value="ane"/>
-            <arg value="${name}-strict.ane"/>
-            <arg value="../build/extension.xml"/>
-            <arg line="-swc swc/${name}.swc"/>
-
-            <arg line="-platform iPhone-ARM -platformoptions ../build/platform-ios-strict.xml -C ios/ ."/>
-            <arg line="-platform Android-ARM -platformoptions ../build/platform-android-without-gp-support.xml -C android/ ."/>
-            <arg line="-platform Android-ARM64 -platformoptions ../build/platform-android-without-gp-support.xml -C android/ ."/>
-            <arg line="-platform Android-x86 -platformoptions ../build/platform-android-without-gp-support.xml -C android/ ."/>
-            <arg line="-platform default -C default/ ."/>
-        </exec>
-
-        <move file="../temp/${name}-strict.ane" todir="../bin"/>
-    </target>
-
-    <target name="clear">
-        <delete dir="../temp"/>
-        <copy file="../bin/${name}.ane" todir="../SampleApp/libs"/>
+        <!-- Copy .ane to sample/native_extensions folder -->
+        <copy todir="../sample/native_extensions">
+            <fileset dir="../bin">
+                <include name="*.ane"/>
+            </fileset>
+        </copy>
     </target>
 
 </project>
