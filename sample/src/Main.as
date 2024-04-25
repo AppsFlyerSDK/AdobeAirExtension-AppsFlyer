@@ -41,7 +41,12 @@ public class Main extends Sprite {
         appsFlyer.setResolveDeepLinkURLs(["5a5b39e8a8df.ngrok.io"]);
         appsFlyer.init("4UGrDF4vFvPLbHq5bXtCza", "753258300");
         appsFlyer.start("4UGrDF4vFvPLbHq5bXtCza", "753258300");
-
+        // Test 1
+        appsFlyer.enableTCFDataCollection(true);
+        // Test 2
+        appsFlyer.setConsentForNonGDPRUser();
+        // Test 3
+        appsFlyer.setConsentForGDPRUser(true, true);
         function eventHandler(event:AppsFlyerEvent):void {
             log("AppsFlyer event: " + event.type + "; \nData: " + event.data);
             textField.text = "AppsFlyer event: " + event.type + "; \nData: " + event.data + "\n";

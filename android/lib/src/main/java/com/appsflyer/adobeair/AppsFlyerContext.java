@@ -54,6 +54,9 @@ public class AppsFlyerContext extends FREContext {
         map.put("setDisableAdvertisingIdentifiers", new SetDisableAdvertisingIdentifiers());
         map.put("setSharingFilterForPartners", new SetSharingFilterForPartners());
         map.put("setCurrentDeviceLanguage", new SetCurrentDeviceLanguage());
+        map.put("EnableTCFDataCollection", new EnableTCFDataCollection());
+        map.put("SetConsentForNonGDPRUser", new SetConsentForNonGDPRUser());
+        map.put("SetConsentForGDPRUser", new SetConsentForGDPRUser());
 //        map.put("subscribeForDeepLink", new SubscribeForDeepLink());
         return map;
     }

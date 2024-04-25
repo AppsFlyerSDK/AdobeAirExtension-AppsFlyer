@@ -21,7 +21,7 @@
             "output": "bin/Main.apk",
             "signingOptions": {
                 "storetype": "pkcs12",
-                "keystore": "android_certificate.p12"
+                "keystore": "a1.p12"
             }
         },
         "ios": {
@@ -29,13 +29,13 @@
             "output": "bin/Main.ipa",
             "signingOptions": {
 				"storetype": "pkcs12",
-				"keystore": "ios_certificate.p12",
-				"provisioning-profile": "example.mobileprovision"
+				"keystore": "a1.p12",
+				"provisioning-profile": "iOSExample.mobileprovision"
 			}
         },
         "ios_simulator": {
             "target": "ipa-debug-interpreter-simulator",
-            "platformsdk": "/Applications/Xcode14.2.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator16.2.sdk",
+            "platformsdk": "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator17.2.sdk",
             "output": "bin/Main.ipa",
             "signingOptions": {
 				"storetype": "pkcs12",
