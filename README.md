@@ -48,8 +48,8 @@ Supported platforms:
 
 Based on:
 
-- iOS AppsFlyerSDK **v6.12.1**
-- Android AppsFlyerSDK **v6.12.2**
+- iOS AppsFlyerSDK **v6.13.2**
+- Android AppsFlyerSDK **v6.13.0**
 
 Built with:
 
