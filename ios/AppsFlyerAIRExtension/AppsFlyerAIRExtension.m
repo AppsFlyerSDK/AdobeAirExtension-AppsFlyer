@@ -484,7 +484,7 @@ DEFINE_ANE_FUNCTION(SetConsentForNonGDPRUser)
     return NULL;
 }
 
-// void UAppsFlyerSDKBlueprint::SetConsentForGDPRUser(bool hasConsentForDataUsage, bool hasConsentForAdsPersonalization)
+// void SetConsentForGDPRUser(bool hasConsentForDataUsage, bool hasConsentForAdsPersonalization)
 DEFINE_ANE_FUNCTION(SetConsentForGDPRUser)
 {
     uint32_t hasConsentForDataUsage;
@@ -503,7 +503,7 @@ DEFINE_ANE_FUNCTION(SetConsentForGDPRUser)
 
 void AFExtContextInitializer(void* extData, const uint8_t* ctxType, FREContext ctx, uint32_t* numFunctionsToTest, const FRENamedFunction** functionsToSet)
 {
-    *numFunctionsToTest = 32;
+    *numFunctionsToTest = 35;
     FRENamedFunction* func = (FRENamedFunction*)malloc(sizeof(FRENamedFunction) * *numFunctionsToTest);
     
     func[0].name = (const uint8_t*)"start";
