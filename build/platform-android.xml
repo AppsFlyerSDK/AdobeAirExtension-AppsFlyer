@@ -2,22 +2,23 @@
     <packagedDependencies>
 
         <packagedDependency>installreferrer-2.2.jar</packagedDependency>
-        <packagedDependency>af-android-sdk-6.12.2.jar</packagedDependency>
-
+        <packagedDependency>af-android-sdk-6.13.0.jar</packagedDependency>
+        <!-- Not Using -->
         <!-- <packagedDependency>google-play-services.jar</packagedDependency> -->
-
+        
+        <!-- PlayServices/Support -->
+        <!--  
         <packagedDependency>play-services-base-15.0.1.jar</packagedDependency>
         <packagedDependency>play-services-basement-15.0.1.jar</packagedDependency>
         <packagedDependency>play-services-ads-15.0.1.jar</packagedDependency>
-        <packagedDependency>play-services-ads-identifier-15.0.1.jar</packagedDependency>
-<!--    // kotlin-stdlib-1.8.0
-        // kotlin-stdlib-common-1.8.0
-        // kotlin-stdlib-jdk7-1.8.0
-        // kotlin-stdlib-jdk8-1.8.0 -->
+        <packagedDependency>play-services-ads-identifier-15.0.1.jar</packagedDependency> 
+        -->
+
+
+        <!-- Kotlin -->
         <packagedDependency>kotlin-stdlib-1.8.0.jar</packagedDependency>
-        <packagedDependency>kotlin-stdlib-common-1.8.0.jar</packagedDependency>
-        <packagedDependency>kotlin-stdlib-jdk7-1.8.0.jar</packagedDependency>
         <packagedDependency>kotlin-stdlib-jdk8-1.8.0.jar</packagedDependency>
+
     </packagedDependencies>
     <packagedResources>
 <!--    <packagedResource> 

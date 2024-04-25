@@ -144,7 +144,7 @@ DEFINE_ANE_FUNCTION(init)
     NSString *developerKey = [AppsFlyerAIRExtension getString: argv[0]];
     NSString *appId = [AppsFlyerAIRExtension getString: argv[1]];
     [[AppsFlyerLib shared] setPluginInfoWith:AFSDKPluginAdobeAir
-                               pluginVersion:@"6.12.1"
+                               pluginVersion:@"6.13.2"
                             additionalParams:nil];
     [AppsFlyerLib shared].appsFlyerDevKey = developerKey;
     [AppsFlyerLib shared].appleAppID = appId;
@@ -469,10 +469,41 @@ DEFINE_ANE_FUNCTION(setSharingFilterForPartners)
     return NULL;
 }
 
+DEFINE_ANE_FUNCTION(EnableTCFDataCollection)
+{
+    uint32_t value;
+    FREGetObjectAsBool(argv[0], &value);
+    [[AppsFlyerLib shared] enableTCFDataCollection:value];
+    return NULL;
+}
+
+DEFINE_ANE_FUNCTION(SetConsentForNonGDPRUser)
+{
+    id consent = [[AppsFlyerConsent alloc] initNonGDPRUser];
+    [[AppsFlyerLib shared] setConsentData:consent];
+    return NULL;
+}
+
+// void SetConsentForGDPRUser(bool hasConsentForDataUsage, bool hasConsentForAdsPersonalization)
+DEFINE_ANE_FUNCTION(SetConsentForGDPRUser)
+{
+    uint32_t hasConsentForDataUsage;
+    FREGetObjectAsBool(argv[0], &hasConsentForDataUsage);
+    
+    uint32_t hasConsentForAdsPersonalization;
+    FREGetObjectAsBool(argv[0], &hasConsentForAdsPersonalization);
+    
+    
+    id consent = [[AppsFlyerConsent alloc] initForGDPRUserWithHasConsentForDataUsage:hasConsentForDataUsage
+                                                     hasConsentForAdsPersonalization:hasConsentForAdsPersonalization];
+    [[AppsFlyerLib shared] setConsentData:consent];
+    return NULL;
+}
+
 
 void AFExtContextInitializer(void* extData, const uint8_t* ctxType, FREContext ctx, uint32_t* numFunctionsToTest, const FRENamedFunction** functionsToSet)
 {
-    *numFunctionsToTest = 32;
+    *numFunctionsToTest = 35;
     FRENamedFunction* func = (FRENamedFunction*)malloc(sizeof(FRENamedFunction) * *numFunctionsToTest);
     
     func[0].name = (const uint8_t*)"start";
@@ -602,6 +633,18 @@ void AFExtContextInitializer(void* extData, const uint8_t* ctxType, FREContext c
     func[31].name = (const uint8_t*)"setSharingFilterForPartners";
     func[31].functionData = NULL;
     func[31].function = &setSharingFilterForPartners;
+    
+    func[32].name = (const uint8_t*)"EnableTCFDataCollection";
+    func[32].functionData = NULL;
+    func[32].function = &EnableTCFDataCollection;
+    
+    func[33].name = (const uint8_t*)"SetConsentForNonGDPRUser";
+    func[33].functionData = NULL;
+    func[33].function = &SetConsentForNonGDPRUser;
+    
+    func[34].name = (const uint8_t*)"SetConsentForGDPRUser";
+    func[34].functionData = NULL;
+    func[34].function = &SetConsentForGDPRUser;
     
     *functionsToSet = func;
     

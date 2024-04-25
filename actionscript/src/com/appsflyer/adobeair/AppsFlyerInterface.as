@@ -161,6 +161,18 @@ public class AppsFlyerInterface extends EventDispatcher {
 		context.call("setSharingFilterForPartners", partners);
 	}
 
+	public function enableTCFDataCollection(enable:Boolean):void {
+		context.call("EnableTCFDataCollection", enable);
+	}
+
+	public function setConsentForNonGDPRUser():void {
+		context.call("SetConsentForNonGDPRUser");
+	}
+
+	public function setConsentForGDPRUser(hasConsentForDataUsage:Boolean, hasConsentForAdsPersonalization:Boolean):void {
+		context.call("SetConsentForGDPRUser", hasConsentForDataUsage, hasConsentForAdsPersonalization);
+	}
+
 //	public function subscribeForDeepLink():void {
 //		context.addEventListener(StatusEvent.STATUS, _handleStatusEvents);
 //		context.call("subscribeForDeepLink");

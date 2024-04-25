@@ -114,6 +114,17 @@ public class AppsFlyerInterface extends EventDispatcher {
     public function setSharingFilterForPartners(partners:Array):void {
     }
 
+    public function enableTCFDataCollection(enable:Boolean):void {
+	
+	}
+
+	public function setConsentForNonGDPRUser():void {
+	
+	}
+
+	public function setConsentForGDPRUser(hasConsentForDataUsage:Boolean, hasConsentForAdsPersonalization:Boolean):void {
+	
+	}
 //
 //    public function subscribeForDeepLink():void {
 //    }
