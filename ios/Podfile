@@ -3,10 +3,10 @@
 
 target 'AppsFlyerAIRExtension' do
   
-  pod 'AppsFlyerFramework', '6.13.2'
+  pod 'AppsFlyerFramework', '6.14.3'
 end
 
 target 'AppsFlyerAIRExtension-Strict' do
   
-  pod 'AppsFlyerFramework/Strict', '6.13.2'
+  pod 'AppsFlyerFramework/Strict', '6.14.3'
 end

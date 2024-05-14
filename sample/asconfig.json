@@ -6,14 +6,14 @@
 		],
 		"output": "bin/Main.swf",
         "library-path": [
-			"native_extensions/AppsFlyerAIRExtension.ane"
+			"../bin/AppsFlyerAIRExtension.ane"
 		]
 	},
 	"mainClass": "Main",
 	"application": "src/Main-app.xml",
     "airOptions": {
         "extdir": [
-			"./native_extensions"
+			"../bin"
 		],
         "android": {
             "arch": "armv8",

@@ -2,7 +2,7 @@
     <packagedDependencies>
 
         <packagedDependency>installreferrer-2.2.jar</packagedDependency>
-        <packagedDependency>af-android-sdk-6.13.0.jar</packagedDependency>
+        <packagedDependency>af-android-sdk-6.14.0.jar</packagedDependency>
         <!-- Not Using -->
         <!-- <packagedDependency>google-play-services.jar</packagedDependency> -->
         

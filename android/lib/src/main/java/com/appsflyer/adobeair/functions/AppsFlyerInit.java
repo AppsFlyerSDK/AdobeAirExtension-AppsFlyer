@@ -62,7 +62,7 @@ public class AppsFlyerInit implements FREFunction {
             };
 
             AppsFlyerLib.getInstance().init(devKey, conversionDataListener, freContext.getActivity().getApplicationContext());
-            PluginInfo pluginInfo = new PluginInfo(Plugin.ADOBE_AIR, "6.13.2");
+            PluginInfo pluginInfo = new PluginInfo(Plugin.ADOBE_AIR, "6.14.3");
             AppsFlyerLib.getInstance().setPluginInfo(pluginInfo);
             cnt.setDevKey(devKey);
 

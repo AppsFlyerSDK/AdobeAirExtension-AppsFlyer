@@ -144,7 +144,7 @@ DEFINE_ANE_FUNCTION(init)
     NSString *developerKey = [AppsFlyerAIRExtension getString: argv[0]];
     NSString *appId = [AppsFlyerAIRExtension getString: argv[1]];
     [[AppsFlyerLib shared] setPluginInfoWith:AFSDKPluginAdobeAir
-                               pluginVersion:@"6.13.2"
+                               pluginVersion:@"6.14.3"
                             additionalParams:nil];
     [AppsFlyerLib shared].appsFlyerDevKey = developerKey;
     [AppsFlyerLib shared].appleAppID = appId;
