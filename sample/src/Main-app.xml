@@ -27,7 +27,7 @@
                 <string>2</string>
             </array>
             <key>MinimumOSVersion</key>
-            <string>11.0</string>
+            <string>12.0</string>
             <!--URI-scheme setup-->
             <key>CFBundleURLTypes</key>
             <array>

@@ -44,12 +44,12 @@ If you have used 1 of the removed APIs, please check the integration guide for t
 Supported platforms:
 
 - Android
-- iOS 11+
+- iOS 12+
 
 Based on:
 
-- iOS AppsFlyerSDK **v6.13.2**
-- Android AppsFlyerSDK **v6.13.0**
+- iOS AppsFlyerSDK **v6.14.3**
+- Android AppsFlyerSDK **v6.14.0**
 
 Built with:
 
